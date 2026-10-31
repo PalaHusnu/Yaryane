@@ -465,13 +465,13 @@ function yaneDraftShow(d){
 }
 function yaneMultiPlanner(){
  const box=document.getElementById('yaneMessages');if(!box)return;
- const pending=tasks.filter(t=>!t.done).slice(0,12);
+ const pending=tasks.filter(t=>!t.done).sort((a,b)=>String(a.date||'9999-12-31').localeCompare(String(b.date||'9999-12-31'))).slice(0,12);
  const wrap=document.createElement('div');wrap.className='yane-task-planner yane-multi-planner';
  const head=document.createElement('strong');head.textContent='✦ Mehrere Aufgaben für die Woche';wrap.appendChild(head);
  if(!pending.length){const p=document.createElement('p');p.textContent='Keine offenen Aufgaben vorhanden.';wrap.appendChild(p);box.appendChild(wrap);return}
- const help=document.createElement('small');help.textContent='Wähle bis zu 5 Aufgaben. Vorschläge werden nicht automatisch gespeichert.';wrap.appendChild(help);
+ const help=document.createElement('small');help.textContent='Wähle bis zu 5 Aufgaben. Aufgaben mit Fälligkeitsdatum werden zuerst eingeplant, möglichst rechtzeitig. Nichts wird automatisch gespeichert.';wrap.appendChild(help);
  const choices=document.createElement('div');choices.className='yane-multi-choices';
- pending.forEach(t=>{const row=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.value=String(t.id);const name=document.createElement('span');name.textContent=t.title||t.name||'Aufgabe';check.addEventListener('change',()=>{const checked=[...choices.querySelectorAll('input:checked')];if(checked.length>5){check.checked=false;const msg=wrap.querySelector('.yane-multi-limit');if(msg)msg.textContent='Bitte höchstens fünf Aufgaben auswählen.'}});row.append(check,name);choices.appendChild(row)});wrap.appendChild(choices);const limit=document.createElement('small');limit.className='yane-multi-limit';wrap.appendChild(limit);
+ pending.forEach(t=>{const row=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.value=String(t.id);const name=document.createElement('span');name.textContent=(t.title||t.name||'Aufgabe')+(t.date?' · fällig '+fmt(t.date):'');check.addEventListener('change',()=>{const checked=[...choices.querySelectorAll('input:checked')];if(checked.length>5){check.checked=false;const msg=wrap.querySelector('.yane-multi-limit');if(msg)msg.textContent='Bitte höchstens fünf Aufgaben auswählen.'}});row.append(check,name);choices.appendChild(row)});wrap.appendChild(choices);const limit=document.createElement('small');limit.className='yane-multi-limit';wrap.appendChild(limit);
  const duration=document.createElement('select');duration.setAttribute('aria-label','Dauer pro Aufgabe');
  [[30,'30 Minuten je Aufgabe'],[60,'60 Minuten je Aufgabe'],[90,'90 Minuten je Aufgabe'],[120,'120 Minuten je Aufgabe']].forEach(([n,label])=>{const option=document.createElement('option');option.value=String(n);option.textContent=label;duration.appendChild(option)});
  const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
@@ -491,13 +491,13 @@ function yaneMultiPlanner(){
   for(let i=0;i<7;i++){const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+i);yaneFreeSlots('Freie Zeitfenster '+localDate(date));for(const slot of yaneLastSlots){const [a,b]=slot.start.split(':').map(Number),[c,d]=slot.end.split(':').map(Number);{const from=Math.max(a*60+b,bounds[0]),to=Math.min(c*60+d,bounds[1]);if(to-from>=needed)intervals.push({date:slot.date,from,to})}}}
   yaneLastSlots=[];
   let count=0;
-  selected.forEach(t=>{
-   const idx=intervals.findIndex(x=>x.to-x.from>=needed);
-   if(idx<0){const note=document.createElement('p');note.textContent='Kein passender Platz für: '+(t.title||t.name||'Aufgabe');results.appendChild(note);return}
+  selected.sort((a,b)=>String(a.date||'9999-12-31').localeCompare(String(b.date||'9999-12-31'))).forEach(t=>{
+   const idx=intervals.findIndex(x=>x.to-x.from>=needed&&(!t.date||x.date<=t.date));
+   if(idx<0){const note=document.createElement('p');note.textContent='Kein passender Platz'+(t.date?' bis zum Fälligkeitsdatum':'')+' für: '+(t.title||t.name||'Aufgabe');results.appendChild(note);return}
    const slot=intervals[idx],start=clock(slot.from),end=clock(slot.from+needed);slot.from+=needed;if(slot.to-slot.from<30)intervals.splice(idx,1);
    const card=document.createElement('div');card.className='yane-multi-item';
    const title=document.createElement('strong');title.textContent=t.title||t.name||'Aufgabe';
-   const info=document.createElement('small');info.textContent=fmt(slot.date)+' · '+start+'–'+end+' Uhr';
+   const info=document.createElement('small');info.textContent=fmt(slot.date)+' · '+start+'–'+end+' Uhr'+(t.date?' · fällig '+fmt(t.date):'');
    const btn=document.createElement('button');btn.type='button';btn.textContent='Termin prüfen';btn.onclick=()=>{yaneLastDraft={kind:'event',title:t.title||t.name||'Aufgabe',date:slot.date,time:start,end};yaneDraftOpen(yaneLastDraft)};
    card.append(title,info,btn);results.appendChild(card);count++;
   });
