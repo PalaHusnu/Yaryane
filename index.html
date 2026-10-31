@@ -695,7 +695,10 @@ function yaryaneReminderPreview(){
  root.replaceChildren();
  const heading=document.createElement('strong');heading.textContent='Nächste Erinnerungen';root.appendChild(heading);
  const now=Date.now(),lead=yaryaneReminderLead()*60000,limit=now+7*86400000;
- const upcoming=yaryaneReminderItems().map(item=>({...item,at:new Date(item.date+'T'+item.start+':00').getTime()})).filter(item=>Number.isFinite(item.at)&&item.at>=now&&item.at-lead<=limit).sort((a,b)=>a.at-b.at).slice(0,5);
+ const allItems=yaryaneReminderItems();
+ const missingTime=events.filter(e=>e.date&&!yaryaneValidClock(e.start)).length+shifts.filter(x=>x.date&&!['free','off','vacation','sick'].includes(x.type)&&!yaryaneValidClock(x.start)).length;
+ if(missingTime){const warning=document.createElement('small');warning.textContent=missingTime+' Einträge ohne gültige Startzeit können nicht erinnert oder mit Alarm exportiert werden.';root.appendChild(warning)}
+ const upcoming=allItems.map(item=>({...item,at:new Date(item.date+'T'+item.start+':00').getTime()})).filter(item=>Number.isFinite(item.at)&&item.at>=now&&item.at-lead<=limit).sort((a,b)=>a.at-b.at).slice(0,5);
  if(!upcoming.length){const empty=document.createElement('small');empty.textContent='In den nächsten 7 Tagen sind keine Termine oder Schichten mit Startzeit eingetragen.';root.appendChild(empty);return}
  upcoming.forEach(item=>{const row=document.createElement('div');row.className='yaryane-reminder-preview-row';const title=document.createElement('span');title.textContent=(item.type==='Schicht'?'▣ ':'◷ ')+item.title;const date=document.createElement('small');date.textContent=fmt(item.date)+' · '+item.start+' Uhr · '+yaryaneReminderLead()+' Min. vorher';row.append(title,date);root.appendChild(row)});
 }
