@@ -237,6 +237,31 @@ html[data-theme=dark] #modal .field input:not([type=checkbox]),html[data-theme=d
 #modal .formactions button{min-height:43px;font-size:13px}
 #modal .sheet form>.danger{margin-top:7px!important}
 @media(min-width:560px){#modal .sheet{border-radius:22px;margin-bottom:18px}}
+</style><style id="yaryane-unified-input-sizing">
+/* One definitive size for every editor control, including Safari date/time */
+#modal .sheet form label.field{margin:6px 0 8px!important;min-width:0!important}
+#modal .sheet form label.field>input:not([type="checkbox"]),
+#modal .sheet form label.field>select,
+#modal .sheet form label.field>textarea{
+ box-sizing:border-box!important;display:block!important;width:100%!important;max-width:100%!important;
+ height:40px!important;min-height:40px!important;max-height:40px!important;
+ padding:7px 11px!important;margin-top:5px!important;
+ font-size:16px!important;line-height:24px!important;font-weight:400!important;
+ border-radius:10px!important;border:1px solid rgba(127,155,202,.30)!important;
+ background:rgba(116,146,194,.075)!important;color:var(--ink)!important;
+ box-shadow:none!important;vertical-align:middle!important;
+}
+#modal .sheet form label.field>textarea{height:72px!important;min-height:72px!important;max-height:none!important;resize:vertical!important}
+#modal .sheet form label.field>input[type="date"],
+#modal .sheet form label.field>input[type="time"]{
+ -webkit-appearance:none!important;appearance:none!important;
+ display:block!important;min-width:0!important;text-align:left!important;
+}
+#modal .sheet form label.field>input[type="date"]::-webkit-date-and-time-value,
+#modal .sheet form label.field>input[type="time"]::-webkit-date-and-time-value{min-height:24px!important;line-height:24px!important;text-align:left!important}
+#modal .sheet form label.field>input[type="date"]::-webkit-datetime-edit,
+#modal .sheet form label.field>input[type="time"]::-webkit-datetime-edit{padding:0!important;line-height:24px!important}
+#modal .sheet form label.field>input:focus,#modal .sheet form label.field>select:focus,#modal .sheet form label.field>textarea:focus{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(35,130,245,.12)!important}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
