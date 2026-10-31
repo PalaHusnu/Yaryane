@@ -173,6 +173,24 @@ html,body{overscroll-behavior-x:none;-webkit-text-size-adjust:100%}
 .nav button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 button,label.settings-import,.profile-avatar{-webkit-tap-highlight-color:transparent}
 @media(prefers-reduced-motion:reduce){#app.yaryane-page-enter{animation:none}}
+</style><style id="yaryane-profile-editor-premium">
+.profile-editor-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;padding-bottom:max(18px,env(safe-area-inset-bottom));background:rgba(3,12,29,.66);-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px);overflow-y:auto}
+.profile-editor{width:100%;max-width:410px;max-height:calc(100dvh - 36px);overflow-y:auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:25px;padding:24px;box-shadow:0 25px 75px rgba(0,0,0,.32);animation:profileEditorAppear .2s ease-out both}
+.profile-editor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.profile-editor-mark{width:45px;height:45px;display:grid;place-items:center;border-radius:14px;background:rgba(30,120,245,.14);color:var(--accent);font-size:23px}
+.profile-editor-close{width:33px;height:33px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:rgba(130,150,185,.14);color:var(--muted);font-size:24px;line-height:1}
+.profile-editor h3{font-size:23px;letter-spacing:-.5px;margin:0 0 7px}
+.profile-editor p{font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 25px}
+.profile-editor label{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:9px}
+.profile-editor input{display:block;width:100%;height:52px;padding:0 15px;font-size:16px;border-radius:13px;border:1px solid rgba(115,150,195,.35);background:var(--glass);color:var(--ink);outline:none}
+.profile-editor input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(30,125,245,.12)}
+.profile-editor-actions{display:flex;gap:10px;margin-top:25px}
+.profile-editor-actions button{min-height:48px;border-radius:13px;font-size:13px;font-weight:700;padding:11px 10px}
+.profile-editor-cancel{flex:0 0 35%;border:1px solid var(--line);background:var(--glass);color:var(--ink)}
+.profile-editor-save{flex:1;border:0;background:var(--accent);color:#fff;box-shadow:0 5px 16px rgba(20,110,230,.22)}
+@keyframes profileEditorAppear{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-height:560px){.profile-editor-overlay{align-items:flex-start}.profile-editor{margin:auto 0}}
+@media(prefers-reduced-motion:reduce){.profile-editor{animation:none}}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
@@ -205,7 +223,17 @@ function notesPage(){let query=noteSearch.trim().toLocaleLowerCase('de'),list=no
 function noteCards(list){return '<div class="notes">'+list.map(x=>'<button class="glass note" style="border-top:3px solid '+({blue:'#398eff',violet:'#a080f3',pink:'#f47ea7',mint:'#45c8a5',amber:'#efbb57'}[x.color]||'#398eff')+'" onclick="openForm(\'note\',\''+esc(x.id)+'\')"><strong>'+(x.pinned?'📌 ':'')+esc(x.icon||'📝')+' '+esc(x.title||'Ohne Titel')+'</strong><p>'+(x.checklist?noteLines(x).slice(0,5).map(t=>'☐ '+esc(t)).join('\n'):esc(String(x.body||'').slice(0,140)))+'</p><small>'+esc(x.updated||x.date?fmt(x.updated||x.date):'')+'</small></button>').join('')+'</div>'+(list.length?'':'<div class="glass empty">Keine passenden Notizen gefunden. ✨</div>')}
 function renderNotesResults(){let q=noteSearch.trim().toLocaleLowerCase('de'),list=notes.filter(x=>(!q||(String(x.title||'')+' '+String(x.body||'')).toLocaleLowerCase('de').includes(q))&&(noteFilter==='Alle'||(noteFilter==='Angeheftet'?x.pinned:x.checklist)));list.sort((x,y)=>Number(!!y.pinned)-Number(!!x.pinned)||String(y.updated||y.date||'').localeCompare(String(x.updated||x.date||'')));document.getElementById('noteResults').innerHTML=noteCards(list)}
 const PROFILE_NAME_KEY='yaryane_profile_name_v1',PROFILE_PHOTO_KEY='yaryane_profile_photo_v1';
-function editProfileName(){const current=localStorage.getItem(PROFILE_NAME_KEY)||'';const overlay=document.createElement('div');overlay.className='profile-editor-overlay';overlay.innerHTML='<form class="glass profile-editor" id="profileNameForm"><h3>Profil bearbeiten</h3><p>Wie möchtest du in Yaryane heißen?</p><label for="profileNameInput">Anzeigename</label><input id="profileNameInput" maxlength="45" autocomplete="nickname" placeholder="Dein Name"><div class="profile-editor-actions"><button type="button" class="secondary" id="profileCancel">Abbrechen</button><button type="submit" class="primary">Speichern</button></div></form>';document.body.appendChild(overlay);const input=overlay.querySelector('input');input.value=current;overlay.querySelector('#profileCancel').onclick=()=>overlay.remove();overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});overlay.querySelector('form').onsubmit=e=>{e.preventDefault();const name=input.value.trim();if(name)localStorage.setItem(PROFILE_NAME_KEY,name);else localStorage.removeItem(PROFILE_NAME_KEY);overlay.remove();render();window.dispatchEvent(new Event('yaryane-local-change'))};input.focus()}
+function editProfileName(){
+ const existing=document.querySelector('.profile-editor-overlay');if(existing)return;
+ const current=localStorage.getItem(PROFILE_NAME_KEY)||'';
+ const overlay=document.createElement('div');overlay.className='profile-editor-overlay';overlay.setAttribute('role','presentation');
+ overlay.innerHTML='<form class="profile-editor" role="dialog" aria-modal="true" aria-labelledby="profileEditTitle"><div class="profile-editor-top"><span class="profile-editor-mark">✎</span><button type="button" class="profile-editor-close" aria-label="Schließen">×</button></div><h3 id="profileEditTitle">Profil bearbeiten</h3><p>Wähle den Namen, der in deinem Profil angezeigt wird.</p><label for="profileNameInput">ANZEIGENAME</label><input id="profileNameInput" name="displayName" maxlength="45" autocomplete="nickname" placeholder="Dein Name" required><div class="profile-editor-actions"><button type="button" class="profile-editor-cancel">Abbrechen</button><button type="submit" class="profile-editor-save">Änderungen speichern</button></div></form>';
+ document.body.appendChild(overlay);const input=overlay.querySelector('input');input.value=current;
+ const close=()=>overlay.remove();overlay.querySelector('.profile-editor-close').onclick=close;overlay.querySelector('.profile-editor-cancel').onclick=close;
+ overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+ overlay.querySelector('form').onsubmit=e=>{e.preventDefault();const name=input.value.trim();if(!name)return;localStorage.setItem(PROFILE_NAME_KEY,name);close();render();window.dispatchEvent(new Event('yaryane-local-change'))};
+ requestAnimationFrame(()=>input.focus({preventScroll:true}))
+}
 function removeProfilePhoto(){if(!localStorage.getItem(PROFILE_PHOTO_KEY))return;if(!confirm('Profilbild entfernen?'))return;localStorage.removeItem(PROFILE_PHOTO_KEY);render();window.dispatchEvent(new Event('yaryane-local-change'))}
 function updateProfilePhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Bitte ein Bild auswählen.');return}if(file.size>12000000){alert('Das Foto ist zu groß. Bitte ein kleineres Bild wählen.');return}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{try{const canvas=document.createElement('canvas'),size=192;canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');const side=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);localStorage.setItem(PROFILE_PHOTO_KEY,canvas.toDataURL('image/jpeg',.76));render();window.dispatchEvent(new Event('yaryane-local-change'))}catch(e){alert('Profilbild konnte nicht gespeichert werden.')}};img.onerror=()=>alert('Foto konnte nicht geöffnet werden.');img.src=reader.result};reader.readAsDataURL(file)}
 function refreshProfileHeader(){const el=document.getElementById('profileAccountStatus');if(el)el.textContent=window.yaryaneAccountEmail?'Angemeldet · '+window.yaryaneAccountEmail:'Ohne Anmeldung · nur auf diesem Gerät'}
