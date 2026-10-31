@@ -450,6 +450,35 @@ input,textarea,select{accent-color:var(--accent)}
 @media(max-width:370px){.yane-panel{border-radius:19px}.yane-head{padding:10px 12px}.yane-messages{padding:11px 10px}#yaneLaunch{right:12px}}
 @media(prefers-reduced-motion:reduce){#yaneLaunch:active{transform:none}}
 @media(prefers-reduced-transparency:reduce){.yane-panel{background:var(--bg)!important;-webkit-backdrop-filter:none;backdrop-filter:none}#yaneOverlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
+</style><style id="yaryane-liquid-glass-forms-v6">
+/* Editorfelder: dieselben Glasfarben, Fokuszustände und kompakten Abstände */
+#modal .sheet form label.field{font-size:12px;font-weight:600;line-height:1.4;color:var(--muted)}
+#modal .sheet form label.field>input:not([type="checkbox"]),
+#modal .sheet form label.field>select,
+#modal .sheet form label.field>textarea{
+ border-color:var(--yg-stroke)!important;
+ background:var(--yg-control)!important;
+ border-radius:var(--yg-radius-sm)!important;
+ box-shadow:inset 0 1px 0 var(--yg-highlight)!important;
+}
+#modal .sheet form label.field>input:focus,
+#modal .sheet form label.field>select:focus,
+#modal .sheet form label.field>textarea:focus{
+ border-color:var(--accent)!important;
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)!important;
+ outline:none!important;
+}
+#modal .sheet form label.field>input:disabled,
+#modal .sheet form label.field>select:disabled,
+#modal .sheet form label.field>textarea:disabled{opacity:.58}
+#modal .sheet form label.field>textarea{line-height:1.45!important}
+#modal .sheet form .formactions{padding-top:3px}
+#modal .sheet form .formactions button{min-height:42px}
+@media(prefers-contrast:more){
+ #modal .sheet form label.field>input:not([type="checkbox"]),
+ #modal .sheet form label.field>select,
+ #modal .sheet form label.field>textarea{border-color:var(--muted)!important}
+}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
