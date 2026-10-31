@@ -651,7 +651,7 @@ function removeProfilePhoto(){if(!localStorage.getItem(PROFILE_PHOTO_KEY))return
 function updateProfilePhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Bitte ein Bild auswählen.');return}if(file.size>12000000){alert('Das Foto ist zu groß. Bitte ein kleineres Bild wählen.');return}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{try{const canvas=document.createElement('canvas'),size=192;canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');const side=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);localStorage.setItem(PROFILE_PHOTO_KEY,canvas.toDataURL('image/jpeg',.76));render();window.dispatchEvent(new Event('yaryane-local-change'))}catch(e){alert('Profilbild konnte nicht gespeichert werden.')}};img.onerror=()=>alert('Foto konnte nicht geöffnet werden.');img.src=reader.result};reader.readAsDataURL(file)}
 function refreshProfileHeader(){const el=document.getElementById('profileAccountStatus');if(el)el.textContent=window.yaryaneAccountEmail?'Angemeldet · '+window.yaryaneAccountEmail:'Ohne Anmeldung · nur auf diesem Gerät'}
 const YARYANE_REMINDER_KEY='yaryane_reminder_lead_v1';
-function yaryaneReminderLead(){const n=Number(localStorage.getItem(YARYANE_REMINDER_KEY));return [0,5,15,30,60].includes(n)?n:15}
+function yaryaneReminderLead(){const raw=localStorage.getItem(YARYANE_REMINDER_KEY);const n=Number(raw);return raw!==null&&[0,5,15,30,60].includes(n)?n:15}
 function yaryaneSetReminderLead(v){const n=Number(v);if([0,5,15,30,60].includes(n))localStorage.setItem(YARYANE_REMINDER_KEY,String(n))}
 function yaryaneRequestNotification(){
  if(!('Notification' in window)){alert('Dieser Browser unterstützt keine Web-Mitteilungen. Nutze für Hintergrund-Erinnerungen den Kalenderexport.');return}
@@ -666,18 +666,21 @@ function yaryaneReminderItems(){
 }
 function yaryaneReminderCheck(){
  const now=Date.now(),lead=yaryaneReminderLead()*60000;
- if(!window.yaryaneReminderSeen)window.yaryaneReminderSeen=new Set();
+ const seenKey='yaryane_reminders_seen_v1';let seen={};try{seen=JSON.parse(localStorage.getItem(seenKey)||'{}')||{}}catch(e){}
+ for(const key of Object.keys(seen))if(seen[key]<now-3*86400000)delete seen[key];
+ let changed=false;
  for(const item of yaryaneReminderItems()){
   const start=new Date(item.date+'T'+item.start+':00').getTime();
   if(!Number.isFinite(start))continue;
   const key=item.id+'-'+item.date+'-'+item.start+'-'+lead;
-  if(now>=start-lead&&now<start+60000&&!window.yaryaneReminderSeen.has(key)){
-   window.yaryaneReminderSeen.add(key);
+  if(now>=start-lead&&now<start+60000&&!seen[key]){
+   seen[key]=now;changed=true;
    const message=item.title+' · '+item.start+' Uhr';
    if('Notification' in window&&Notification.permission==='granted'){try{new Notification('Yaryane · '+item.type,{body:message,tag:key})}catch(e){yaryaneReminderToast(message)}}
    else yaryaneReminderToast(message);
   }
  }
+ if(changed){try{localStorage.setItem(seenKey,JSON.stringify(seen))}catch(e){}}
 }
 function yaryaneReminderToast(message){
  const old=document.getElementById('yaryaneReminderToast');if(old)old.remove();
@@ -700,7 +703,8 @@ function yaryaneExportCalendar(){
   lines.push('BEGIN:VEVENT','UID:'+escapeICS(item.id)+'@yaryane.husnu.de','DTSTAMP:'+dtstamp,'DTSTART:'+stamp(item.date,item.start),'DTEND:'+stamp(endDate,endTime),'SUMMARY:'+escapeICS(item.title),'DESCRIPTION:'+escapeICS('Aus Yaryane exportierter '+item.type),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escapeICS(item.title),'TRIGGER:-PT'+lead+'M','END:VALARM','END:VEVENT');
  }
  lines.push('END:VCALENDAR');
- const blob=new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
+ const folded=[];for(const line of lines){let part='';for(const ch of line){if(new TextEncoder().encode(part+ch).length>75){folded.push(part);part=' '+ch}else part+=ch}folded.push(part)}
+ const blob=new Blob([folded.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Yaryane-Erinnerungen.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
  alert('Kalenderdatei erstellt ('+items.length+' Einträge). Bitte importiere sie in deine Kalender-App und prüfe dort die Alarme. Der Export synchronisiert sich nicht automatisch.');
 }
