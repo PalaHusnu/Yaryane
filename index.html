@@ -40,6 +40,9 @@ html[data-theme=dark] .glass{box-shadow:0 8px 24px rgba(0,0,0,.14),inset 0 1px 0
 .nav button{min-width:0;flex:1;padding:6px 2px;font-size:10px}
 .nav button .symbol{font-size:21px}
 @media(max-width:390px){.setting{font-size:14px;padding:11px 12px}.brand{font-size:22px}}
+</style><style id="yaryane-ios-input-nozoom">
+/* iOS Safari zooms focused form fields below 16px */
+input,textarea,select,.field input,.field textarea,.field select,#syncControls input{font-size:16px!important}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
