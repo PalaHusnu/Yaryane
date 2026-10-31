@@ -496,6 +496,24 @@ input,textarea,select{accent-color:var(--accent)}
 .event-detail-panel button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media(max-width:370px){.event-detail-panel{padding:9px 12px 14px!important}.event-detail-panel .event-detail-hero h2{font-size:20px!important}.event-detail-date-tile{width:55px;height:60px;flex-basis:55px}}
 @media(prefers-reduced-transparency:reduce){.event-detail-panel{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.event-detail-overlay{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+</style><style id="yaryane-liquid-glass-accessibility-v8">
+/* Präziser Abschluss: lesbare Systemschriften, Touch-Ziele, Tastaturfokus */
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{isolation:isolate}
+.item strong,.note strong,.setting strong{font-weight:680}
+.item small,.note p,.setting small{line-height:1.45}
+.nav{isolation:isolate}
+.nav button{position:relative}
+.nav button.active{font-weight:700}
+.nav button.active::after{content:"";position:absolute;left:24%;right:24%;bottom:2px;height:2px;border-radius:2px;background:var(--accent);opacity:.7}
+button:disabled{cursor:default;opacity:.52}
+button:not(:disabled):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#modal .sheet{scrollbar-width:thin}
+#modal .sheet input,#modal .sheet select,#modal .sheet textarea{color-scheme:light dark}
+html[data-theme=light] #modal .sheet input,html[data-theme=light] #modal .sheet select,html[data-theme=light] #modal .sheet textarea{color-scheme:light}
+html[data-theme=dark] #modal .sheet input,html[data-theme=dark] #modal .sheet select,html[data-theme=dark] #modal .sheet textarea{color-scheme:dark}
+@media(max-width:370px){.nav button.active::after{left:28%;right:28%}}
+@media(prefers-reduced-motion:reduce){html:focus-within{scroll-behavior:auto!important}}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
