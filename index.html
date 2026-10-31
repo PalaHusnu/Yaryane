@@ -352,23 +352,40 @@ function navigate(p){if(document.getElementById('yaneOverlay')&&!document.getEle
 const yaneHistory=[];
 function yaneToday(){return localDate(new Date())}
 function yaneReply(question){
- const q=question.toLocaleLowerCase('de-DE').trim(),today=yaneToday(),monthKey=today.slice(0,7);
- const ev=events.filter(e=>e.date===today),ts=tasks.filter(t=>!t.done&&!t.completed&&!t.checked&&!t.isDone&&t.status!=='done'),sh=shifts.filter(x=>x.date===today);
- if(/hallo|hey|guten morgen|hi\b/.test(q))return 'Hallo! ✨ Ich bin Yane, dein Begleiter in Yaryane. Frag mich nach deinen Terminen, Aufgaben, Schichten oder der App.';
- if(/heute|tagesübersicht|tag geplant|was steht/.test(q))return 'Dein Tag · '+fmt(today)+'\n\n📅 '+ev.length+' Termin(e)'+(ev.length?'\n'+ev.slice(0,5).map(e=>'• '+(e.start||'Ganztägig')+' '+e.name).join('\n'):'')+'\n\n✓ '+ts.length+' offene Aufgabe(n) insgesamt\n▣ '+sh.length+' Schicht(en) heute'+(sh.length?'\n'+sh.map(x=>'• '+(x.type||x.kind||'Schicht')).join('\n'):'');
- if(/frei|dienst|schicht|frühdienst|spätdienst|nachtdienst/.test(q)){const m=shifts.filter(x=>String(x.date||'').startsWith(monthKey));const future=shifts.filter(x=>x.date>=today).sort((a,b)=>a.date.localeCompare(b.date));return 'Dienstplan · '+monthKey+'\n\n'+m.length+' Schichteinträge in diesem Monat.\n'+(future.length?'Nächster Eintrag: '+fmt(future[0].date)+' · '+(future[0].type||future[0].kind||'Schicht'):'Keine kommenden Schichten eingetragen.')+'\n\nHinweis: Ich werte nur die gespeicherten Schichten aus.'}
- if(/aufgabe|todo|to-do|erledigen/.test(q))return 'Deine Aufgaben ✓\n\n'+(ts.length?ts.slice(0,8).map(t=>'• '+(t.name||t.title||t.text||'Aufgabe')).join('\n'):'Aktuell finde ich keine offenen Aufgaben.')+'\n\nDu kannst sie im Reiter „Aufgaben“ bearbeiten.';
- if(/termin|kalender|woche/.test(q)){const next=events.filter(e=>e.date>=today).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).slice(0,6);return 'Deine nächsten Termine 📅\n\n'+(next.length?next.map(e=>'• '+fmt(e.date)+' · '+(e.start||'Ganztägig')+' · '+e.name).join('\n'):'Keine kommenden Termine gefunden.')}
- if(/backup|sicher|cloud|sync|konto|anmeld/.test(q))return 'Datensicherung in Yaryane ☁️\n\nÖffne „Mehr“ → „Daten & Sicherheit“, um ein Backup zu erstellen. Unter „Konto & Cloud“ kannst du deine Daten nach Anmeldung sichern oder laden. Das Laden ersetzt lokale Einträge erst nach deiner Bestätigung.';
- if(/notiz/.test(q))return 'Deine Notizen 📝\n\nDu hast '+notes.length+' Notiz(en). Öffne „Mehr“ → „Notizen“, um sie anzusehen oder zu bearbeiten.';
- if(/design|hell|dunkel|modus|einstellung|profil/.test(q))return 'Unter „Mehr“ → „Darstellung“ kannst du Hell- und Dunkelmodus wechseln. Oben in den Einstellungen kannst du deinen Profilnamen und dein Bild bearbeiten.';
- if(/wer bist|was kannst|hilfe|yane|ki/.test(q))return 'Ich bin Yane ✦, die erste lokale Assistentin von Yaryane. Ich kann Termine, Aufgaben und Schichten zusammenfassen und App-Funktionen erklären. Noch bin ich keine generative KI und kann keine freien Änderungen an deinen Daten vornehmen.';
- return 'Dazu habe ich noch keine passende lokale Funktion. ✨\n\nVersuche zum Beispiel: „Was steht heute an?“, „Meine nächsten Termine“, „Meine Aufgaben“, „Mein Dienstplan“ oder „Wie sichere ich meine Daten?“';
+ const q=String(question||'').toLocaleLowerCase('de-DE').trim(),today=yaneToday();
+ const pending=tasks.filter(t=>!t.done),todayEvents=events.filter(e=>e.date===today).sort((a,b)=>(a.start||'').localeCompare(b.start||''));
+ const todayShifts=shifts.filter(x=>x.date===today);
+ const shiftLabel=x=>({early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst',free:'Frei',off:'Frei',vacation:'Urlaub',sick:'Krank'}[x.type]||x.label||x.name||x.type||'Schicht');
+ const taskLabel=t=>t.title||t.name||t.text||'Aufgabe';
+ const eventLine=e=>'• '+fmt(e.date)+' · '+(e.start||'Ganztägig')+' · '+(e.name||'Termin');
+ if(/^(hi|hey|hallo|guten morgen|guten abend)[! .]*$/.test(q))return 'Hallo! ✨ Ich bin Yane. Ich kann deine Termine, Aufgaben und Schichten auswerten und dir Yaryane erklären.';
+ if(/hilfe|wer bist|was kannst|was ist yane|ki\b/.test(q))return 'Ich bin Yane ✦ – dein lokaler Assistent. Ich kann deinen Tag, die nächsten Termine, offene Aufgaben und den Dienstplan zusammenfassen. Ich bin noch keine generative KI und ändere keine Daten.';
+ if(/backup|sicher|cloud|sync|konto|anmeld/.test(q))return 'Deine Daten sichern ☁️\n\nÖffne „Mehr“ und suche die Backup- und Cloud-Einstellungen. Du kannst eine JSON-Sicherung erstellen. Die Cloud-Funktionen verwendest du nur nach Anmeldung und Aktivierung.';
+ if(/notiz/.test(q))return 'Notizen 📝\n\nDu hast '+notes.length+' gespeicherte Notiz(en). Du findest sie unter „Mehr“ → „Notizen“.';
+ if(/design|hell|dunkel|modus|einstellung|profil/.test(q))return 'Unter „Mehr“ findest du Darstellung und Profil. Dort kannst du den Modus, deinen Namen und dein Profilbild ändern.';
+ if(/aufgabe|todo|to-do|erledigen/.test(q))return 'Offene Aufgaben ✓\n\n'+(pending.length?pending.slice(0,8).map(t=>'• '+taskLabel(t)+(t.date?' ('+fmt(t.date)+')':'')).join('\n'):'Keine offenen Aufgaben.')+(pending.length>8?'\n… und '+(pending.length-8)+' weitere.':'');
+ if(/frei|dienst|schicht|früh|spät|nacht|urlaub/.test(q)){
+   const monthKey=today.slice(0,7),monthShifts=shifts.filter(x=>String(x.date||'').startsWith(monthKey));
+   const upcoming=shifts.filter(x=>x.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+   return 'Dein Dienstplan ▣\n\n'+monthShifts.length+' Einträge in diesem Monat.\n\nNächste Einträge:\n'+(upcoming.length?upcoming.map(x=>'• '+fmt(x.date)+' · '+shiftLabel(x)).join('\n'):'Keine kommenden Einträge.')+'\n\nNicht eingetragene Tage sind nicht automatisch freie Tage.';
+ }
+ if(/woche|nächste 7 tage|kommende 7 tage/.test(q)){
+   const end=new Date(today+'T12:00:00');end.setDate(end.getDate()+7);const limit=localDate(end);
+   const weekEvents=events.filter(e=>e.date>=today&&e.date<limit).sort((a,b)=>(a.date+(a.start||'')).localeCompare(b.date+(b.start||'')));
+   return 'Deine nächsten 7 Tage 📅\n\n'+(weekEvents.length?weekEvents.slice(0,10).map(eventLine).join('\n'):'Keine Termine eingetragen.')+'\n\n'+pending.filter(t=>t.date>=today&&t.date<limit).length+' offene Aufgaben mit Fälligkeit in diesem Zeitraum.';
+ }
+ if(/termin|kalender|morgen|nächste/.test(q)){
+   const next=events.filter(e=>e.date>=today).sort((a,b)=>(a.date+(a.start||'')).localeCompare(b.date+(b.start||''))).slice(0,7);
+   return 'Deine nächsten Termine 📅\n\n'+(next.length?next.map(eventLine).join('\n'):'Keine kommenden Termine gefunden.');
+ }
+ if(/heute|tagesübersicht|tag geplant|was steht/.test(q))return 'Heute · '+fmt(today)+'\n\n📅 '+todayEvents.length+' Termin(e)'+(todayEvents.length?'\n'+todayEvents.slice(0,5).map(e=>'• '+(e.start||'Ganztägig')+' · '+(e.name||'Termin')).join('\n'):'')+'\n\n✓ '+pending.length+' offene Aufgabe(n) insgesamt\n▣ '+todayShifts.length+' Dienstplaneinträge heute'+(todayShifts.length?'\n'+todayShifts.map(x=>'• '+shiftLabel(x)).join('\n'):'');
+ return 'Das kann ich in meiner lokalen Version noch nicht sicher beantworten. ✨\n\nFrag mich nach „Heute“, „Nächste Woche“, „Meine Termine“, „Meine Aufgaben“, „Dienstplan“ oder „Backup“.';
 }
 function yaneEscape(s){return esc(s)}
 function yaneDraw(){const box=document.getElementById('yaneMessages');if(!box)return;box.innerHTML=yaneHistory.map(m=>'<div class="yane-bubble '+(m.role==='user'?'user':'bot')+'">'+yaneEscape(m.text)+'</div>').join('');box.scrollTop=box.scrollHeight}
 function yaneAsk(q){q=String(q||'').trim().slice(0,350);if(!q)return;yaneHistory.push({role:'user',text:q},{role:'bot',text:yaneReply(q)});if(yaneHistory.length>24)yaneHistory.splice(0,yaneHistory.length-24);yaneDraw();const input=document.getElementById('yaneInput');if(input)input.value=''}
 function openYane(){document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove());const overlay=document.getElementById('yaneOverlay');if(!overlay)return;if(!overlay.hidden)return;if(!yaneHistory.length)yaneHistory.push({role:'bot',text:'Hallo! Ich bin Yane ✦\n\nIch helfe dir, deinen Tag zu überblicken und Yaryane besser zu nutzen. Was möchtest du wissen?'});overlay.hidden=false;overlay.style.display='flex';overlay.innerHTML='<section class="yane-panel" role="dialog" aria-modal="true" aria-label="Yane Assistent"><div class="yane-head"><div class="yane-logo">✦</div><div class="yane-head-copy"><strong>Yane</strong><small>Dein lokaler Yaryane-Assistent</small></div><button class="yane-x" type="button" aria-label="Schließen" onclick="closeYane()">×</button></div><div class="yane-messages" id="yaneMessages"></div><div class="yane-quick"><button onclick="yaneAsk(\'Was steht heute an?\')">Heute ✨</button><button onclick="yaneAsk(\'Meine nächsten Termine\')">Termine</button><button onclick="yaneAsk(\'Meine Aufgaben\')">Aufgaben</button><button onclick="yaneAsk(\'Mein Dienstplan\')">Dienstplan</button><button onclick="yaneAsk(\'Wie sichere ich meine Daten?\')">App-Hilfe</button></div><form class="yane-compose" onsubmit="event.preventDefault();yaneAsk(document.getElementById(\'yaneInput\').value)"><input id="yaneInput" maxlength="350" placeholder="Frag Yane etwas …" autocomplete="off" aria-label="Nachricht an Yane"><button type="submit" aria-label="Senden">↑</button></form><div class="yane-foot">Lokal auf deinem Gerät · Noch keine externe KI</div></section>';overlay.onclick=e=>{if(e.target===overlay)closeYane()};yaneDraw()}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(document.getElementById('yaneOverlay')&&!document.getElementById('yaneOverlay').hidden)closeYane();document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove())}});
 function closeYane(){const overlay=document.getElementById('yaneOverlay');if(overlay){overlay.hidden=true;overlay.style.display='none';overlay.innerHTML=''}}
 function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
 function head(title,plus){return '<div class="toolbar"><h2>'+title+'</h2><div class="actions">'+(plus?'<button class="add" aria-label="Hinzufügen" onclick="openForm(\''+plus+'\')">+</button>':'')+'</div></div>'}
