@@ -474,16 +474,20 @@ function yaneTaskPlanner(weekMode=false){
  pending.forEach(t=>{const option=document.createElement('option');option.value=String(t.id);option.textContent=t.title||t.name||'Aufgabe';select.appendChild(option)});
  const duration=document.createElement('select');duration.setAttribute('aria-label','Dauer auswählen');
  [[30,'30 Minuten'],[60,'60 Minuten'],[90,'90 Minuten'],[120,'2 Stunden']].forEach(([n,label])=>{const opt=document.createElement('option');opt.value=String(n);opt.textContent=label;duration.appendChild(opt)});
+ const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
+ [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;preference.appendChild(option)});
  const go=document.createElement('button');go.type='button';go.textContent='Freie Zeiten anzeigen';
  go.onclick=()=>{
  const task=pending.find(t=>String(t.id)===select.value);if(!task)return;
- const needed=Number(duration.value),available=[];
+ const needed=Number(duration.value),available=[],preferred=preference.value;
+ const bounds=preferred==='morning'?[480,720]:preferred==='afternoon'?[720,1020]:preferred==='evening'?[1020,1200]:[480,1200];
+ const clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
  const days=weekMode?7:1;
  for(let day=0;day<days;day++){
   const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+day);
   const query='Freie Zeitfenster '+localDate(date);
   yaneFreeSlots(query);
-  available.push(...yaneLastSlots.filter(x=>{const [h1,m1]=x.start.split(':').map(Number),[h2,m2]=x.end.split(':').map(Number);return (h2*60+m2)-(h1*60+m1)>=needed}).slice(0,2));
+  available.push(...yaneLastSlots.map(x=>{const [h1,m1]=x.start.split(':').map(Number),[h2,m2]=x.end.split(':').map(Number);const from=Math.max(h1*60+m1,bounds[0]),to=Math.min(h2*60+m2,bounds[1]);return {...x,start:clock(from),end:clock(to),duration:to-from}}).filter(x=>x.duration>=needed).slice(0,2));
  }
  yaneLastSlots=[];
  const previous=wrap.querySelector('.yane-task-results');if(previous)previous.remove();
@@ -525,13 +529,13 @@ function yaneTaskPlanner(weekMode=false){
     summary.appendChild(recommended);
    }
   }
-  const hint=document.createElement('small');hint.textContent='Die Einschätzung basiert auf deinen eingetragenen Uhrzeiten und der gewählten Aufgabendauer.';summary.appendChild(hint);
+  const hint=document.createElement('small');hint.textContent='Die Einschätzung basiert auf deinen eingetragenen Uhrzeiten, der Dauer und deiner bevorzugten Tageszeit.';summary.appendChild(hint);
   results.insertBefore(summary,results.firstChild);
  }else if(!available.length){results.textContent='Kein passendes freies Zeitfenster gefunden. Versuche eine kürzere Dauer.'}
  else available.slice(0,3).forEach(slot=>{const btn=document.createElement('button');btn.type='button';const [h,m]=slot.start.split(':').map(Number),finish=h*60+m+needed,end=String(Math.floor(finish/60)).padStart(2,'0')+':'+String(finish%60).padStart(2,'0');btn.textContent=slot.start+'–'+end+' Uhr';btn.onclick=()=>{yaneLastDraft={kind:'event',title:task.title||task.name||'Aufgabe erledigen',date:slot.date,time:slot.start,end};yaneDraftOpen(yaneLastDraft)};results.appendChild(btn)});
  wrap.appendChild(results);
  };
- wrap.append(select,duration,go);
+ wrap.append(select,duration,preference,go);
  }
  box.appendChild(wrap);box.scrollTop=box.scrollHeight;
 }
