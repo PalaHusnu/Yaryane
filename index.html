@@ -368,6 +368,25 @@ button,input,select,textarea{-webkit-tap-highlight-color:transparent}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.nav button{transition:none}}
 @media(max-width:370px){.sectionhead h2{font-size:16px}.item{padding:9px 10px}.setting{padding:11px}}
+</style><style id="yaryane-liquid-glass-polish-v2">
+/* Konsistente Glasoberflächen auch für Einstellungen, Yane und Dialoge */
+:root{--yg-soft:rgba(90,143,228,.10);--yg-divider:rgba(80,117,180,.14)}
+html[data-theme=dark]{--yg-soft:rgba(112,156,230,.13);--yg-divider:rgba(157,187,242,.16)}
+.yaryane-reminder-settings{padding:13px;gap:9px;border-radius:var(--yg-radius)}
+.yaryane-reminder-settings select{height:40px;border-radius:var(--yg-radius-sm);border-color:var(--yg-stroke);background:var(--yg-control)}
+.yaryane-reminder-settings button{min-height:40px;padding:9px 12px;border-radius:var(--yg-radius-sm);border:1px solid var(--yg-divider);background:var(--yg-soft)}
+.yaryane-reminder-preview{border-radius:var(--yg-radius-sm);border-color:var(--yg-divider);background:var(--yg-soft)}
+.yaryane-reminder-preview-row{padding:7px 0;border-color:var(--yg-divider)}
+#yaryaneReminderToast{border-color:var(--yg-stroke);border-radius:var(--yg-radius);background:var(--glass);-webkit-backdrop-filter:saturate(155%) blur(22px);backdrop-filter:saturate(155%) blur(22px);box-shadow:var(--yg-elevation);padding:12px 13px}
+#yaryaneReminderToast button{min-height:36px;border-radius:var(--yg-radius-sm)}
+#yaneLaunch{box-shadow:var(--yg-elevation),inset 0 1px 0 var(--yg-highlight)}
+#yaneOverlay .glass{border-color:var(--yg-stroke);box-shadow:var(--yg-elevation),inset 0 1px 0 var(--yg-highlight)}
+.settings-section-title{letter-spacing:.075em}
+.settings-row{border-radius:var(--yg-radius)}
+.formactions button{min-width:0}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.glass,.nav,#yaryaneReminderToast{background:var(--bg)}}
+@media(prefers-contrast:more){.glass,.secondary,.yaryane-reminder-settings select{border-width:1.5px;border-color:var(--muted)}.muted,.item small{opacity:1}}
+@media(prefers-reduced-transparency:reduce){.glass,.nav,#yaryaneReminderToast{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
