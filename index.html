@@ -165,6 +165,14 @@ html,body{overscroll-behavior-x:none;-webkit-text-size-adjust:100%}
 .profile-editor input{width:100%;font-size:16px;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--glass);color:var(--ink)}
 .profile-editor-actions{display:flex;gap:10px;margin-top:22px}
 .profile-editor-actions button{flex:1;min-height:43px}
+</style><style id="yaryane-navigation-stability">
+/* Stable navigation: subtle compositor-only entrance, no positional jump */
+#app{min-height:calc(100dvh - 180px)}
+#app.yaryane-page-enter{animation:yaryanePageEnter .18s ease-out both}
+@keyframes yaryanePageEnter{from{opacity:.72}to{opacity:1}}
+.nav button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+button,label.settings-import,.profile-avatar{-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:reduce){#app.yaryane-page-enter{animation:none}}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
@@ -175,7 +183,7 @@ const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',m
 const days=['Mo','Di','Mi','Do','Fr','Sa','So'],types={early:['F','Frühdienst','#2dc49b'],late:['S','Spätdienst','#8c70f6'],night:['N','Nachtdienst','#f5b13f'],free:['F','Frei','#4ba8ea'],vacation:['U','Urlaub','#ef79a2'],sick:['K','Krankheit','#fa637b']};
 let theme=localStorage.getItem(THEME)|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 function setTheme(t){theme=t;document.documentElement.dataset.theme=t;localStorage.setItem(THEME,t);document.querySelector('meta[name=theme-color]').content=t==='dark'?'#061225':'#dce9ff'}setTheme(theme);
-function navigate(p){if(p==='notes'&&page==='more')window.yaryaneNotesFromMore=true;else if(p!=='notes')window.yaryaneNotesFromMore=false;page=p;render();window.scrollTo(0,0)}
+function navigate(p){if(p===page)return;if(p==='notes'&&page==='more')window.yaryaneNotesFromMore=true;else if(p!=='notes')window.yaryaneNotesFromMore=false;page=p;window.scrollTo({top:0,left:0,behavior:'instant'});render();const content=document.getElementById('app');if(content){content.classList.remove('yaryane-page-enter');void content.offsetWidth;content.classList.add('yaryane-page-enter')}}
 function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
 function head(title,plus){return '<div class="toolbar"><h2>'+title+'</h2><div class="actions">'+(plus?'<button class="add" aria-label="Hinzufügen" onclick="openForm(\''+plus+'\')">+</button>':'')+'</div></div>'}
 function eventList(date){let e=events.filter(x=>x.date===date).sort((a,b)=>(a.start||'').localeCompare(b.start||''));return e.length?e.map(x=>'<div class="glass item stripe" style="border-left-color:'+(x.kind==='work'?'#0c86ff':x.kind==='free'?'#2dc49b':'#fa659c')+'"><span class="time">'+esc(x.start||'Ganztägig')+'</span><span class="iconbox">'+(x.kind==='work'?'💼':x.kind==='free'?'🌿':'📅')+'</span><div class="details"><strong>'+esc(x.name)+'</strong><small>'+esc(x.notes||x.end||'Termin')+'</small></div><button class="dots" onclick="openForm(\'event\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Noch keine Termine für diesen Tag. ✨</div>'}
