@@ -104,6 +104,9 @@ html:not([data-theme=dark]) #syncControls .sync-action-copy strong{color:#203755
 html:not([data-theme=dark]) #syncControls .sync-action-copy small{color:#526681;opacity:1}
 html:not([data-theme=dark]) #syncControls .sync-action-chevron{color:#5d7291;opacity:.8}
 html:not([data-theme=dark]) #syncControls .sync-action:active{background:rgba(72,123,195,.19)}
+</style><style id="yaryane-prevent-double-tap-zoom">
+/* Suppress double-tap zoom on app controls, preserve pinch-to-zoom */
+html,body,.app,button,a,input,select,textarea,[role="button"]{touch-action:manipulation}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
