@@ -880,6 +880,12 @@ const yaryaneReminderQueue=[];
 function yaryaneReminderToast(message){
  yaryaneReminderQueue.push(String(message));
  yaryaneReminderShowNext();
+ const active=document.getElementById('yaryaneReminderToast');
+ const button=active&&active.querySelector('button');
+ if(button&&yaryaneReminderQueue.length){
+  button.textContent='Weiter ('+yaryaneReminderQueue.length+')';
+  button.setAttribute('aria-label','Nächste Erinnerung anzeigen');
+ }
 }
 function yaryaneReminderShowNext(){
  if(document.getElementById('yaryaneReminderToast')||!yaryaneReminderQueue.length)return;
@@ -887,7 +893,7 @@ function yaryaneReminderShowNext(){
  const el=document.createElement('div');el.id='yaryaneReminderToast';el.setAttribute('role','alert');
  const text=document.createElement('span');text.textContent='⏰ '+message;
  const close=document.createElement('button');close.type='button';close.textContent=yaryaneReminderQueue.length?'Weiter':'OK';
- close.setAttribute('aria-label','Erinnerung schließen');
+ close.setAttribute('aria-label',yaryaneReminderQueue.length?'Nächste Erinnerung anzeigen':'Erinnerung schließen');
  close.onclick=()=>{el.remove();yaryaneReminderShowNext()};
  el.append(text,close);document.body.appendChild(el);
 }
