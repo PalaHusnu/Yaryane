@@ -877,15 +877,18 @@ function yaryaneReminderCheck(){
  if(changed){try{localStorage.setItem(seenKey,JSON.stringify(seen))}catch(e){}}
 }
 const yaryaneReminderQueue=[];
+function yaryaneReminderUpdateButton(){
+ const active=document.getElementById('yaryaneReminderToast');
+ const button=active&&active.querySelector('button');
+ if(!button)return;
+ const pending=yaryaneReminderQueue.length;
+ button.textContent=pending?'Weiter ('+pending+')':'OK';
+ button.setAttribute('aria-label',pending?'Nächste Erinnerung anzeigen':'Erinnerung schließen');
+}
 function yaryaneReminderToast(message){
  yaryaneReminderQueue.push(String(message));
  yaryaneReminderShowNext();
- const active=document.getElementById('yaryaneReminderToast');
- const button=active&&active.querySelector('button');
- if(button&&yaryaneReminderQueue.length){
-  button.textContent='Weiter ('+yaryaneReminderQueue.length+')';
-  button.setAttribute('aria-label','Nächste Erinnerung anzeigen');
- }
+ yaryaneReminderUpdateButton();
 }
 function yaryaneReminderShowNext(){
  if(document.getElementById('yaryaneReminderToast')||!yaryaneReminderQueue.length)return;
