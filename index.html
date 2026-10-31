@@ -434,6 +434,22 @@ button{touch-action:manipulation}
 input,textarea,select{accent-color:var(--accent)}
 @media(hover:hover){.item:hover,.setting:hover,.note:hover{border-color:color-mix(in srgb,var(--accent) 24%,var(--yg-stroke))}}
 @media(prefers-reduced-motion:reduce){.item,.setting,.note,.pill,.round,.avatar,.add{transition:none}}
+</style><style id="yaryane-liquid-glass-yane-v5">
+/* Yane an die kompakten Glas-Tokens der Haupt-App angleichen */
+.yane-panel{border-radius:23px;border-color:var(--yg-stroke);box-shadow:0 16px 52px rgba(0,17,54,.24),inset 0 1px 0 var(--yg-highlight)}
+.yane-head{padding:12px 14px 11px;gap:10px;border-bottom-color:var(--yg-divider)}
+.yane-logo{width:38px;height:38px;border-radius:12px;font-size:22px}
+.yane-head-copy strong{font-size:16px;letter-spacing:-.25px}
+.yane-x{width:38px;height:38px;flex-shrink:0;border-radius:12px;border-color:var(--yg-divider)}
+.yane-messages{padding:13px 12px;gap:10px}
+.yane-bubble{border-radius:var(--yg-radius);padding:10px 12px;font-size:13px;line-height:1.48;overflow-wrap:anywhere}
+.yane-panel button{touch-action:manipulation}
+.yane-panel button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#yaneLaunch{width:50px;height:50px;border-radius:16px;font-size:24px}
+#yaneOverlay{overscroll-behavior:contain}
+@media(max-width:370px){.yane-panel{border-radius:19px}.yane-head{padding:10px 12px}.yane-messages{padding:11px 10px}#yaneLaunch{right:12px}}
+@media(prefers-reduced-motion:reduce){#yaneLaunch:active{transform:none}}
+@media(prefers-reduced-transparency:reduce){.yane-panel{background:var(--bg)!important;-webkit-backdrop-filter:none;backdrop-filter:none}#yaneOverlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
