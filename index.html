@@ -93,6 +93,17 @@ html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){bo
 html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){background:transparent;box-shadow:none;border-color:var(--line)}
 html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main):active{background:rgba(80,140,220,.12)}
 @media(hover:hover){#syncControls .sync-action:hover,#syncControls .sync-action-main:hover{background:rgba(80,140,220,.09)}}
+</style><style id="yaryane-sync-light-contrast">
+/* Softer light-mode surfaces with readable separation */
+html:not([data-theme=dark]) #syncControls .sync-actions{background:rgba(218,230,249,.94);border:1px solid rgba(105,138,186,.30);box-shadow:0 5px 16px rgba(38,70,125,.08)}
+html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){background:transparent;border-color:rgba(105,138,186,.22)}
+html:not([data-theme=dark]) #syncControls .sync-action+.sync-action{border-top:1px solid rgba(105,138,186,.24)}
+html:not([data-theme=dark]) #syncControls .sync-action-icon{background:rgba(25,104,210,.14);color:#1759a5}
+html:not([data-theme=dark]) #syncControls .sync-action-main .sync-action-icon{background:#236bd0;color:#fff}
+html:not([data-theme=dark]) #syncControls .sync-action-copy strong{color:#203755}
+html:not([data-theme=dark]) #syncControls .sync-action-copy small{color:#526681;opacity:1}
+html:not([data-theme=dark]) #syncControls .sync-action-chevron{color:#5d7291;opacity:.8}
+html:not([data-theme=dark]) #syncControls .sync-action:active{background:rgba(72,123,195,.19)}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
