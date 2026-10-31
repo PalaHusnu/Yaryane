@@ -114,6 +114,15 @@ input,textarea,select{touch-action:auto}
 .yaryane-back{display:inline-flex;align-items:center;gap:5px;width:auto;min-width:0;margin:0 10px 0 0;padding:4px 6px;border:0;background:transparent;box-shadow:none;color:var(--accent);font-size:17px;font-weight:500;vertical-align:middle;-webkit-backdrop-filter:none;backdrop-filter:none}
 .yaryane-back span{font-size:14px}
 .yaryane-back:active{opacity:.55}
+</style><style id="yaryane-smooth-touch-v2">
+/* Responsive, consistent touch feedback without layout shifts */
+button,.setting,.pill,.note,.sync-action{ -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background-color .16s ease,color .16s ease,opacity .16s ease,box-shadow .16s ease,transform .16s cubic-bezier(.2,.8,.2,1)}
+button:active,.setting:active,.pill:active,.note:active{opacity:.82}
+.nav button:active,.setting:active,.sync-action:active{transform:scale(.975)}
+.nav button{transition:color .16s ease,background-color .16s ease,transform .16s ease}
+.nav button.active{transition:color .16s ease,background-color .16s ease}
+html,body{overscroll-behavior-x:none;-webkit-text-size-adjust:100%}
+@media(prefers-reduced-motion:reduce){button,.setting,.pill,.note,.sync-action,.nav button{transition:none}}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
@@ -167,6 +176,9 @@ function importData(input){let file=input.files[0];if(!file)return;if(file.size>
 
 render();
 document.addEventListener('dblclick',function(e){if(e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault()},{passive:false});
+// On iOS, cancel only the second tap in the same spot, before Safari smart-zooms/scrolls.
+// Single taps, swipes, form editing and two-finger pinch remain available.
+(function(){let last=0,x=0,y=0;document.addEventListener('touchend',function(e){if(e.touches.length||e.changedTouches.length!==1)return;const t=e.changedTouches[0],now=Date.now();if(now-last<330&&Math.abs(t.clientX-x)<26&&Math.abs(t.clientY-y)<26&&!e.target.closest('input,textarea,select,[contenteditable="true"]')){e.preventDefault();last=0;return}last=now;x=t.clientX;y=t.clientY},{passive:false})})();
 </script><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,signOut} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
