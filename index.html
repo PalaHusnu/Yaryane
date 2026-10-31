@@ -338,7 +338,7 @@ html[data-theme=dark] .yane-bubble.bot{background:rgba(140,174,229,.12);border-c
 html[data-theme=dark] .yane-compose input{background:rgba(10,24,53,.3)}
 .yane-compose button{flex:0 0 43px;width:43px;height:43px;border-radius:14px;border:0;background:#3183ef;color:white;font-size:21px}
 .yane-foot{font-size:10px;opacity:.58;text-align:center;padding:0 12px 11px}
-</style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
+</style><style id="yaryane-yane-hidden-fix">#yaneOverlay[hidden]{display:none!important;pointer-events:none!important}</style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
 let events=get(K,[]),tasks=get(TK,[]),notes=get(NK,[]),shifts=get(SK,[]),page='home',selected=localDate(new Date()),month=new Date().getMonth(),year=new Date().getFullYear(),filter='Alle',shiftMode='Monat',edit=null;
