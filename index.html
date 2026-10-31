@@ -195,6 +195,30 @@ button,label.settings-import,.profile-avatar{-webkit-tap-highlight-color:transpa
 .home-profile-avatar{width:45px;height:45px;min-width:45px;display:grid;place-items:center;padding:0;border-radius:50%;border:2px solid rgba(89,151,239,.52);background:linear-gradient(145deg,#368cf1,#5d65bc);color:white;font-size:18px;font-weight:750;overflow:hidden;box-shadow:0 4px 15px rgba(15,75,165,.2);transition:transform .16s ease,box-shadow .16s ease}
 .home-profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .home-profile-avatar:active{transform:scale(.94)}
+</style><style id="yaryane-refined-form-controls">
+/* Compact iOS-inspired editor controls; keep native date/time pickers accessible */
+#modal .sheet{border-radius:25px 25px 0 0;padding:21px 18px max(24px,env(safe-area-inset-bottom))}
+#modal .sheet .toolbar{padding:0 0 13px;margin-bottom:7px}
+#modal .sheet .toolbar h2{font-size:21px;letter-spacing:-.45px}
+#modal .field{display:block;margin:15px 0;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.1px;line-height:1.35}
+#modal .field input:not([type=checkbox]),#modal .field select,#modal .field textarea{
+ box-sizing:border-box;display:block;width:100%;min-height:46px;height:46px;margin-top:7px;padding:9px 13px;
+ border:1px solid rgba(115,151,198,.26);border-radius:12px;
+ background:rgba(116,149,200,.075);color:var(--ink);font-size:16px!important;font-weight:450;
+ box-shadow:none;outline:none;transition:border-color .16s ease,background-color .16s ease,box-shadow .16s ease;
+ -webkit-appearance:auto;appearance:auto
+}
+html[data-theme=dark] #modal .field input:not([type=checkbox]),html[data-theme=dark] #modal .field select,html[data-theme=dark] #modal .field textarea{background:rgba(113,151,216,.095);border-color:rgba(135,165,218,.19)}
+#modal .field input:focus,#modal .field select:focus,#modal .field textarea:focus{border-color:var(--accent);background:rgba(90,150,245,.10);box-shadow:0 0 0 3px rgba(36,127,245,.10)}
+#modal .field textarea{height:auto;min-height:86px;resize:vertical;line-height:1.5}
+#modal .field input[type=date],#modal .field input[type=time]{text-align:left;min-width:0;max-width:100%;font-variant-numeric:tabular-nums}
+#modal .field input[type=date]::-webkit-date-and-time-value,#modal .field input[type=time]::-webkit-date-and-time-value{text-align:left}
+#modal .field input[type=date]::-webkit-datetime-edit,#modal .field input[type=time]::-webkit-datetime-edit{padding:0}
+#modal .field select{padding-right:12px}
+#modal .formactions{display:flex;gap:10px;margin-top:23px}
+#modal .formactions button{min-height:46px;border-radius:13px;font-size:14px;font-weight:650}
+#modal .danger{min-height:44px;border-radius:13px;font-weight:600}
+@media(prefers-reduced-motion:reduce){#modal .field input,#modal .field select,#modal .field textarea{transition:none}}
 </style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
