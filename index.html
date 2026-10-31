@@ -476,9 +476,15 @@ function yaneTaskPlanner(weekMode=false){
  [[30,'30 Minuten'],[60,'60 Minuten'],[90,'90 Minuten'],[120,'2 Stunden']].forEach(([n,label])=>{const opt=document.createElement('option');opt.value=String(n);opt.textContent=label;duration.appendChild(opt)});
  const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
  [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;preference.appendChild(option)});
+ const settingsKey='yaryane_yane_planner_prefs_v1';
+ let savedPrefs={};try{savedPrefs=JSON.parse(localStorage.getItem(settingsKey)||'{}')||{}}catch(e){}
+ if(['30','60','90','120'].includes(String(savedPrefs.duration)))duration.value=String(savedPrefs.duration);
+ if(['all','morning','afternoon','evening'].includes(savedPrefs.time))preference.value=savedPrefs.time;
+ const savePrefs=()=>{try{localStorage.setItem(settingsKey,JSON.stringify({duration:duration.value,time:preference.value}))}catch(e){}};
+ duration.addEventListener('change',savePrefs);preference.addEventListener('change',savePrefs);
  const go=document.createElement('button');go.type='button';go.textContent='Freie Zeiten anzeigen';
  go.onclick=()=>{
- const task=pending.find(t=>String(t.id)===select.value);if(!task)return;
+ const task=pending.find(t=>String(t.id)===select.value);if(!task)return;savePrefs();
  const needed=Number(duration.value),available=[],preferred=preference.value;
  const bounds=preferred==='morning'?[480,720]:preferred==='afternoon'?[720,1020]:preferred==='evening'?[1020,1200]:[480,1200];
  const clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
