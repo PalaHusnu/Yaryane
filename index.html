@@ -79,9 +79,8 @@ try{
   const auth=getAuth(app);
   const db=getFirestore(app);
   window.yaryaneFirebase={app,auth,db,ready:true,syncEnabled:false};
-  const update=()=>{const el=document.getElementById('firebaseConnection');if(el)el.textContent='Firebase verbunden · Synchronisierung noch nicht aktiviert'};
-  new MutationObserver(update).observe(document.body,{childList:true,subtree:true});
-  update();
+  const el=document.getElementById('firebaseConnection');
+  if(el)el.textContent='Firebase vorbereitet · Synchronisierung noch nicht aktiviert';
 }catch(error){
   console.error('Firebase initialization failed',error);
   window.yaryaneFirebase={ready:false,syncEnabled:false};
