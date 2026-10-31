@@ -659,17 +659,19 @@ function yaryaneRequestNotification(){
  Notification.requestPermission().then(p=>alert(p==='granted'?'Mitteilungen aktiviert – solange Yaryane geöffnet ist.':'Mitteilungen nicht aktiviert. Der Kalenderexport bleibt verfügbar.')).catch(()=>alert('Mitteilungen konnten nicht aktiviert werden.'))
 }
 function yaryaneValidClock(t){if(!/^\d{1,2}:\d{2}$/.test(String(t||'')))return false;const [h,m]=String(t).split(':').map(Number);return h>=0&&h<24&&m>=0&&m<60}
+function yaryaneValidDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(d||'')))return false;const parsed=new Date(d+'T12:00:00');return Number.isFinite(parsed.getTime())&&localDate(parsed)===d}
+function yaryaneClock(t){const [h,m]=String(t).split(':');return h.padStart(2,'0')+':'+m}
 function yaryaneReminderItems(){
  const list=[];
- for(const e of events){if(/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))&&yaryaneValidClock(e.start))list.push({id:'event-'+e.id,date:e.date,start:e.start,end:e.end,title:e.name||'Termin',type:'Termin'})}
- for(const x of shifts){if(/^\d{4}-\d{2}-\d{2}$/.test(String(x.date||''))&&yaryaneValidClock(x.start)&&!['free','off','vacation','sick'].includes(x.type)){const labels={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'};list.push({id:'shift-'+x.id,date:x.date,start:x.start,end:x.end,title:labels[x.type]||'Schicht',type:'Schicht'})}}
+ for(const e of events){if(yaryaneValidDate(e.date)&&yaryaneValidClock(e.start))list.push({id:'event-'+e.id,date:e.date,start:yaryaneClock(e.start),end:yaryaneValidClock(e.end)?yaryaneClock(e.end):e.end,title:e.name||'Termin',type:'Termin'})}
+ for(const x of shifts){if(yaryaneValidDate(x.date)&&yaryaneValidClock(x.start)&&!['free','off','vacation','sick'].includes(x.type)){const labels={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'};list.push({id:'shift-'+x.id,date:x.date,start:yaryaneClock(x.start),end:yaryaneValidClock(x.end)?yaryaneClock(x.end):x.end,title:labels[x.type]||'Schicht',type:'Schicht'})}}
  return list;
 }
 function yaryaneReminderCheck(){
  const now=Date.now(),lead=yaryaneReminderLead()*60000;
  const seenKey='yaryane_reminders_seen_v1';let seen={};try{seen=JSON.parse(localStorage.getItem(seenKey)||'{}')||{}}catch(e){}
- for(const key of Object.keys(seen))if(seen[key]<now-3*86400000)delete seen[key];
  let changed=false;
+ for(const key of Object.keys(seen))if(!Number.isFinite(seen[key])||seen[key]<now-3*86400000){delete seen[key];changed=true}
  for(const item of yaryaneReminderItems()){
   const start=new Date(item.date+'T'+item.start+':00').getTime();
   if(!Number.isFinite(start))continue;
@@ -683,11 +685,20 @@ function yaryaneReminderCheck(){
  }
  if(changed){try{localStorage.setItem(seenKey,JSON.stringify(seen))}catch(e){}}
 }
+const yaryaneReminderQueue=[];
 function yaryaneReminderToast(message){
- const old=document.getElementById('yaryaneReminderToast');if(old)old.remove();
- const el=document.createElement('div');el.id='yaryaneReminderToast';el.setAttribute('role','status');
+ yaryaneReminderQueue.push(String(message));
+ yaryaneReminderShowNext();
+}
+function yaryaneReminderShowNext(){
+ if(document.getElementById('yaryaneReminderToast')||!yaryaneReminderQueue.length)return;
+ const message=yaryaneReminderQueue.shift();
+ const el=document.createElement('div');el.id='yaryaneReminderToast';el.setAttribute('role','alert');
  const text=document.createElement('span');text.textContent='⏰ '+message;
- const close=document.createElement('button');close.type='button';close.textContent='OK';close.onclick=()=>el.remove();el.append(text,close);document.body.appendChild(el);
+ const close=document.createElement('button');close.type='button';close.textContent=yaryaneReminderQueue.length?'Weiter':'OK';
+ close.setAttribute('aria-label','Erinnerung schließen');
+ close.onclick=()=>{el.remove();yaryaneReminderShowNext()};
+ el.append(text,close);document.body.appendChild(el);
 }
 function yaryaneReminderTest(){yaryaneReminderToast('TEST · So sieht ein Hinweis in Yaryane aus. Dies ist kein echter Termin.')}
 function yaryaneReminderPreview(){
@@ -696,8 +707,8 @@ function yaryaneReminderPreview(){
  const heading=document.createElement('strong');heading.textContent='Nächste Erinnerungen';root.appendChild(heading);
  const now=Date.now(),lead=yaryaneReminderLead()*60000,limit=now+7*86400000;
  const allItems=yaryaneReminderItems();
- const missingTime=events.filter(e=>e.date&&!yaryaneValidClock(e.start)).length+shifts.filter(x=>x.date&&!['free','off','vacation','sick'].includes(x.type)&&!yaryaneValidClock(x.start)).length;
- if(missingTime){const warning=document.createElement('small');warning.textContent=missingTime+' Einträge ohne gültige Startzeit können nicht erinnert oder mit Alarm exportiert werden.';root.appendChild(warning)}
+ const missingTime=events.filter(e=>e.date&&(!yaryaneValidDate(e.date)||!yaryaneValidClock(e.start))).length+shifts.filter(x=>x.date&&!['free','off','vacation','sick'].includes(x.type)&&(!yaryaneValidDate(x.date)||!yaryaneValidClock(x.start))).length;
+ if(missingTime){const warning=document.createElement('small');warning.textContent=missingTime+' Einträge ohne gültiges Datum oder Startzeit können nicht erinnert oder mit Alarm exportiert werden.';root.appendChild(warning)}
  const upcoming=allItems.map(item=>({...item,at:new Date(item.date+'T'+item.start+':00').getTime()})).filter(item=>Number.isFinite(item.at)&&item.at>=now&&item.at-lead<=limit).sort((a,b)=>a.at-b.at).slice(0,5);
  if(!upcoming.length){const empty=document.createElement('small');empty.textContent='In den nächsten 7 Tagen sind keine Termine oder Schichten mit Startzeit eingetragen.';root.appendChild(empty);return}
  upcoming.forEach(item=>{const row=document.createElement('div');row.className='yaryane-reminder-preview-row';const title=document.createElement('span');title.textContent=(item.type==='Schicht'?'▣ ':'◷ ')+item.title;const date=document.createElement('small');date.textContent=fmt(item.date)+' · '+item.start+' Uhr · '+yaryaneReminderLead()+' Min. vorher';row.append(title,date);root.appendChild(row)});
