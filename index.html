@@ -652,16 +652,17 @@ function updateProfilePhoto(input){const file=input.files&&input.files[0];if(!fi
 function refreshProfileHeader(){const el=document.getElementById('profileAccountStatus');if(el)el.textContent=window.yaryaneAccountEmail?'Angemeldet · '+window.yaryaneAccountEmail:'Ohne Anmeldung · nur auf diesem Gerät'}
 const YARYANE_REMINDER_KEY='yaryane_reminder_lead_v1';
 function yaryaneReminderLead(){const raw=localStorage.getItem(YARYANE_REMINDER_KEY);const n=Number(raw);return raw!==null&&[0,5,15,30,60].includes(n)?n:15}
-function yaryaneSetReminderLead(v){const n=Number(v);if([0,5,15,30,60].includes(n)){localStorage.setItem(YARYANE_REMINDER_KEY,String(n));yaryaneReminderPreview()}}
+function yaryaneSetReminderLead(v){const n=Number(v);if([0,5,15,30,60].includes(n)){localStorage.setItem(YARYANE_REMINDER_KEY,String(n));yaryaneReminderPreview();yaryaneReminderCheck()}}
 function yaryaneRequestNotification(){
  if(!('Notification' in window)){alert('Dieser Browser unterstützt keine Web-Mitteilungen. Nutze für Hintergrund-Erinnerungen den Kalenderexport.');return}
  if(Notification.permission==='granted'){alert('Mitteilungen sind bereits erlaubt. Yaryane prüft Erinnerungen, solange die App geöffnet ist.');return}
  Notification.requestPermission().then(p=>alert(p==='granted'?'Mitteilungen aktiviert – solange Yaryane geöffnet ist.':'Mitteilungen nicht aktiviert. Der Kalenderexport bleibt verfügbar.')).catch(()=>alert('Mitteilungen konnten nicht aktiviert werden.'))
 }
+function yaryaneValidClock(t){if(!/^\d{1,2}:\d{2}$/.test(String(t||'')))return false;const [h,m]=String(t).split(':').map(Number);return h>=0&&h<24&&m>=0&&m<60}
 function yaryaneReminderItems(){
  const list=[];
- for(const e of events){if(e.date&&/^\d{1,2}:\d{2}$/.test(String(e.start||'')))list.push({id:'event-'+e.id,date:e.date,start:e.start,end:e.end,title:e.name||'Termin',type:'Termin'})}
- for(const x of shifts){if(x.date&&/^\d{1,2}:\d{2}$/.test(String(x.start||''))&&!['free','off','vacation','sick'].includes(x.type)){const labels={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'};list.push({id:'shift-'+x.id,date:x.date,start:x.start,end:x.end,title:labels[x.type]||'Schicht',type:'Schicht'})}}
+ for(const e of events){if(/^\d{4}-\d{2}-\d{2}$/.test(String(e.date||''))&&yaryaneValidClock(e.start))list.push({id:'event-'+e.id,date:e.date,start:e.start,end:e.end,title:e.name||'Termin',type:'Termin'})}
+ for(const x of shifts){if(/^\d{4}-\d{2}-\d{2}$/.test(String(x.date||''))&&yaryaneValidClock(x.start)&&!['free','off','vacation','sick'].includes(x.type)){const labels={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'};list.push({id:'shift-'+x.id,date:x.date,start:x.start,end:x.end,title:labels[x.type]||'Schicht',type:'Schicht'})}}
  return list;
 }
 function yaryaneReminderCheck(){
@@ -688,7 +689,7 @@ function yaryaneReminderToast(message){
  const text=document.createElement('span');text.textContent='⏰ '+message;
  const close=document.createElement('button');close.type='button';close.textContent='OK';close.onclick=()=>el.remove();el.append(text,close);document.body.appendChild(el);
 }
-function yaryaneReminderTest(){yaryaneReminderToast('Test-Erinnerung · So sieht ein Hinweis in Yaryane aus.')}
+function yaryaneReminderTest(){yaryaneReminderToast('TEST · So sieht ein Hinweis in Yaryane aus. Dies ist kein echter Termin.')}
 function yaryaneReminderPreview(){
  const root=document.getElementById('yaryaneReminderPreview');if(!root)return;
  root.replaceChildren();
@@ -699,28 +700,33 @@ function yaryaneReminderPreview(){
  upcoming.forEach(item=>{const row=document.createElement('div');row.className='yaryane-reminder-preview-row';const title=document.createElement('span');title.textContent=(item.type==='Schicht'?'▣ ':'◷ ')+item.title;const date=document.createElement('small');date.textContent=fmt(item.date)+' · '+item.start+' Uhr · '+yaryaneReminderLead()+' Min. vorher';row.append(title,date);root.appendChild(row)});
 }
 function yaryaneExportCalendar(){
- const lead=yaryaneReminderLead(),items=yaryaneReminderItems().filter(x=>x.date>=localDate(new Date()));
+ const lead=yaryaneReminderLead(),items=yaryaneReminderItems().filter(x=>new Date(x.date+'T'+x.start+':00').getTime()>=Date.now()).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
  if(!items.length){alert('Keine zukünftigen Termine oder Schichten mit Startzeit zum Exportieren vorhanden.');return}
  const escapeICS=v=>String(v||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
  const stamp=(date,time)=>date.replace(/-/g,'')+'T'+time.replace(':','')+'00';
  const dtstamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+ let exported=0;
  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Yaryane//Erinnerungen//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Yaryane Erinnerungen'];
  for(const item of items){
   const start=new Date(item.date+'T'+item.start+':00');if(Number.isNaN(start.getTime()))continue;
   const end=new Date(start);
-  if(/^\d{1,2}:\d{2}$/.test(String(item.end||''))){const [h,m]=item.end.split(':').map(Number);end.setHours(h,m,0,0);if(end<=start)end.setDate(end.getDate()+1)}else end.setHours(start.getHours()+1,start.getMinutes(),0,0);
+  if(yaryaneValidClock(item.end)){const [h,m]=item.end.split(':').map(Number);end.setHours(h,m,0,0);if(end<=start)end.setDate(end.getDate()+1)}else end.setHours(start.getHours()+1,start.getMinutes(),0,0);
   const endDate=localDate(end),endTime=String(end.getHours()).padStart(2,'0')+':'+String(end.getMinutes()).padStart(2,'0');
+  exported++;
   lines.push('BEGIN:VEVENT','UID:'+escapeICS(item.id)+'@yaryane.husnu.de','DTSTAMP:'+dtstamp,'DTSTART:'+stamp(item.date,item.start),'DTEND:'+stamp(endDate,endTime),'SUMMARY:'+escapeICS(item.title),'DESCRIPTION:'+escapeICS('Aus Yaryane exportierter '+item.type),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escapeICS(item.title),'TRIGGER:-PT'+lead+'M','END:VALARM','END:VEVENT');
  }
+ if(!exported){alert('Keine gültigen Einträge zum Exportieren vorhanden.');return}
  lines.push('END:VCALENDAR');
  const folded=[];for(const line of lines){let part='';for(const ch of line){if(new TextEncoder().encode(part+ch).length>75){folded.push(part);part=' '+ch}else part+=ch}folded.push(part)}
  const blob=new Blob([folded.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Yaryane-Erinnerungen.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
- alert('Kalenderdatei erstellt ('+items.length+' Einträge). Bitte importiere sie in deine Kalender-App und prüfe dort die Alarme. Der Export synchronisiert sich nicht automatisch.');
+ alert('Kalenderdatei erstellt ('+exported+' Einträge). Bitte importiere sie in deine Kalender-App und prüfe dort die Alarme. Der Export synchronisiert sich nicht automatisch.');
 }
-window.addEventListener('focus',yaryaneReminderCheck);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)yaryaneReminderCheck()});
+window.addEventListener('focus',()=>{yaryaneReminderCheck();yaryaneReminderPreview()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){yaryaneReminderCheck();yaryaneReminderPreview()}});
 setInterval(()=>{if(!document.hidden)yaryaneReminderCheck()},30000);
+setTimeout(yaryaneReminderCheck,1200);
+window.addEventListener('yaryane-local-change',()=>{yaryaneReminderCheck();yaryaneReminderPreview()});
 function morePage(){
  const total=events.length+tasks.length+notes.length+shifts.length;
  const backup=!!localStorage.getItem('yaryane_preimport_backup_v1');
@@ -733,7 +739,7 @@ function morePage(){
  +'<div class="settings-section-title">ORGANISATION</div>'
  +'<button class="glass setting settings-row" onclick="navigate(\'notes\')"><span class="settings-icon">📝</span><span class="settings-row-text"><strong>Notizen</strong><small>Ideen und Checklisten verwalten</small></span><span class="arrow">›</span></button>'
  +'<div class="settings-section-title">ERINNERUNGEN</div>'
- +'<div class="glass yaryane-reminder-settings"><strong>Termine & Schichten</strong><p>Hinweise in Yaryane funktionieren bei geöffneter App. Für Erinnerungen bei geschlossener App nutze den Kalenderexport mit Alarm.</p><label for="yaryaneReminderLead">Erinnerung vorher</label><select id="yaryaneReminderLead" onchange="yaryaneSetReminderLead(this.value)"><option value="0"'+(yaryaneReminderLead()===0?' selected':'')+'>Zum Beginn</option><option value="5"'+(yaryaneReminderLead()===5?' selected':'')+'>5 Minuten</option><option value="15"'+(yaryaneReminderLead()===15?' selected':'')+'>15 Minuten</option><option value="30"'+(yaryaneReminderLead()===30?' selected':'')+'>30 Minuten</option><option value="60"'+(yaryaneReminderLead()===60?' selected':'')+'>1 Stunde</option></select><button type="button" onclick="yaryaneRequestNotification()">Mitteilungen für geöffnete App aktivieren</button><button type="button" onclick="yaryaneExportCalendar()">Kalenderdatei mit Alarmen exportieren</button><button type="button" onclick="yaryaneReminderTest()">Test-Erinnerung anzeigen</button><div id="yaryaneReminderPreview" class="yaryane-reminder-preview" aria-live="polite"></div><small>Die Kalenderdatei muss in eine Kalender-App importiert werden. Ein erneuter Export aktualisiert bereits importierte Termine nicht automatisch. Einträge ohne Uhrzeit können keinen Alarm erhalten.</small></div>'
+ +'<div class="glass yaryane-reminder-settings"><strong>Termine & Schichten</strong><p>Hinweise in Yaryane funktionieren bei geöffneter App. Für Erinnerungen bei geschlossener App nutze den Kalenderexport mit Alarm.</p><label for="yaryaneReminderLead">Erinnerung vorher</label><select id="yaryaneReminderLead" onchange="yaryaneSetReminderLead(this.value)"><option value="0"'+(yaryaneReminderLead()===0?' selected':'')+'>Zum Beginn</option><option value="5"'+(yaryaneReminderLead()===5?' selected':'')+'>5 Minuten</option><option value="15"'+(yaryaneReminderLead()===15?' selected':'')+'>15 Minuten</option><option value="30"'+(yaryaneReminderLead()===30?' selected':'')+'>30 Minuten</option><option value="60"'+(yaryaneReminderLead()===60?' selected':'')+'>1 Stunde</option></select><button type="button" onclick="yaryaneRequestNotification()">Mitteilungen für geöffnete App aktivieren</button><button type="button" onclick="yaryaneExportCalendar()">Kalenderdatei mit Alarmen exportieren</button><button type="button" onclick="yaryaneReminderTest()">Test-Erinnerung anzeigen</button><div id="yaryaneReminderPreview" class="yaryane-reminder-preview" aria-live="polite"></div><small>Die Kalenderdatei muss in eine Kalender-App importiert werden. Prüfe beim erneuten Import auf Duplikate: Ein erneuter Export aktualisiert bereits importierte Termine nicht automatisch. Einträge ohne Uhrzeit können keinen Alarm erhalten.</small></div>'
  +'<div class="settings-section-title">DARSTELLUNG</div>'
  +'<button class="glass setting settings-row" onclick="setTheme(theme===\'dark\'?\'light\':\'dark\');render()"><span class="settings-icon">◐</span><span class="settings-row-text"><strong>Erscheinungsbild</strong><small>Aktuell: '+(theme==='dark'?'Dunkel':'Hell')+' · Tippen zum Wechseln</small></span><span class="arrow">›</span></button>'
  +'<div class="settings-section-title">DATEN & SICHERHEIT</div>'
