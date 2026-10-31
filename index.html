@@ -219,6 +219,24 @@ html[data-theme=dark] #modal .field input:not([type=checkbox]),html[data-theme=d
 #modal .formactions button{min-height:46px;border-radius:13px;font-size:14px;font-weight:650}
 #modal .danger{min-height:44px;border-radius:13px;font-weight:600}
 @media(prefers-reduced-motion:reduce){#modal .field input,#modal .field select,#modal .field textarea{transition:none}}
+</style><style id="yaryane-compact-editor-layout">
+/* Mobile form sheet, compact fields and two-column time controls */
+#modal .overlay{align-items:flex-end}
+#modal .sheet{width:100%;max-width:520px;max-height:min(86dvh,850px);padding:16px 17px calc(18px + env(safe-area-inset-bottom));border-radius:23px 23px 0 0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+#modal .sheet .toolbar{padding:0 0 10px;margin:0 0 4px}
+#modal .sheet .toolbar h2{font-size:19px;font-weight:750}
+#modal .sheet .toolbar .round{width:33px;height:33px;font-size:19px}
+#modal .sheet form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;row-gap:0;align-items:start}
+#modal .sheet form>.field{grid-column:1/-1;margin:8px 0 10px;font-size:11px;font-weight:650;min-width:0}
+#modal .sheet form>.field:has(input[name="start"]),#modal .sheet form>.field:has(input[name="end"]){grid-column:auto}
+#modal .field input:not([type=checkbox]),#modal .field select,#modal .field textarea{height:42px;min-height:42px;margin-top:5px;padding:7px 10px;border-radius:10px;font-size:16px!important;border:1px solid rgba(118,152,202,.24);background:rgba(104,140,197,.065)}
+#modal .field input[type="date"],#modal .field input[type="time"]{width:100%;min-width:0;max-width:100%;font-size:16px!important}
+#modal .field textarea{min-height:74px;height:74px;padding:10px;line-height:1.4}
+#modal .sheet form>.formactions,#modal .sheet form>.danger{grid-column:1/-1}
+#modal .formactions{margin-top:13px;gap:9px}
+#modal .formactions button{min-height:43px;font-size:13px}
+#modal .sheet form>.danger{margin-top:7px!important}
+@media(min-width:560px){#modal .sheet{border-radius:22px;margin-bottom:18px}}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
