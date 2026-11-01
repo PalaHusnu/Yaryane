@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f6f7fa">
+<meta name="theme-color" content="#edf3ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Yaryane">
 <title>Yaryane – Dein Kalender</title>
@@ -13,6 +13,92 @@ html[data-theme=dark]{color-scheme:dark;--bg:#10141c;--surface:#191f2a;--fg:#eef
 @media(max-width:600px){.shell{padding-top:16px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}.top{padding-bottom:16px}.brand{font-size:22px}.hero{margin:24px 0 20px}h1{font-size:28px}.calendar{gap:3px}.day{min-height:66px;border-color:transparent;background:transparent}.day-select{min-height:62px;font-size:14px}.day-dots{display:flex}.chip{display:none}.metric{padding:14px 11px}.metric-label{font-size:11px}.metric-detail{font-size:10px}.stat{font-size:24px}.entry{padding:13px 12px;gap:9px}.dialog{padding:20px}.panel{padding:17px}}
 @media(max-width:360px){.brand{font-size:20px}.brand-mark{margin-right:5px}.top-actions{gap:5px}.top .btn{padding:10px 12px}.footer button{font-size:10px}.metric-detail{font-size:10px}.entry{grid-template-columns:3px minmax(0,1fr)}.entry .bar{grid-row:1 / 3}.entry-actions{grid-column:2;justify-content:flex-end}.formgrid{grid-template-columns:1fr;gap:0}}
 @media(prefers-reduced-motion:no-preference){button{transition:background .15s,color .15s}}
+
+/* Liquid Glass material on the simplified app structure. */
+:root{
+ --bg:#edf3ff;--surface:#f8faff;--fg:#172644;--muted:#566884;--border:rgba(86,116,166,.22);
+ --glass:rgba(255,255,255,.58);--glass-strong:rgba(255,255,255,.83);--glass-edge:rgba(255,255,255,.9);
+ --glow-blue:rgba(81,151,255,.25);--glow-lilac:rgba(177,127,241,.17);--soft:rgba(80,122,242,.12);
+ --glass-shadow:0 10px 32px rgba(37,68,120,.09);--accent:#365bdd;
+}
+html[data-theme=dark]{
+ --bg:#0b1323;--surface:#17253b;--fg:#eff5ff;--muted:#abbdd7;--border:rgba(174,204,255,.18);
+ --glass:rgba(22,40,68,.62);--glass-strong:rgba(22,40,68,.87);--glass-edge:rgba(208,226,255,.22);
+ --glow-blue:rgba(71,139,241,.23);--glow-lilac:rgba(159,104,233,.16);--soft:rgba(132,165,255,.16);
+ --glass-shadow:0 12px 36px rgba(0,5,18,.22);--accent:#a8bdff;
+}
+html{background:var(--bg)}
+body{
+ min-height:100vh;
+ background-color:var(--bg);
+ background-image:radial-gradient(ellipse at 0% 12%,var(--glow-blue),transparent 63%),radial-gradient(ellipse at 100% 28%,var(--glow-lilac),transparent 58%);
+ background-size:100% 110vh;background-repeat:no-repeat;
+}
+.top{border-bottom:0}
+.brand-mark{background:linear-gradient(135deg,#66b9ff,#ab8dff);box-shadow:0 0 15px rgba(117,159,255,.25)}
+.panel,.summary,.list,.status-panel,.calendar,.dialog{
+ background:var(--glass);border:1px solid var(--border);
+ border-top-color:var(--glass-edge);border-radius:20px;
+ -webkit-backdrop-filter:blur(22px) saturate(155%);backdrop-filter:blur(22px) saturate(155%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--glass-shadow);
+}
+.calendar{padding:12px 8px}
+.metric+.metric,.entry+.entry{border-color:var(--border)}
+.btn,.icon-button{
+ background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,0)),var(--glass);
+ border:1px solid var(--border);border-top-color:var(--glass-edge);
+ border-radius:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 12px rgba(9,35,83,.05);
+ -webkit-backdrop-filter:blur(18px) saturate(155%);backdrop-filter:blur(18px) saturate(155%);
+}
+.btn.primary{
+ background:linear-gradient(135deg,#246ee9,#6651dc);border-color:rgba(133,175,255,.36);border-top-color:rgba(209,228,255,.55);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 5px 18px rgba(54,91,221,.2);color:#fff;
+}
+.seg{background:var(--glass);border:1px solid var(--border);border-top-color:var(--glass-edge);border-radius:17px;padding:5px;
+ -webkit-backdrop-filter:blur(20px) saturate(155%);backdrop-filter:blur(20px) saturate(155%);box-shadow:var(--glass-shadow)}
+.seg button{border-radius:12px}
+.seg button.active{
+ background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.03)),var(--soft);
+ box-shadow:inset 0 1px 0 var(--glass-edge),0 2px 8px rgba(9,35,83,.08);color:var(--fg);
+}
+.day{background:transparent;border-color:var(--border)}
+.day.selected{background:var(--soft);border-color:var(--accent);box-shadow:inset 0 1px 0 var(--glass-edge)}
+.day.today .num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;min-height:26px;border-radius:50%;background:var(--soft)}
+.empty{background:var(--glass);border:1px dashed var(--border);border-radius:20px;
+ -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.footer{
+ left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));
+ max-width:720px;margin-inline:auto;padding:7px;gap:2px;border:1px solid var(--border);border-top-color:var(--glass-edge);border-radius:27px;
+ background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,0)),var(--glass);
+ -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 38px rgba(0,10,35,.2);
+}
+.footer button{border-radius:20px;min-height:54px}
+.footer button.active{
+ background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.02)),var(--soft);
+ box-shadow:inset 0 1px 0 var(--glass-edge),inset 0 0 0 1px var(--border),0 3px 10px rgba(9,35,83,.07);
+}
+.shell{padding-bottom:calc(128px + env(safe-area-inset-bottom))}
+.modal{background:rgba(3,10,25,.48)}
+.dialog{background:var(--glass-strong);border-radius:25px}
+.dialog-header .icon-button{box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.field input,.field select,.field textarea{background:var(--glass);border-color:var(--border);border-top-color:var(--glass-edge);border-radius:13px}
+@media(max-width:600px){
+ .calendar{padding:9px 6px}.day{border-color:transparent;min-height:62px}.day-select{min-height:60px}
+ .day.selected{border-color:var(--border);background:var(--soft)}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+ .panel,.summary,.list,.status-panel,.calendar,.dialog,.empty,.footer,.seg,.btn,.icon-button{background:var(--surface)}
+ .btn.primary{background:#365bdd}.footer button.active,.seg button.active{background:var(--soft)}
+}
+@media(prefers-reduced-transparency:reduce){
+ .panel,.summary,.list,.status-panel,.calendar,.dialog,.empty,.footer,.seg,.btn,.icon-button{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+ .btn.primary{background:#365bdd}.footer button.active,.seg button.active{background:var(--soft)}
+}
+@media(prefers-contrast:more){
+ :root{--muted:#344969;--border:rgba(39,70,118,.5)}
+ html[data-theme=dark]{--muted:#cfddf4;--border:rgba(199,220,255,.5)}
+}
 </style>
 </head>
 <body>
@@ -85,7 +171,7 @@ const themeSelect=document.getElementById('themeToggle');
 const systemTheme=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
 let themePreference='system';
 try{const stored=localStorage.getItem(themeKey);if(['light','dark','system'].includes(stored))themePreference=stored}catch(e){}
-function applyTheme(){const dark=themePreference==='dark'||(themePreference==='system'&&systemTheme?.matches);document.documentElement.dataset.theme=dark?'dark':'light';themeSelect.value=themePreference;document.querySelector('meta[name="theme-color"]').content=dark?'#10141c':'#f6f7fa'}
+function applyTheme(){const dark=themePreference==='dark'||(themePreference==='system'&&systemTheme?.matches);document.documentElement.dataset.theme=dark?'dark':'light';themeSelect.value=themePreference;document.querySelector('meta[name="theme-color"]').content=dark?'#0b1323':'#edf3ff'}
 applyTheme();
 themeSelect.onchange=()=>{themePreference=themeSelect.value;applyTheme();try{localStorage.setItem(themeKey,themePreference)}catch(e){}};
 if(systemTheme?.addEventListener)systemTheme.addEventListener('change',applyTheme);else if(systemTheme?.addListener)systemTheme.addListener(applyTheme);
