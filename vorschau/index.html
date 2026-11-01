@@ -2,16 +2,20 @@
 :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;color-scheme:light;--bg:#e8efff;--ink:#132345;--muted:#63718f;--glass:rgba(255,255,255,.66);--line:rgba(255,255,255,.68);--accent:#087bfa;--shadow:0 10px 30px rgba(43,76,147,.12)}
 html[data-theme=dark]{color-scheme:dark;--bg:#061225;--ink:#f3f7ff;--muted:#9eacc8;--glass:rgba(19,37,68,.73);--line:rgba(145,180,243,.13);--accent:#2186ff;--shadow:0 10px 30px rgba(0,0,0,.22)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);min-height:100vh}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 0%,rgba(124,174,255,.42),transparent 43%),radial-gradient(ellipse at 95% 28%,rgba(183,139,255,.22),transparent 50%)}html[data-theme=dark] body:before{background:radial-gradient(ellipse at 25% 0%,rgba(34,88,187,.28),transparent 45%),radial-gradient(ellipse at 90% 55%,rgba(61,42,137,.18),transparent 50%)}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.app{max-width:520px;margin:auto;min-height:100dvh;padding:env(safe-area-inset-top) 16px calc(105px + env(safe-area-inset-bottom));position:relative}.top{display:flex;align-items:center;justify-content:space-between;padding:23px 0 16px}.brand{font-size:26px;font-weight:850;letter-spacing:-1px}.brand span{color:var(--accent)}.subtitle,.muted{color:var(--muted);font-size:12px}.avatar,.round,.add{width:39px;height:39px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--accent);display:grid;place-items:center;font-size:20px}.add{background:var(--accent);color:white;border:0;font-size:27px}.glass{background:var(--glass);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:19px}.hero{min-height:185px;padding:21px 18px;color:white;background:linear-gradient(160deg,rgba(40,69,137,.15),rgba(6,27,75,.35)),linear-gradient(145deg,#9fc1ee 0%,#857dbb 35%,#304f88 67%,#0b326b 100%);position:relative;overflow:hidden}.hero:before{content:"";position:absolute;left:-15%;right:-15%;bottom:0;height:55%;background:linear-gradient(160deg,transparent 20%,rgba(23,46,111,.55) 20% 45%,transparent 45%),linear-gradient(25deg,transparent 25%,rgba(12,36,86,.5) 25% 60%,transparent 60%);clip-path:polygon(0 100%,0 55%,18% 25%,34% 68%,58% 10%,79% 64%,100% 24%,100% 100%)}.hero>*{position:relative}.hero h1{margin:0;font-size:25px}.hero p{margin:3px 0 35px;font-size:12px}.hero button{border:1px solid #ffffff65;border-radius:25px;padding:12px 14px;background:#ffffff55;color:white;width:100%;text-align:left}.hero button b{float:right;background:#087bfa;padding:1px 9px;border-radius:50%;font-size:22px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.sectionhead h2{font-size:19px;margin:0}.sectionhead button,.textbtn{border:0;background:none;color:var(--accent);font-size:12px}.item{display:flex;align-items:center;gap:11px;padding:13px;margin:7px 0;min-height:63px}.stripe{border-left:4px solid var(--accent)}.item .details{flex:1;min-width:0}.item strong{display:block;font-size:13px}.item small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.time{font-size:12px;min-width:48px;color:var(--muted)}.iconbox{font-size:20px}.dots{border:0;background:none;color:var(--muted);padding:8px}.nav{position:fixed;z-index:10;bottom:0;left:0;right:0;padding:9px max(10px,calc((100vw - 520px)/2 + 10px)) calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;background:var(--glass);border-top:1px solid var(--line);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}.nav button{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;padding:6px 7px;border-radius:12px;min-width:52px}.nav button .symbol{font-size:20px}.nav button.active{color:var(--accent);background:rgba(32,126,255,.12)}.page-title{font-size:24px;margin:12px 0 18px}.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.toolbar h2{margin:0;font-size:18px}.toolbar .actions{display:flex;gap:7px}.calendar{padding:12px}.weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}.weekdays{color:var(--muted);font-size:11px;margin-bottom:8px}.day{min-height:48px;border:0;background:none;color:var(--ink);border-radius:12px;position:relative;padding:5px 1px;font-size:13px}.day.selected{background:var(--accent);color:white}.day.other{opacity:.3}.day i{display:block;margin:5px auto 0;width:5px;height:5px;border-radius:50%;background:#fa638e}.day.shift{background:rgba(35,139,238,.13)}.day.shift.early{background:rgba(45,194,155,.27)}.day.shift.late{background:rgba(145,102,241,.26)}.day.shift.night{background:rgba(251,184,62,.3)}.day.shift.vacation{background:rgba(246,104,152,.27)}.day.selected{background:var(--accent)!important}.pillrow{display:flex;gap:7px;overflow:auto;margin:13px 0 18px}.pill{border:1px solid var(--line);background:var(--glass);color:var(--muted);padding:9px 13px;border-radius:12px;font-size:12px;white-space:nowrap}.pill.active{background:var(--accent);color:white;border-color:var(--accent)}.check{appearance:none;width:21px;height:21px;border:1.5px solid var(--muted);border-radius:50%;flex-shrink:0}.check:checked{background:var(--accent);border-color:var(--accent)}.check:checked:after{content:"✓";color:white;display:block;text-align:center}.done strong{text-decoration:line-through;opacity:.55}.notes{display:grid;grid-template-columns:1fr 1fr;gap:11px}.note{padding:15px;min-height:155px;text-align:left;color:var(--ink);border-radius:18px}.note strong{display:block;margin-bottom:12px;font-size:14px}.note p{white-space:pre-line;font-size:12px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere}.note small{font-size:10px;color:var(--muted)}.setting{display:flex;align-items:center;gap:12px;padding:15px;margin-bottom:8px;width:100%;color:var(--ink);text-align:left}.setting span:nth-child(2){flex:1}.setting .arrow{color:var(--muted)}.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}.legend div{font-size:11px}.tag{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;margin-right:7px}.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.overlay{position:fixed;z-index:20;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center}.sheet{width:100%;max-width:520px;max-height:90dvh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:22px 18px calc(25px + env(safe-area-inset-bottom))}.sheet h2{margin:0 0 15px}.field{display:block;margin:12px 0;color:var(--muted);font-size:12px}.field input,.field textarea,.field select{display:block;width:100%;border:1px solid var(--line);background:var(--glass);color:var(--ink);padding:13px;border-radius:12px;margin-top:6px}.field textarea{min-height:110px}.primary{background:var(--accent);color:white;border:0;border-radius:13px;padding:13px 18px;font-weight:650}.secondary{background:var(--glass);color:var(--ink);border:1px solid var(--line);border-radius:13px;padding:13px 18px}.danger{color:#ee5276}.formactions{display:flex;gap:8px;margin-top:18px}.formactions button{flex:1}.hidden{display:none!important}
-</style></head><body><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
-const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
-const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+</style></head><body><aside role="note" style="max-width:520px;margin:14px auto 0;padding:8px 16px;font:12px system-ui;color:inherit;opacity:.8">Vorschau · Eigener Datenspeicher. Deine Live-Daten bleiben unverändert.</aside><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
+const K='yaryane_preview_v1_events',TK='yaryane_preview_tasks_v1',NK='yaryane_preview_notes_v1',SK='yaryane_preview_shifts_v1',THEME='yaryane_preview_theme';
+const get=(k,d)=>{try{return JSON.parse(storageGet(k))??d}catch{return d}};
 let events=get(K,[]),tasks=get(TK,[]),notes=get(NK,[]),shifts=get(SK,[]),page='home',selected=localDate(new Date()),month=new Date().getMonth(),year=new Date().getFullYear(),filter='Alle',shiftMode='Monat',edit=null;
 function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',month:'short',year:'numeric'});
 const days=['Mo','Di','Mi','Do','Fr','Sa','So'],types={early:['F','Frühdienst','#2dc49b'],late:['S','Spätdienst','#8c70f6'],night:['N','Nachtdienst','#f5b13f'],free:['F','Frei','#4ba8ea'],vacation:['U','Urlaub','#ef79a2'],sick:['K','Krankheit','#fa637b']};
-let theme=localStorage.getItem(THEME)|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-function setTheme(t){theme=t;document.documentElement.dataset.theme=t;localStorage.setItem(THEME,t);document.querySelector('meta[name=theme-color]').content=t==='dark'?'#061225':'#dce9ff'}setTheme(theme);
+const systemColors=typeof matchMedia==='function'?matchMedia('(prefers-color-scheme: dark)'):null;
+let theme=['light','dark'].includes(storageGet(THEME))?storageGet(THEME):(systemColors?.matches?'dark':'light');
+function setTheme(t,persist=true){theme=t==='dark'?'dark':'light';document.documentElement.dataset.theme=theme;if(persist){try{localStorage.setItem(THEME,theme)}catch{alert('Darstellung nur für diese Sitzung geändert. Browser-Speicher nicht verfügbar.')}}document.querySelector('meta[name=theme-color]').content=theme==='dark'?'#061225':'#dce9ff'}
+setTheme(theme,false);
+const systemColorChange=()=>{if(!['light','dark'].includes(storageGet(THEME)))setTheme(systemColors?.matches?'dark':'light',false)};
+if(systemColors?.addEventListener)systemColors.addEventListener('change',systemColorChange);else if(systemColors?.addListener)systemColors.addListener(systemColorChange);
 function navigate(p){page=p;render();window.scrollTo(0,0)}
 function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
 function head(title,plus){return '<div class="toolbar"><h2>'+title+'</h2><div class="actions">'+(plus?'<button class="add" aria-label="Hinzufügen" onclick="openForm(\''+plus+'\')">+</button>':'')+'</div></div>'}
@@ -19,20 +23,196 @@ function eventList(date){let e=events.filter(x=>x.date===date).sort((a,b)=>(a.st
 function home(){let today=localDate(new Date());return '<div class="top"><div><div class="brand">🪷 Yary<span>ane</span> ✦</div><div class="subtitle">Dein Kalender. Dein Leben.</div></div><button class="avatar" onclick="navigate(\'more\')">●</button></div><section class="glass hero"><h1>Yaryane ☾</h1><p>Dein Kalender. Dein Leben.</p><button onclick="openForm(\'event\')">Neuen Termin hinzufügen… <b>+</b></button></section><div class="sectionhead"><h2>Heute</h2><button onclick="navigate(\'calendar\')">Alle anzeigen ›</button></div><div class="muted">'+fmt(today)+'</div>'+eventList(today)+'<div class="sectionhead"><h2>Deine Aufgaben</h2><button onclick="navigate(\'tasks\')">Alle anzeigen ›</button></div>'+taskList(tasks.filter(x=>!x.done).slice(0,3))+'<div class="sectionhead"><h2>Schnellzugriff</h2></div><div class="notes"><button class="glass note" onclick="navigate(\'shifts\')"><strong>▣ Dienstplan</strong><p>Deine Schichten im Blick</p></button><button class="glass note" onclick="navigate(\'notes\')"><strong>▤ Notizen</strong><p>Ideen und Listen festhalten</p></button></div>'}
 function calGrid(forShifts){let first=new Date(year,month,1),offset=(first.getDay()+6)%7,last=new Date(year,month+1,0).getDate(),total=Math.ceil((offset+last)/7)*7,out='<div class="glass calendar"><div class="weekdays">'+days.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="days">';for(let i=0;i<total;i++){let d=new Date(year,month,i-offset+1),date=localDate(d),sh=shifts.find(x=>x.date===date),ev=events.some(x=>x.date===date),other=d.getMonth()!==month;out+='<button class="day '+(other?'other ':'')+(selected===date?'selected ':'')+(forShifts&&sh?'shift '+sh.type:'')+'" onclick="chooseDate(\''+date+'\')">'+d.getDate()+(forShifts&&sh?'<i style="background:'+types[sh.type][2]+'"></i>':ev?'<i></i>':'')+'</button>'}return out+'</div></div>'}
 function monthbar(){return '<div class="toolbar"><button class="round" onclick="moveMonth(-1)">‹</button><h2>'+new Date(year,month,1).toLocaleDateString('de-DE',{month:'long',year:'numeric'})+'</h2><button class="round" onclick="moveMonth(1)">›</button></div>'}
-function moveMonth(n){let d=new Date(year,month+n,1);month=d.getMonth();year=d.getFullYear();render()}function chooseDate(d){selected=d;let a=d.split('-');year=+a[0];month=+a[1]-1;render()}
+function moveMonth(n){let d=new Date(year,month+n,1);month=d.getMonth();year=d.getFullYear();const day=Math.min(Number(selected.slice(-2))||1,new Date(year,month+1,0).getDate());selected=localDate(new Date(year,month,day));render()}function chooseDate(d){selected=d;let a=d.split('-');year=+a[0];month=+a[1]-1;render()}
 function calendar(){return '<div class="top"><div class="brand">Kalender</div><button class="add" onclick="openForm(\'event\')">+</button></div>'+monthbar()+calGrid(false)+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'event\')">+ Termin</button></div>'+eventList(selected)}
 function taskList(a){return a.length?a.map(x=>'<div class="glass item '+(x.done?'done':'')+'"><input class="check" type="checkbox" '+(x.done?'checked':'')+' onchange="toggleTask(\''+esc(x.id)+'\')"><span class="iconbox">'+esc(x.icon||'📌')+'</span><div class="details"><strong>'+esc(x.title)+'</strong><small>'+esc(x.date?fmt(x.date):'Ohne Datum')+'</small></div><button class="dots" onclick="openForm(\'task\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Hier ist noch alles frei. ✨</div>'}
 function tasksPage(){let a=tasks.filter(x=>filter==='Erledigt'?x.done:filter==='Heute'?x.date===localDate(new Date())&&!x.done:filter==='Diese Woche'?x.date&&Math.abs(new Date(x.date+'T12:00:00')-new Date())<604800000&&!x.done:!x.done);return '<div class="top"><div class="brand">Aufgaben</div><button class="add" onclick="openForm(\'task\')">+</button></div><div class="pillrow">'+['Alle','Heute','Diese Woche','Erledigt'].map(x=>'<button class="pill '+(filter===x?'active':'')+'" onclick="filter=\''+x+'\';render()">'+x+'</button>').join('')+'</div>'+taskList(a)}
-function toggleTask(id){let t=tasks.find(x=>x.id===id);if(t){t.done=!t.done;save(TK,tasks);render()}}
 function shiftsPage(){let sh=shifts.find(x=>x.date===selected);return '<div class="top"><div class="brand">Dienstplan</div><button class="add" onclick="openForm(\'shift\')">+</button></div>'+monthbar()+'<div class="pillrow"><button class="pill '+(shiftMode==='Monat'?'active':'')+'" onclick="shiftMode=\'Monat\';render()">Monat</button><button class="pill '+(shiftMode==='Liste'?'active':'')+'" onclick="shiftMode=\'Liste\';render()">Liste</button></div>'+(shiftMode==='Monat'?calGrid(true):shifts.filter(x=>x.date.startsWith(year+'-'+String(month+1).padStart(2,'0'))).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>'<button class="glass setting" onclick="openForm(\'shift\',\''+x.id+'\')"><span class="tag" style="background:'+types[x.type][2]+'55">'+types[x.type][0]+'</span><span>'+fmt(x.date)+' · '+types[x.type][1]+'</span><span class="arrow">›</span></button>').join('')||'<div class="glass empty">Noch keine Schichten eingetragen.</div>')+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'shift\',\''+(sh?sh.id:'')+'\')">'+(sh?'Bearbeiten':'+ Schicht')+'</button></div>'+(sh?'<div class="glass item"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+'</small></div></div>':'<div class="glass empty">Für diesen Tag ist keine Schicht eingetragen.</div>')+'<div class="glass" style="padding:14px;margin-top:15px"><strong>Schichtfarben</strong><div class="legend">'+Object.entries(types).map(([k,v])=>'<div><span class="tag" style="background:'+v[2]+'55">'+v[0]+'</span>'+v[1]+'</div>').join('')+'</div></div>'}
 function notesPage(){return '<div class="top"><div class="brand">Notizen</div><button class="add" onclick="openForm(\'note\')">+</button></div><div class="notes">'+notes.map(x=>'<button class="glass note" onclick="openForm(\'note\',\''+esc(x.id)+'\')"><strong>'+esc(x.icon||'📝')+' '+esc(x.title)+'</strong><p>'+esc(x.body.slice(0,120))+'</p><small>'+fmt(x.date)+'</small></button>').join('')+'</div>'+(notes.length?'':'<div class="glass empty">Dein Platz für Ideen, Listen und Erinnerungen. ✨</div>')}
 function morePage(){return '<div class="top"><div class="brand">Einstellungen</div></div><button class="glass setting" onclick="alert(\'Yaryane – Dein persönlicher Kalender\')"><span>👤</span><span><strong>Yaryane</strong><small class="muted" style="display:block">Dein persönlicher Kalender</small></span><span class="arrow">›</span></button>'+[['▤','Notizen','notes'],['▦','Kalender','calendar'],['✓','Aufgaben','tasks'],['▣','Dienstplan','shifts']].map(([i,t,p])=>'<button class="glass setting" onclick="navigate(\''+p+'\')"><span>'+i+'</span><span>'+t+'</span><span class="arrow">›</span></button>').join('')+'<button class="glass setting" onclick="setTheme(theme===\'dark\'?\'light\':\'dark\');render()"><span>◐</span><span>Design</span><span class="muted">'+(theme==='dark'?'Dunkel':'Hell')+' ↔</span></button><button class="glass setting" onclick="exportData()"><span>⇩</span><span>Datensicherung exportieren</span><span class="arrow">›</span></button><label class="glass setting" style="cursor:pointer"><span>⇧</span><span>Datensicherung importieren</span><input type="file" accept="application/json" style="display:none" onchange="importData(this)"></label><div class="muted" style="padding:15px">Alle Daten werden auf diesem Gerät im Browser gespeichert. Bitte regelmäßig sichern.</div>'}
 function render(){nav();document.getElementById('app').innerHTML=page==='home'?home():page==='calendar'?calendar():page==='tasks'?tasksPage():page==='shifts'?shiftsPage():page==='notes'?notesPage():morePage()}
-function openForm(type,id){let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+date+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+date+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label>':'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" onclick="event.stopPropagation()"><div class="toolbar"><h2>'+(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>'}
-function closeForm(){document.getElementById('modal').innerHTML='';edit=null}
-function submitForm(e){e.preventDefault();let f=new FormData(e.target),id=edit.id||String(Date.now()),type=edit.type,arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,prev=arr.find(x=>x.id===id)||{},v=type==='event'?{id,kind:f.get('kind'),name:f.get('title'),date:f.get('date'),start:f.get('start'),end:f.get('end'),notes:f.get('body')}:type==='task'?{id,title:f.get('title'),icon:f.get('icon'),date:f.get('date'),done:prev.done||false}:type==='shift'?{id,date:f.get('date'),type:f.get('shiftType'),start:f.get('start'),end:f.get('end')}:{id,title:f.get('title'),icon:f.get('icon'),body:f.get('body'),date:localDate(new Date())};if(type==='shift')arr=arr.filter(x=>x.date!==v.date||x.id===id);let ix=arr.findIndex(x=>x.id===id);if(ix>=0)arr[ix]=v;else arr.push(v);if(type==='event'){events=arr;save(K,arr)}if(type==='task'){tasks=arr;save(TK,arr)}if(type==='shift'){shifts=arr;save(SK,arr)}if(type==='note'){notes=arr;save(NK,arr)}closeForm();render()}
-function deleteEntry(){if(!confirm('Diesen Eintrag wirklich löschen?'))return;let {type,id}=edit;if(type==='event')save(K,events=events.filter(x=>x.id!==id));if(type==='task')save(TK,tasks=tasks.filter(x=>x.id!==id));if(type==='shift')save(SK,shifts=shifts.filter(x=>x.id!==id));if(type==='note')save(NK,notes=notes.filter(x=>x.id!==id));closeForm();render()}
-function exportData(){let data=JSON.stringify({version:2,events,tasks,notes,shifts},null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function importData(input){let file=input.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!confirm('Gespeicherte Daten durch die Sicherung ersetzen?'))return;if(!Array.isArray(d.events))throw Error('Ungültige Sicherung');save(K,events=d.events);save(TK,tasks=Array.isArray(d.tasks)?d.tasks:[]);save(NK,notes=Array.isArray(d.notes)?d.notes:[]);save(SK,shifts=Array.isArray(d.shifts)?d.shifts:[]);render();alert('Sicherung importiert.')}catch(e){alert('Import fehlgeschlagen: '+e.message)}};r.readAsText(file)}
+function openForm(type,id){yaryaneFormReturnFocus=document.activeElement;document.getElementById('app').inert=true;document.getElementById('nav').inert=true;document.body.classList.add('yaryane-modal-open');let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label>':'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="entryFormTitle" onclick="event.stopPropagation()"><div class="toolbar"><h2 id="entryFormTitle">' +(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>';const firstInput=document.querySelector('#modal input:not([type=hidden]),#modal select');firstInput?.focus()}
+function exportData(){try{let data=JSON.stringify(backupPayload(),null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung-'+localDate(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);try{localStorage.setItem('yaryane_preview_last_export_v1',new Date().toISOString())}catch{}alert('Sicherungsdatei wurde zum Download bereitgestellt. Bitte in Dateien speichern und aufbewahren.')}catch(e){alert('Sicherung konnte nicht erstellt werden: '+e.message)}}
+function backupPayload(){return {version:3,exportedAt:new Date().toISOString(),events,tasks,notes,shifts}}
+// Shared data-integrity helpers for the current app and its legacy preview.
+function storageGet(key){try{return localStorage.getItem(key)}catch{return null}}
+let yaryaneIdCounter=0;
+let yaryaneFormReturnFocus=null;
+function yaryaneNewId(){return globalThis.crypto?.randomUUID?.()||'y-'+Date.now().toString(36)+'-'+(++yaryaneIdCounter).toString(36)+'-'+Math.random().toString(36).slice(2)}
+function yaryaneDateOK(value,optional=false){
+ if(optional&&(value==null||value===''))return true;
+ if(typeof value!=='string'||value.length!==10||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const [y,m,d]=value.split('-').map(Number),leap=y%4===0&&(y%100!==0||y%400===0);
+ return y>=1&&m>=1&&m<=12&&d>=1&&d<=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31][m-1];
+}
+function yaryaneClockOK(value){return typeof value==='string'&&value===value.trim()&&value.length>=4&&value.length<=5&&/^(?:\d|[01]\d|2[0-3]):[0-5]\d$/.test(value)}
+function yaryaneText(value,name,optional=false,max=1000000){
+ if(value==null&&optional)return '';
+ if(typeof value!=='string'||value.length>max||(!optional&&!value.trim()))throw Error('Ungültiges Feld: '+name);
+ return value;
+}
+function yaryaneNormalizeItem(x,type){
+ if(!x||typeof x!=='object'||Array.isArray(x))throw Error('Ungültiger Eintrag');
+ const id=String(x.id??''),v={...x,id:/^[a-zA-Z0-9_-]{1,128}$/.test(id)?id:yaryaneNewId()};
+ if(type==='event'){
+  v.name=yaryaneText(x.name,'Titel',false,10000);v.notes=yaryaneText(x.notes,'Notiz',true);
+  if(!['work','private','free'].includes(x.kind))throw Error('Ungültige Kategorie');
+ }else if(type==='task'){
+  v.title=yaryaneText(x.title,'Aufgabe',false,10000);v.details=yaryaneText(x.details,'Beschreibung',true);
+  if(x.done!=null&&typeof x.done!=='boolean')throw Error('Ungültiger Aufgabenstatus');
+  v.done=!!x.done;v.icon=yaryaneText(x.icon,'Symbol',true,100)||'📌';v.priority=x.priority||'normal';
+  if(!['normal','high','low'].includes(v.priority))throw Error('Ungültige Priorität');
+ }else if(type==='note'){
+  v.title=yaryaneText(x.title,'Notiztitel',false,10000);v.body=yaryaneText(x.body,'Notizinhalt',true);
+  v.icon=yaryaneText(x.icon,'Symbol',true,100)||'📝';v.color=x.color||'blue';
+  if(!['blue','violet','pink','mint','amber'].includes(v.color))throw Error('Ungültige Notizfarbe');
+  for(const flag of ['pinned','checklist'])if(x[flag]!=null&&typeof x[flag]!=='boolean')throw Error('Ungültige Notizeinstellung');
+  if(!yaryaneDateOK(x.updated,true))throw Error('Ungültiges Änderungsdatum');
+ }else if(type==='shift'){
+  if(!['early','late','night','free','vacation','sick'].includes(x.type))throw Error('Ungültige Schichtart');
+  v.breakMinutes=x.breakMinutes==null?0:Number(x.breakMinutes);
+  if(!Number.isFinite(v.breakMinutes)||v.breakMinutes<0||v.breakMinutes>600)throw Error('Ungültige Pausenzeit');
+ }
+ if(!yaryaneDateOK(x.date,type==='task'||type==='note'))throw Error('Ungültiges Datum');
+ v.date=x.date||'';
+ if(type==='event'||type==='shift'){
+  for(const key of ['start','end']){const value=x[key]??'';if(value!==''&&!yaryaneClockOK(value))throw Error('Ungültige Uhrzeit');v[key]=value?value.padStart(5,'0'):''}
+  if(v.start&&v.end&&v.start===v.end)throw Error('Beginn und Ende dürfen nicht gleich sein');
+ }
+ return v;
+}
+function yaryaneNormalizeBackup(data){
+ if(Array.isArray(data))data={events:data,tasks,notes,shifts};
+ if(!data||typeof data!=='object'||!Array.isArray(data.events))throw Error('Keine gültige Yaryane-Sicherung');
+ const out={};
+ for(const [key,type] of [['events','event'],['tasks','task'],['notes','note'],['shifts','shift']]){
+  const list=data[key]??[];if(!Array.isArray(list))throw Error('Ungültiges Format: '+key);
+  const ids=new Set();out[key]=list.map(x=>{const v=yaryaneNormalizeItem(x,type);if(ids.has(v.id))throw Error('Doppelte Kennung in '+key);ids.add(v.id);return v});
+ }
+ if(data.profile!=null){
+  if(typeof data.profile!=='object'||Array.isArray(data.profile))throw Error('Ungültiges Profil');
+  const name=yaryaneText(data.profile.name,'Profilname',true,1000),photo=yaryaneText(data.profile.photo,'Profilfoto',true,120000);
+  if(photo&&!/^data:image\/(?:png|jpeg|webp|gif);base64,[a-zA-Z0-9+/=]+$/.test(photo)&&!/^https:\/\//.test(photo))throw Error('Ungültiges Profilfoto');
+  out.profile={name,photo};
+ }
+ return out;
+}
+function yaryaneWriteEntries(entries){
+ const before=entries.map(([key])=>[key,localStorage.getItem(key)]),written=[];
+ try{entries.forEach(([key,value],i)=>{localStorage.setItem(key,value);written.push(i)})}
+ catch(error){
+  let restored=true;
+  for(const i of written.reverse()){try{const [key,value]=before[i];if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}catch{restored=false}}
+  if(!restored)throw Error('Speicherfehler. Rückfallkopie prüfen; Änderungen konnten nicht vollständig zurückgesetzt werden.');
+  throw error;
+ }
+}
+function yaryaneLocalChange(){window.dispatchEvent(new Event('yaryane-local-change'))}
+function yaryanePersist(type,list){
+ const key={event:K,task:TK,note:NK,shift:SK}[type];
+ try{yaryaneWriteEntries([[key,JSON.stringify(list)]])}catch{alert('Speichern nicht möglich. Deine bisherigen Daten bleiben erhalten. Prüfe den Browser-Speicher.');return false}
+ if(type==='event')events=list;if(type==='task')tasks=list;if(type==='note')notes=list;if(type==='shift')shifts=list;
+ yaryaneLocalChange();return true;
+}
+function yaryaneApplySnapshot(data,makeBackup=true){
+ const d=yaryaneNormalizeBackup(data),pairs=[];
+ if(makeBackup)pairs.push(['yaryane_preview_preimport_backup_v1',JSON.stringify({version:3,events,tasks,notes,shifts})]);
+ for(const [key,name] of [[K,'events'],[TK,'tasks'],[NK,'notes'],[SK,'shifts']])pairs.push([key,JSON.stringify(d[name])]);
+ if(d.profile){pairs.push(['yaryane_preview_profile_name_v1',d.profile.name],['yaryane_preview_profile_photo_v1',d.profile.photo])}
+ yaryaneWriteEntries(pairs);
+ events=d.events;tasks=d.tasks;notes=d.notes;shifts=d.shifts;yaryaneLocalChange();return d;
+}
+function yaryaneInterval(item){
+ if(!yaryaneDateOK(item.date)||!yaryaneClockOK(item.start)||!yaryaneClockOK(item.end))return null;
+ const start=new Date(item.date+'T'+item.start.padStart(5,'0')+':00'),end=new Date(item.date+'T'+item.end.padStart(5,'0')+':00');
+ if(end<=start)end.setDate(end.getDate()+1);return [start.getTime(),end.getTime()];
+}
+function yaryaneBlockedDay(date){
+ const from=new Date(date+'T00:00:00'),to=new Date(from);to.setDate(to.getDate()+1);
+ const blocked=[],unknown=[];
+ const all=[...events,...shifts.filter(x=>!['free','vacation','sick'].includes(x.type))];
+ for(const item of all){
+  const interval=yaryaneInterval(item);
+  if(!interval){if(item.date===date)unknown.push(item.name||'Dienstplaneintrag');continue}
+  if(interval[0]>=to||interval[1]<=from)continue;
+  const start=new Date(Math.max(interval[0],from.getTime())),end=new Date(Math.min(interval[1],to.getTime()));
+  blocked.push([interval[0]<=from?0:start.getHours()*60+start.getMinutes(),interval[1]>=to?1440:end.getHours()*60+end.getMinutes()]);
+ }
+ return {blocked,unknown};
+}
+function yaryaneEventConflicts(candidate,excludeId){
+ const a=yaryaneInterval(candidate);if(!a)return [];
+ const items=[];
+ for(const x of events){if(String(x.id)===String(excludeId))continue;const b=yaryaneInterval(x);if(b&&a[0]<b[1]&&a[1]>b[0])items.push((x.name||'Termin')+' · '+fmt(x.date)+' · '+x.start+'–'+x.end)}
+ for(const x of shifts){if(['free','vacation','sick'].includes(x.type))continue;const b=yaryaneInterval(x);if(b&&a[0]<b[1]&&a[1]>b[0])items.push((types[x.type]?.[1]||'Schicht')+' · '+fmt(x.date)+' · '+x.start+'–'+x.end)}
+ return items;
+}
+function toggleTask(id){
+ const list=tasks.map(x=>String(x.id)===String(id)?{...x,done:!x.done}:x);
+ if(yaryanePersist('task',list))render();
+}
+function submitForm(e){
+ e.preventDefault();if(!edit)return;
+ try{
+  const f=new FormData(e.target),type=edit.type,editing=edit.id!=null,id=editing?String(edit.id):yaryaneNewId();
+  let arr=(type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes).slice();
+  const prev=arr.find(x=>String(x.id)===id)||{},title=String(f.get('title')||'').trim();
+  let value=type==='event'?{id,kind:f.get('kind'),name:title,date:f.get('date'),start:f.get('start'),end:f.get('end'),notes:f.get('body')}:
+   type==='task'?{...prev,id,title,icon:f.get('icon'),date:f.get('date'),priority:f.get('priority')||'normal',details:f.get('details')||'',done:!!prev.done}:
+   type==='shift'?{id,date:f.get('date'),type:f.get('shiftType'),start:f.get('start'),end:f.get('end'),breakMinutes:Number(f.get('breakMinutes')||0)}:
+   {...prev,id,title,icon:f.get('icon'),body:f.get('body'),date:prev.date||localDate(new Date()),updated:localDate(new Date()),color:f.get('color')||'blue',pinned:f.has('pinned'),checklist:f.has('checklist')};
+  value=yaryaneNormalizeItem(value,type);
+  const rep=editing?'1':String(f.get('repeat')||'1');if(!['1','7','14','28','weekly4','weekly8'].includes(rep))throw Error('Ungültige Wiederholung');
+  const step=rep.startsWith('weekly')?7:1,count=rep.startsWith('weekly')?Number(rep.slice(6)):Number(rep),additions=[value];
+  if(type==='event'||type==='shift')for(let i=1;i<count;i++){const day=new Date(value.date+'T12:00:00');day.setDate(day.getDate()+i*step);additions.push(yaryaneNormalizeItem({...value,id:yaryaneNewId(),date:localDate(day)},type))}
+  if(type==='event'){
+   const conflicts=[...new Set(additions.flatMap(v=>yaryaneEventConflicts(v,edit.id)))];
+   if(conflicts.length&&!confirm('Überschneidung mit:\n\n'+conflicts.slice(0,5).join('\n')+'\n\nTrotzdem speichern?'))return;
+  }
+  if(editing){const i=arr.findIndex(x=>String(x.id)===id);if(i<0)throw Error('Eintrag nicht mehr vorhanden');arr[i]=value}
+  else if(type==='shift'){arr=arr.filter(x=>x.date!==value.date);for(const v of additions)if(!arr.some(x=>x.date===v.date))arr.push(v)}
+  else arr.push(...additions);
+  if(yaryanePersist(type,arr)){closeForm();render()}
+ }catch(error){alert('Eintrag nicht gespeichert: '+error.message)}
+}
+function deleteEntry(){
+ if(!edit||edit.id==null)return;
+ if(!confirm('Diesen Eintrag wirklich löschen?'))return;
+ const {type,id}=edit,arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes;
+ if(yaryanePersist(type,arr.filter(x=>String(x.id)!==String(id)))){closeForm();render()}
+}
+function closeForm(){
+ document.getElementById('modal').innerHTML='';document.body.classList.remove('yaryane-modal-open');
+ document.getElementById('app').inert=false;document.getElementById('nav').inert=false;edit=null;
+ if(yaryaneFormReturnFocus?.isConnected)yaryaneFormReturnFocus.focus();
+}
+document.addEventListener('keydown',e=>{
+ if(!edit)return;
+ if(e.key==='Escape'){e.preventDefault();closeForm();return}
+ if(e.key==='Tab'){
+  const form=document.querySelector('#modal .sheet');if(!form)return;
+  const items=[...form.querySelectorAll('button,input,select,textarea,[tabindex="0"]')].filter(x=>!x.disabled&&x.offsetParent!==null);
+  if(!items.length)return;const first=items[0],last=items[items.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+ }
+});
+function restoreSnapshot(){
+ try{const saved=JSON.parse(storageGet('yaryane_preview_preimport_backup_v1')||'null');if(!saved)throw Error('Keine Rückfallkopie vorhanden');yaryaneNormalizeBackup(saved);if(!confirm('Rückfallkopie wiederherstellen? Die aktuellen Daten werden ersetzt.'))return;yaryaneApplySnapshot(saved);render();alert('Rückfallkopie wiederhergestellt.')}catch(error){alert('Wiederherstellung fehlgeschlagen: '+error.message)}
+}
+function importData(input){
+ const file=input.files?.[0];if(!file)return;
+ if(file.size>10000000){alert('Datei zu groß.');input.value='';return}
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const raw=JSON.parse(reader.result),data=yaryaneNormalizeBackup(raw),counts='Termine: '+data.events.length+', Aufgaben: '+data.tasks.length+', Notizen: '+data.notes.length+', Schichten: '+data.shifts.length;
+   if(!confirm('Sicherung importieren?\n'+counts+'\n\nDie aktuellen Daten werden ersetzt. Vorher wird eine Rückfallkopie angelegt.'))return;
+   yaryaneApplySnapshot(data);render();alert('Import abgeschlossen. Deine vorherigen Daten sind als Rückfallkopie gespeichert.');
+  }catch(error){alert('Import fehlgeschlagen: '+error.message)}finally{input.value=''}
+ };
+ reader.onerror=()=>{alert('Datei konnte nicht gelesen werden.');input.value=''};reader.readAsText(file);
+}
+
 render();
 </script></body></html>
