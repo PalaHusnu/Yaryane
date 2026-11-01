@@ -1,8 +1,538 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#dce9ff"><meta name="apple-mobile-web-app-capable" content="yes"><title>Yaryane · Dein Kalender</title><style>
+<!doctype html><html lang="de"><head><meta name="yaryane-preview-source" content="dd2fade67e377bcc16d29196116b419a8cd75aff"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="theme-color" content="#dce9ff"><meta name="apple-mobile-web-app-capable" content="yes"><title>Yaryane · Dein Kalender</title><style>
 :root{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;color-scheme:light;--bg:#e8efff;--ink:#132345;--muted:#63718f;--glass:rgba(255,255,255,.66);--line:rgba(255,255,255,.68);--accent:#087bfa;--shadow:0 10px 30px rgba(43,76,147,.12)}
 html[data-theme=dark]{color-scheme:dark;--bg:#061225;--ink:#f3f7ff;--muted:#9eacc8;--glass:rgba(19,37,68,.73);--line:rgba(145,180,243,.13);--accent:#2186ff;--shadow:0 10px 30px rgba(0,0,0,.22)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);min-height:100vh}body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 15% 0%,rgba(124,174,255,.42),transparent 43%),radial-gradient(ellipse at 95% 28%,rgba(183,139,255,.22),transparent 50%)}html[data-theme=dark] body:before{background:radial-gradient(ellipse at 25% 0%,rgba(34,88,187,.28),transparent 45%),radial-gradient(ellipse at 90% 55%,rgba(61,42,137,.18),transparent 50%)}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.app{max-width:520px;margin:auto;min-height:100dvh;padding:env(safe-area-inset-top) 16px calc(105px + env(safe-area-inset-bottom));position:relative}.top{display:flex;align-items:center;justify-content:space-between;padding:23px 0 16px}.brand{font-size:26px;font-weight:850;letter-spacing:-1px}.brand span{color:var(--accent)}.subtitle,.muted{color:var(--muted);font-size:12px}.avatar,.round,.add{width:39px;height:39px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--accent);display:grid;place-items:center;font-size:20px}.add{background:var(--accent);color:white;border:0;font-size:27px}.glass{background:var(--glass);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:19px}.hero{min-height:185px;padding:21px 18px;color:white;background:linear-gradient(160deg,rgba(40,69,137,.15),rgba(6,27,75,.35)),linear-gradient(145deg,#9fc1ee 0%,#857dbb 35%,#304f88 67%,#0b326b 100%);position:relative;overflow:hidden}.hero:before{content:"";position:absolute;left:-15%;right:-15%;bottom:0;height:55%;background:linear-gradient(160deg,transparent 20%,rgba(23,46,111,.55) 20% 45%,transparent 45%),linear-gradient(25deg,transparent 25%,rgba(12,36,86,.5) 25% 60%,transparent 60%);clip-path:polygon(0 100%,0 55%,18% 25%,34% 68%,58% 10%,79% 64%,100% 24%,100% 100%)}.hero>*{position:relative}.hero h1{margin:0;font-size:25px}.hero p{margin:3px 0 35px;font-size:12px}.hero button{border:1px solid #ffffff65;border-radius:25px;padding:12px 14px;background:#ffffff55;color:white;width:100%;text-align:left}.hero button b{float:right;background:#087bfa;padding:1px 9px;border-radius:50%;font-size:22px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.sectionhead h2{font-size:19px;margin:0}.sectionhead button,.textbtn{border:0;background:none;color:var(--accent);font-size:12px}.item{display:flex;align-items:center;gap:11px;padding:13px;margin:7px 0;min-height:63px}.stripe{border-left:4px solid var(--accent)}.item .details{flex:1;min-width:0}.item strong{display:block;font-size:13px}.item small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.time{font-size:12px;min-width:48px;color:var(--muted)}.iconbox{font-size:20px}.dots{border:0;background:none;color:var(--muted);padding:8px}.nav{position:fixed;z-index:10;bottom:0;left:0;right:0;padding:9px max(10px,calc((100vw - 520px)/2 + 10px)) calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;background:var(--glass);border-top:1px solid var(--line);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}.nav button{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;padding:6px 7px;border-radius:12px;min-width:52px}.nav button .symbol{font-size:20px}.nav button.active{color:var(--accent);background:rgba(32,126,255,.12)}.page-title{font-size:24px;margin:12px 0 18px}.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.toolbar h2{margin:0;font-size:18px}.toolbar .actions{display:flex;gap:7px}.calendar{padding:12px}.weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}.weekdays{color:var(--muted);font-size:11px;margin-bottom:8px}.day{min-height:48px;border:0;background:none;color:var(--ink);border-radius:12px;position:relative;padding:5px 1px;font-size:13px}.day.selected{background:var(--accent);color:white}.day.other{opacity:.3}.day i{display:block;margin:5px auto 0;width:5px;height:5px;border-radius:50%;background:#fa638e}.day.shift{background:rgba(35,139,238,.13)}.day.shift.early{background:rgba(45,194,155,.27)}.day.shift.late{background:rgba(145,102,241,.26)}.day.shift.night{background:rgba(251,184,62,.3)}.day.shift.vacation{background:rgba(246,104,152,.27)}.day.selected{background:var(--accent)!important}.pillrow{display:flex;gap:7px;overflow:auto;margin:13px 0 18px}.pill{border:1px solid var(--line);background:var(--glass);color:var(--muted);padding:9px 13px;border-radius:12px;font-size:12px;white-space:nowrap}.pill.active{background:var(--accent);color:white;border-color:var(--accent)}.check{appearance:none;width:21px;height:21px;border:1.5px solid var(--muted);border-radius:50%;flex-shrink:0}.check:checked{background:var(--accent);border-color:var(--accent)}.check:checked:after{content:"✓";color:white;display:block;text-align:center}.done strong{text-decoration:line-through;opacity:.55}.notes{display:grid;grid-template-columns:1fr 1fr;gap:11px}.note{padding:15px;min-height:155px;text-align:left;color:var(--ink);border-radius:18px}.note strong{display:block;margin-bottom:12px;font-size:14px}.note p{white-space:pre-line;font-size:12px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere}.note small{font-size:10px;color:var(--muted)}.setting{display:flex;align-items:center;gap:12px;padding:15px;margin-bottom:8px;width:100%;color:var(--ink);text-align:left}.setting span:nth-child(2){flex:1}.setting .arrow{color:var(--muted)}.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}.legend div{font-size:11px}.tag{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;margin-right:7px}.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.overlay{position:fixed;z-index:20;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center}.sheet{width:100%;max-width:520px;max-height:90dvh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:22px 18px calc(25px + env(safe-area-inset-bottom))}.sheet h2{margin:0 0 15px}.field{display:block;margin:12px 0;color:var(--muted);font-size:12px}.field input,.field textarea,.field select{display:block;width:100%;border:1px solid var(--line);background:var(--glass);color:var(--ink);padding:13px;border-radius:12px;margin-top:6px}.field textarea{min-height:110px}.primary{background:var(--accent);color:white;border:0;border-radius:13px;padding:13px 18px;font-weight:650}.secondary{background:var(--glass);color:var(--ink);border:1px solid var(--line);border-radius:13px;padding:13px 18px}.danger{color:#ee5276}.formactions{display:flex;gap:8px;margin-top:18px}.formactions button{flex:1}.hidden{display:none!important}
-</style></head><body><aside role="note" style="max-width:520px;margin:14px auto 0;padding:8px 16px;font:12px system-ui;color:inherit;opacity:.8">Vorschau · Eigener Datenspeicher. Deine Live-Daten bleiben unverändert.</aside><div class="app" id="app"></div><nav class="nav" id="nav"></nav><div id="modal"></div><script>
+</style><style id="yaryane-refinements">
+/* Kompaktere iPhone-Startseite und feinere Liquid-Glass-Oberflächen */
+.app{padding-left:17px;padding-right:17px}
+.top{padding-top:17px;padding-bottom:13px}
+.brand{font-size:25px;letter-spacing:-.9px}
+.hero{min-height:170px;padding:19px 17px;border-radius:24px;background:linear-gradient(155deg,rgba(11,27,65,.05),rgba(6,23,63,.40)),linear-gradient(125deg,#a8c8f4 0%,#9295d0 34%,#587ab2 62%,#153e7c 100%);box-shadow:0 15px 34px rgba(27,56,114,.20),inset 0 1px 0 rgba(255,255,255,.36)}
+html[data-theme=dark] .hero{background:linear-gradient(155deg,rgba(5,17,50,.10),rgba(2,14,43,.54)),linear-gradient(125deg,#6e91d0 0%,#7267ae 34%,#315b98 64%,#0a2a61 100%)}
+.hero:before{opacity:.66;height:48%}
+.hero h1{font-size:23px;letter-spacing:-.5px}
+.hero p{margin-bottom:26px}
+.hero button{padding:10px 13px;background:rgba(245,249,255,.24);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);font-size:13px}
+.hero button b{font-size:19px}
+.sectionhead{margin-top:19px;margin-bottom:10px}
+.sectionhead h2{font-size:18px;letter-spacing:-.3px}
+.glass{box-shadow:0 7px 22px rgba(26,58,118,.10),inset 0 1px 0 rgba(255,255,255,.12)}
+html[data-theme=dark] .glass{box-shadow:0 8px 24px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.06)}
+.notes{gap:10px}
+.note{min-height:120px;padding:13px 14px}
+.note strong{margin-bottom:9px;font-size:13px}
+.note p{margin:0 0 9px;font-size:11px;line-height:1.45}
+.nav{padding-top:7px}
+.nav button{min-width:49px;padding:6px 5px}
+@media(max-width:370px){.app{padding-left:12px;padding-right:12px}.nav button{min-width:45px;font-size:9px}.hero{min-height:160px}.note{padding:11px}}
+@media(prefers-reduced-motion:no-preference){.glass,.pill,.nav button{transition:background-color .18s ease,box-shadow .18s ease,transform .18s ease}.glass:active{transform:scale(.995)}}
+ .day.today-mark:not(.selected){outline:1px solid var(--accent);outline-offset:-2px;font-weight:750}</style><style id="yaryane-mobile-proportions">
+/* Compact, consistent iPhone layout without changing storage or app logic */
+.app{width:100%;max-width:520px;padding-left:clamp(14px,4vw,20px);padding-right:clamp(14px,4vw,20px)}
+.top{padding:16px 0 14px}
+.brand{font-size:clamp(22px,5.7vw,27px);line-height:1.2;letter-spacing:-.65px}
+.setting{min-height:54px;padding:12px 14px;margin-bottom:9px;gap:12px;border-radius:17px;font-size:15px;line-height:1.25}
+.setting>span:first-child{width:25px;flex:0 0 25px;text-align:center;font-size:19px}
+.setting>span:nth-child(2){min-width:0}
+.setting .arrow{font-size:18px}
+.app>.glass:not(.setting){max-width:100%}
+.nav{gap:2px;padding-top:7px}
+.nav button{min-width:0;flex:1;padding:6px 2px;font-size:10px}
+.nav button .symbol{font-size:21px}
+@media(max-width:390px){.setting{font-size:14px;padding:11px 12px}.brand{font-size:22px}}
+</style><style id="yaryane-ios-input-nozoom">
+/* iOS Safari zooms focused form fields below 16px */
+input,textarea,select,.field input,.field textarea,.field select,#syncControls input{font-size:16px!important}
+</style><style id="yaryane-sync-actions-design">
+.sync-actions{display:grid;gap:10px;margin-top:16px}
+#syncControls .sync-action{appearance:none;-webkit-appearance:none;display:flex;flex-direction:row;align-items:center;text-align:left;gap:13px;width:100%;min-height:70px;padding:13px 15px;border:1px solid rgba(145,180,243,.2);border-radius:18px;background:rgba(125,165,235,.075);color:var(--ink);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transition:transform .14s ease,background .14s ease,border-color .14s ease}
+#syncControls .sync-action-main{background:linear-gradient(120deg,#117cf0,#398dff);color:#fff;border-color:rgba(255,255,255,.2);box-shadow:0 7px 18px rgba(22,113,238,.2)}
+#syncControls .sync-action-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:13px;background:rgba(125,165,235,.14);font-size:20px}
+#syncControls .sync-action-main .sync-action-icon{background:rgba(255,255,255,.18)}
+#syncControls .sync-action-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+#syncControls .sync-action-copy strong{font-size:15px;line-height:1.25;font-weight:650}
+#syncControls .sync-action-copy small{font-size:12px;line-height:1.3;opacity:.75}
+#syncControls .sync-action-chevron{font-size:26px;line-height:1;opacity:.6}
+#syncControls .sync-action-logout{min-height:55px;background:transparent;color:var(--muted)}
+#syncControls .sync-action-logout .sync-action-icon{height:34px;width:34px;flex-basis:34px;background:transparent}
+#syncControls .sync-action:active{transform:scale(.975);background:rgba(50,126,255,.22);border-color:var(--accent)}
+#syncControls .sync-action-main:active{background:#0865cf}
+#syncControls .sync-action:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(hover:hover){#syncControls .sync-action:hover{border-color:var(--accent);background:rgba(50,126,255,.12)}#syncControls .sync-action-main:hover{background:#126fe0}}
+@media(prefers-reduced-motion:reduce){#syncControls .sync-action{transition:none}}
+</style><style id="yaryane-sync-liquid-glass">
+/* Refined translucent iOS-style sync controls */
+#syncControls .sync-actions{gap:11px;margin-top:18px}
+#syncControls .sync-action{position:relative;overflow:hidden;isolation:isolate;min-height:72px;padding:14px 15px;border-radius:21px;border:1px solid rgba(180,205,255,.26);background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(125,171,240,.055) 52%,rgba(120,158,224,.09));-webkit-backdrop-filter:blur(22px) saturate(155%);backdrop-filter:blur(22px) saturate(155%);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 6px 18px rgba(0,0,0,.07);transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+#syncControls .sync-action::before{content:"";position:absolute;pointer-events:none;inset:0 0 auto;height:45%;background:linear-gradient(to bottom,rgba(255,255,255,.10),transparent);z-index:-1}
+#syncControls .sync-action-main{color:#fff;border-color:rgba(255,255,255,.38);background:linear-gradient(125deg,rgba(22,116,239,.92),rgba(65,151,255,.87) 58%,rgba(25,107,233,.92));box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 9px 24px rgba(15,103,232,.22)}
+#syncControls .sync-action-icon{border:1px solid rgba(180,205,255,.16);border-radius:14px;background:linear-gradient(145deg,rgba(180,205,255,.22),rgba(120,160,230,.07));box-shadow:inset 0 1px 0 rgba(255,255,255,.12);font-size:19px}
+#syncControls .sync-action-main .sync-action-icon{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.18)}
+#syncControls .sync-action-copy strong{font-size:15px;letter-spacing:-.2px}
+#syncControls .sync-action-copy small{font-size:12px;opacity:.76}
+#syncControls .sync-action-chevron{font-size:23px;opacity:.45}
+#syncControls .sync-action-logout{min-height:54px;background:rgba(145,170,210,.055);box-shadow:none;border-color:rgba(145,180,243,.13)}
+#syncControls .sync-action-logout::before{display:none}
+#syncControls .sync-action:active{transform:scale(.965);box-shadow:inset 0 2px 8px rgba(0,0,0,.11);background:rgba(90,150,240,.22)}
+#syncControls .sync-action-main:active{background:linear-gradient(125deg,#095fc5,#247be6)}
+html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){border-color:rgba(255,255,255,.75);background:linear-gradient(145deg,rgba(255,255,255,.75),rgba(215,231,255,.48));box-shadow:inset 0 1px 0 #fff,0 7px 18px rgba(43,76,147,.09)}
+@media(prefers-reduced-motion:reduce){#syncControls .sync-action{transition:none}}
+</style><style id="yaryane-sync-clean-ios">
+/* Calm, native-inspired settings actions */
+#syncControls .sync-actions{gap:0;margin-top:18px;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#syncControls .sync-action,#syncControls .sync-action-main,#syncControls .sync-action-logout{min-height:61px;gap:12px;width:100%;padding:11px 15px;border:0;border-radius:0;background:transparent;color:var(--ink);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;transform:none;transition:background .15s ease}
+#syncControls .sync-action+.sync-action{border-top:1px solid var(--line)}
+#syncControls .sync-action::before{display:none}
+#syncControls .sync-action-icon,#syncControls .sync-action-main .sync-action-icon,#syncControls .sync-action-logout .sync-action-icon{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border:0;border-radius:10px;background:rgba(30,128,245,.12);box-shadow:none;font-size:18px;color:var(--accent)}
+#syncControls .sync-action-main .sync-action-icon{background:var(--accent);color:#fff}
+#syncControls .sync-action-copy strong{font-size:15px;font-weight:600;letter-spacing:-.2px;color:var(--ink)}
+#syncControls .sync-action-copy small{font-size:12px;opacity:.72;color:var(--muted)}
+#syncControls .sync-action-chevron{font-size:22px;opacity:.5;color:var(--muted)}
+#syncControls .sync-action-logout .sync-action-copy strong{color:var(--muted)}
+#syncControls .sync-action:active,#syncControls .sync-action-main:active,#syncControls .sync-action-logout:active{background:rgba(80,140,220,.15);transform:none;box-shadow:none}
+html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){background:transparent;box-shadow:none;border-color:var(--line)}
+html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main):active{background:rgba(80,140,220,.12)}
+@media(hover:hover){#syncControls .sync-action:hover,#syncControls .sync-action-main:hover{background:rgba(80,140,220,.09)}}
+</style><style id="yaryane-sync-light-contrast">
+/* Softer light-mode surfaces with readable separation */
+html:not([data-theme=dark]) #syncControls .sync-actions{background:rgba(218,230,249,.94);border:1px solid rgba(105,138,186,.30);box-shadow:0 5px 16px rgba(38,70,125,.08)}
+html:not([data-theme=dark]) #syncControls .sync-action:not(.sync-action-main){background:transparent;border-color:rgba(105,138,186,.22)}
+html:not([data-theme=dark]) #syncControls .sync-action+.sync-action{border-top:1px solid rgba(105,138,186,.24)}
+html:not([data-theme=dark]) #syncControls .sync-action-icon{background:rgba(25,104,210,.14);color:#1759a5}
+html:not([data-theme=dark]) #syncControls .sync-action-main .sync-action-icon{background:#236bd0;color:#fff}
+html:not([data-theme=dark]) #syncControls .sync-action-copy strong{color:#203755}
+html:not([data-theme=dark]) #syncControls .sync-action-copy small{color:#526681;opacity:1}
+html:not([data-theme=dark]) #syncControls .sync-action-chevron{color:#5d7291;opacity:.8}
+html:not([data-theme=dark]) #syncControls .sync-action:active{background:rgba(72,123,195,.19)}
+</style><style id="yaryane-prevent-double-tap-zoom">
+/* Suppress double-tap zoom on app controls, preserve pinch-to-zoom */
+html,body,.app,button,a,[role="button"]{touch-action:manipulation}
+</style><style id="yaryane-navigation-touch-fix">
+/* Avoid iOS double-tap smart zoom / scroll on non-editable app surfaces */
+html,body,body *{touch-action:manipulation}
+input,textarea,select{touch-action:auto}
+.yaryane-back{display:inline-flex;align-items:center;gap:5px;width:auto;min-width:0;margin:0 10px 0 0;padding:4px 6px;border:0;background:transparent;box-shadow:none;color:var(--accent);font-size:17px;font-weight:500;vertical-align:middle;-webkit-backdrop-filter:none;backdrop-filter:none}
+.yaryane-back span{font-size:14px}
+.yaryane-back:active{opacity:.55}
+</style><style id="yaryane-smooth-touch-v2">
+/* Responsive, consistent touch feedback without layout shifts */
+button,.setting,.pill,.note,.sync-action{ -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background-color .16s ease,color .16s ease,opacity .16s ease,box-shadow .16s ease,transform .16s cubic-bezier(.2,.8,.2,1)}
+button:active,.setting:active,.pill:active,.note:active{opacity:.82}
+.nav button:active,.setting:active,.sync-action:active{transform:scale(.975)}
+.nav button{transition:color .16s ease,background-color .16s ease,transform .16s ease}
+.nav button.active{transition:color .16s ease,background-color .16s ease}
+html,body{overscroll-behavior-x:none;-webkit-text-size-adjust:100%}
+@media(prefers-reduced-motion:reduce){button,.setting,.pill,.note,.sync-action,.nav button{transition:none}}
+</style><style id="yaryane-settings-professional">
+.settings-section-title{font-size:11px;font-weight:750;letter-spacing:1.1px;color:var(--muted);margin:24px 4px 10px}
+.settings-row{min-height:64px;gap:13px;padding:12px 14px;margin-bottom:9px}
+.settings-icon{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;border-radius:11px;background:rgba(40,126,245,.12);color:var(--accent);font-size:19px;font-weight:600}
+.settings-row-text{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+.settings-row-text strong{font-size:14px;font-weight:650;line-height:1.25}
+.settings-row-text small{font-size:11px;line-height:1.4;color:var(--muted)}
+.settings-row .arrow{color:var(--muted);font-size:23px;opacity:.65}
+.settings-import{cursor:pointer}
+.settings-overview{display:flex;align-items:center;gap:14px;padding:17px 14px;margin-bottom:10px}
+.settings-overview-number{font-size:27px;font-weight:750;color:var(--accent);font-variant-numeric:tabular-nums;min-width:37px;text-align:center}
+.settings-sync{padding:17px 15px}
+.settings-sync-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.settings-sync-head strong{font-size:15px}
+.settings-sync-head .muted{margin:5px 0 0;line-height:1.45}
+.settings-about{padding:17px 16px;display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.settings-about strong{font-size:16px}
+.settings-about span{font-size:13px;color:var(--muted)}
+.settings-about small{font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
+</style><style id="yaryane-profile-settings">
+.profile-card{overflow:hidden;margin-bottom:23px;border-radius:22px}
+.profile-banner{height:68px;background:linear-gradient(115deg,rgba(35,113,220,.65),rgba(103,147,220,.42) 56%,rgba(154,166,226,.52))}
+.profile-content{display:flex;align-items:center;gap:12px;padding:0 14px;margin-top:-22px;position:relative}
+.profile-avatar{position:relative;flex:0 0 66px;width:66px;height:66px;border-radius:50%;border:3px solid var(--bg);background:linear-gradient(140deg,#358ff5,#786bc9);display:grid;place-items:center;color:#fff;font-size:27px;font-weight:750;overflow:visible;cursor:pointer;box-shadow:0 3px 12px rgba(20,60,120,.16)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-camera{position:absolute;right:-4px;bottom:-3px;width:23px;height:23px;display:grid;place-items:center;background:var(--accent);border:2px solid var(--bg);border-radius:50%;font-size:12px;color:#fff}
+.profile-details{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1;padding-top:22px}
+.profile-details strong{font-size:17px;line-height:1.2;overflow-wrap:anywhere}
+.profile-details small{font-size:11px;color:var(--muted);overflow-wrap:anywhere;line-height:1.35}
+.profile-edit{width:auto;flex:0 0 auto;margin-top:20px;border-radius:11px;padding:9px 11px;font-size:12px;font-weight:600;color:var(--accent);background:rgba(55,130,230,.12);box-shadow:none}
+.profile-edit:active{opacity:.65}
+.profile-hint{font-size:11px;color:var(--muted);padding:4px 15px 15px;margin:8px 0 0}
+</style><style id="yaryane-profile-editor-fixes">
+.profile-remove{display:block;margin:-13px 0 14px auto;padding:5px 12px;border:0;background:none;color:var(--muted);font-size:12px}
+.profile-editor-overlay{position:fixed;inset:0;z-index:999;background:rgba(9,21,42,.5);display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(7px)}
+.profile-editor{width:100%;max-width:390px;padding:24px;background:var(--bg)}
+.profile-editor h3{margin:0 0 8px;font-size:21px}
+.profile-editor p{font-size:13px;color:var(--muted);margin:0 0 22px}
+.profile-editor label{display:block;font-size:12px;font-weight:600;margin-bottom:8px}
+.profile-editor input{width:100%;font-size:16px;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--glass);color:var(--ink)}
+.profile-editor-actions{display:flex;gap:10px;margin-top:22px}
+.profile-editor-actions button{flex:1;min-height:43px}
+</style><style id="yaryane-navigation-stability">
+/* Stable navigation: subtle compositor-only entrance, no positional jump */
+#app{min-height:calc(100dvh - 180px)}
+#app.yaryane-page-enter{animation:yaryanePageEnter .18s ease-out both}
+@keyframes yaryanePageEnter{from{opacity:.72}to{opacity:1}}
+.nav button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+button,label.settings-import,.profile-avatar{-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:reduce){#app.yaryane-page-enter{animation:none}}
+</style><style id="yaryane-profile-editor-premium">
+.profile-editor-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;padding-bottom:max(18px,env(safe-area-inset-bottom));background:rgba(3,12,29,.66);-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px);overflow-y:auto}
+.profile-editor{width:100%;max-width:410px;max-height:calc(100dvh - 36px);overflow-y:auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:25px;padding:24px;box-shadow:0 25px 75px rgba(0,0,0,.32);animation:profileEditorAppear .2s ease-out both}
+.profile-editor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.profile-editor-mark{width:45px;height:45px;display:grid;place-items:center;border-radius:14px;background:rgba(30,120,245,.14);color:var(--accent);font-size:23px}
+.profile-editor-close{width:33px;height:33px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:rgba(130,150,185,.14);color:var(--muted);font-size:24px;line-height:1}
+.profile-editor h3{font-size:23px;letter-spacing:-.5px;margin:0 0 7px}
+.profile-editor p{font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 25px}
+.profile-editor label{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--muted);margin-bottom:9px}
+.profile-editor input{display:block;width:100%;height:52px;padding:0 15px;font-size:16px;border-radius:13px;border:1px solid rgba(115,150,195,.35);background:var(--glass);color:var(--ink);outline:none}
+.profile-editor input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(30,125,245,.12)}
+.profile-editor-actions{display:flex;gap:10px;margin-top:25px}
+.profile-editor-actions button{min-height:48px;border-radius:13px;font-size:13px;font-weight:700;padding:11px 10px}
+.profile-editor-cancel{flex:0 0 35%;border:1px solid var(--line);background:var(--glass);color:var(--ink)}
+.profile-editor-save{flex:1;border:0;background:var(--accent);color:#fff;box-shadow:0 5px 16px rgba(20,110,230,.22)}
+@keyframes profileEditorAppear{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-height:560px){.profile-editor-overlay{align-items:flex-start}.profile-editor{margin:auto 0}}
+@media(prefers-reduced-motion:reduce){.profile-editor{animation:none}}
+</style><style id="yaryane-home-profile-avatar">
+.home-profile-avatar{width:45px;height:45px;min-width:45px;display:grid;place-items:center;padding:0;border-radius:50%;border:2px solid rgba(89,151,239,.52);background:linear-gradient(145deg,#368cf1,#5d65bc);color:white;font-size:18px;font-weight:750;overflow:hidden;box-shadow:0 4px 15px rgba(15,75,165,.2);transition:transform .16s ease,box-shadow .16s ease}
+.home-profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.home-profile-avatar:active{transform:scale(.94)}
+</style><style id="yaryane-refined-form-controls">
+/* Compact iOS-inspired editor controls; keep native date/time pickers accessible */
+#modal .sheet{border-radius:25px 25px 0 0;padding:21px 18px max(24px,env(safe-area-inset-bottom))}
+#modal .sheet .toolbar{padding:0 0 13px;margin-bottom:7px}
+#modal .sheet .toolbar h2{font-size:21px;letter-spacing:-.45px}
+#modal .field{display:block;margin:15px 0;color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.1px;line-height:1.35}
+#modal .field input:not([type=checkbox]),#modal .field select,#modal .field textarea{
+ box-sizing:border-box;display:block;width:100%;min-height:46px;height:46px;margin-top:7px;padding:9px 13px;
+ border:1px solid rgba(115,151,198,.26);border-radius:12px;
+ background:rgba(116,149,200,.075);color:var(--ink);font-size:16px!important;font-weight:450;
+ box-shadow:none;outline:none;transition:border-color .16s ease,background-color .16s ease,box-shadow .16s ease;
+ -webkit-appearance:auto;appearance:auto
+}
+html[data-theme=dark] #modal .field input:not([type=checkbox]),html[data-theme=dark] #modal .field select,html[data-theme=dark] #modal .field textarea{background:rgba(113,151,216,.095);border-color:rgba(135,165,218,.19)}
+#modal .field input:focus,#modal .field select:focus,#modal .field textarea:focus{border-color:var(--accent);background:rgba(90,150,245,.10);box-shadow:0 0 0 3px rgba(36,127,245,.10)}
+#modal .field textarea{height:auto;min-height:86px;resize:vertical;line-height:1.5}
+#modal .field input[type=date],#modal .field input[type=time]{text-align:left;min-width:0;max-width:100%;font-variant-numeric:tabular-nums}
+#modal .field input[type=date]::-webkit-date-and-time-value,#modal .field input[type=time]::-webkit-date-and-time-value{text-align:left}
+#modal .field input[type=date]::-webkit-datetime-edit,#modal .field input[type=time]::-webkit-datetime-edit{padding:0}
+#modal .field select{padding-right:12px}
+#modal .formactions{display:flex;gap:10px;margin-top:23px}
+#modal .formactions button{min-height:46px;border-radius:13px;font-size:14px;font-weight:650}
+#modal .danger{min-height:44px;border-radius:13px;font-weight:600}
+@media(prefers-reduced-motion:reduce){#modal .field input,#modal .field select,#modal .field textarea{transition:none}}
+</style><style id="yaryane-compact-editor-layout">
+/* Mobile form sheet, compact fields and two-column time controls */
+#modal .overlay{align-items:flex-end}
+#modal .sheet{width:100%;max-width:520px;max-height:min(86dvh,850px);padding:16px 17px calc(18px + env(safe-area-inset-bottom));border-radius:23px 23px 0 0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+#modal .sheet .toolbar{padding:0 0 10px;margin:0 0 4px}
+#modal .sheet .toolbar h2{font-size:19px;font-weight:750}
+#modal .sheet .toolbar .round{width:33px;height:33px;font-size:19px}
+#modal .sheet form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;row-gap:0;align-items:start}
+#modal .sheet form>.field{grid-column:1/-1;margin:8px 0 10px;font-size:11px;font-weight:650;min-width:0}
+#modal .sheet form>.field:has(input[name="start"]),#modal .sheet form>.field:has(input[name="end"]){grid-column:auto}
+#modal .field input:not([type=checkbox]),#modal .field select,#modal .field textarea{height:42px;min-height:42px;margin-top:5px;padding:7px 10px;border-radius:10px;font-size:16px!important;border:1px solid rgba(118,152,202,.24);background:rgba(104,140,197,.065)}
+#modal .field input[type="date"],#modal .field input[type="time"]{width:100%;min-width:0;max-width:100%;font-size:16px!important}
+#modal .field textarea{min-height:74px;height:74px;padding:10px;line-height:1.4}
+#modal .sheet form>.formactions,#modal .sheet form>.danger{grid-column:1/-1}
+#modal .formactions{margin-top:13px;gap:9px}
+#modal .formactions button{min-height:43px;font-size:13px}
+#modal .sheet form>.danger{margin-top:7px!important}
+@media(min-width:560px){#modal .sheet{border-radius:22px;margin-bottom:18px}}
+</style><style id="yaryane-unified-input-sizing">
+/* One definitive size for every editor control, including Safari date/time */
+#modal .sheet form label.field{margin:6px 0 8px!important;min-width:0!important}
+#modal .sheet form label.field>input:not([type="checkbox"]),
+#modal .sheet form label.field>select,
+#modal .sheet form label.field>textarea{
+ box-sizing:border-box!important;display:block!important;width:100%!important;max-width:100%!important;
+ height:40px!important;min-height:40px!important;max-height:40px!important;
+ padding:7px 11px!important;margin-top:5px!important;
+ font-size:16px!important;line-height:24px!important;font-weight:400!important;
+ border-radius:10px!important;border:1px solid rgba(127,155,202,.30)!important;
+ background:rgba(116,146,194,.075)!important;color:var(--ink)!important;
+ box-shadow:none!important;vertical-align:middle!important;
+}
+#modal .sheet form label.field>textarea{height:72px!important;min-height:72px!important;max-height:none!important;resize:vertical!important}
+#modal .sheet form label.field>input[type="date"],
+#modal .sheet form label.field>input[type="time"]{
+ -webkit-appearance:none!important;appearance:none!important;
+ display:block!important;min-width:0!important;text-align:left!important;
+}
+#modal .sheet form label.field>input[type="date"]::-webkit-date-and-time-value,
+#modal .sheet form label.field>input[type="time"]::-webkit-date-and-time-value{min-height:24px!important;line-height:24px!important;text-align:left!important}
+#modal .sheet form label.field>input[type="date"]::-webkit-datetime-edit,
+#modal .sheet form label.field>input[type="time"]::-webkit-datetime-edit{padding:0!important;line-height:24px!important}
+#modal .sheet form label.field>input:focus,#modal .sheet form label.field>select:focus,#modal .sheet form label.field>textarea:focus{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(35,130,245,.12)!important}
+</style><style id="yaryane-static-background-fix">
+/* iOS Safari: avoid fixed pseudo-element gradients shifting during viewport changes */
+html{background:var(--bg);overflow-x:hidden}
+body{background:var(--bg);overflow-x:hidden}
+body::before{position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;transform:none!important;animation:none!important;transition:none!important;will-change:auto!important;z-index:-1!important}
+#app.yaryane-page-enter{animation:none!important}
+#app{transform:none!important;transition:none!important}
+body.yaryane-modal-open{overflow:hidden;overscroll-behavior:none}
+body.yaryane-modal-open #modal .overlay{overscroll-behavior:contain}
+body.yaryane-modal-open #modal .sheet{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+@media(prefers-reduced-motion:reduce){html,body{scroll-behavior:auto}}
+</style><style id="yaryane-event-read-view">
+.event-readable{cursor:pointer;touch-action:manipulation}
+.event-detail-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,10,28,.62);display:flex;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.event-detail-panel{width:100%;max-width:520px;max-height:88dvh;overflow:auto;border-radius:24px 24px 0 0;background:var(--bg);padding:22px 20px calc(24px + env(safe-area-inset-bottom));color:var(--ink);box-shadow:0 -12px 40px #0003}
+.event-detail-header{display:flex;align-items:center;justify-content:space-between}
+.event-detail-tag{font-size:12px;font-weight:700;color:var(--accent);background:rgba(42,126,241,.12);padding:7px 12px;border-radius:100px}
+.event-detail-x{width:35px;height:35px;border-radius:50%;background:var(--glass);border:1px solid var(--line);color:var(--muted);font-size:23px}
+.event-detail-panel h2{font-size:25px;line-height:1.25;letter-spacing:-.5px;margin:20px 0 18px;overflow-wrap:anywhere}
+.event-detail-row{display:flex;gap:14px;align-items:flex-start;padding:17px 0;border-top:1px solid var(--line)}
+.event-detail-row>span{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:11px;background:rgba(42,126,241,.12);color:var(--accent);font-size:20px}
+.event-detail-row>div{flex:1;min-width:0}.event-detail-row small{display:block;font-size:10px;letter-spacing:.8px;font-weight:750;color:var(--muted);margin-bottom:6px}
+.event-detail-row strong{font-size:15px;font-weight:600}.event-detail-row p{white-space:pre-wrap;overflow-wrap:anywhere;margin:0;font-size:14px;line-height:1.55}
+.event-detail-actions{display:flex;gap:10px;margin-top:20px}.event-detail-actions button{min-height:46px;border-radius:12px;font-size:14px;font-weight:650}
+.event-detail-cancel{flex:0 0 38%;border:1px solid var(--line);background:var(--glass);color:var(--ink)}
+.event-detail-edit{flex:1;border:0;background:var(--accent);color:white}
+</style><style id="yaryane-event-liquid-glass-v2">
+.event-detail-overlay{background:rgba(3,10,25,.44)!important;-webkit-backdrop-filter:blur(13px) saturate(135%)!important;backdrop-filter:blur(13px) saturate(135%)!important;padding:0 10px max(9px,env(safe-area-inset-bottom))!important;align-items:flex-end!important}
+.event-detail-panel{position:relative;max-width:510px!important;width:100%!important;max-height:85dvh!important;border-radius:29px!important;padding:12px 19px 20px!important;overflow:auto!important;overscroll-behavior:contain!important;background:linear-gradient(145deg,rgba(234,242,255,.83),rgba(217,231,253,.72))!important;border:1px solid rgba(255,255,255,.8)!important;box-shadow:0 18px 65px rgba(4,20,52,.28),inset 0 1px 1px rgba(255,255,255,.85)!important;-webkit-backdrop-filter:blur(38px) saturate(175%)!important;backdrop-filter:blur(38px) saturate(175%)!important;color:#152541!important}
+html[data-theme=dark] .event-detail-panel{background:linear-gradient(145deg,rgba(33,52,85,.88),rgba(13,29,57,.82))!important;border-color:rgba(192,215,255,.23)!important;color:#f3f7ff!important;box-shadow:0 18px 70px rgba(0,0,0,.46),inset 0 1px 1px rgba(255,255,255,.15)!important}
+.event-detail-handle{width:35px;height:4px;background:rgba(126,146,176,.42);border-radius:100px;margin:0 auto 17px}
+.event-detail-header{margin-bottom:18px}
+.event-detail-tag{display:inline-flex;gap:7px;align-items:center;border-radius:100px;background:rgba(65,132,233,.12)!important;color:inherit!important;font-size:11px!important;letter-spacing:.2px;padding:8px 12px!important}
+.event-detail-dot{width:7px;height:7px;border-radius:50%;background:#3d91ff}
+.event-detail-x{border:1px solid rgba(145,169,205,.25)!important;background:rgba(145,169,205,.17)!important;color:inherit!important;font-size:23px}
+.event-detail-hero{display:flex;align-items:center;gap:15px;padding:0 2px 23px}
+.event-detail-date-tile{width:69px;height:73px;flex:0 0 69px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:18px;background:linear-gradient(150deg,#398fff,#2064d2);color:white;box-shadow:0 8px 19px rgba(30,99,212,.24)}
+.event-detail-date-tile span{font-size:12px;font-weight:650;text-transform:uppercase}.event-detail-date-tile strong{font-size:29px;font-weight:750;line-height:1.15}
+.event-detail-hero-text{min-width:0}.event-detail-hero-text small{font-size:10px;letter-spacing:1.1px;font-weight:750;opacity:.6}
+.event-detail-panel .event-detail-hero h2{font-size:25px!important;margin:6px 0 0!important;line-height:1.15;overflow-wrap:anywhere;letter-spacing:-.5px}
+.event-detail-content{border-radius:20px;padding:3px 14px;background:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.38)}
+html[data-theme=dark] .event-detail-content{background:rgba(5,16,39,.23);border-color:rgba(195,216,255,.10)}
+.event-detail-row{padding:14px 0!important;align-items:center!important;border-top:0!important;border-bottom:1px solid rgba(133,158,195,.20)}
+.event-detail-row:nth-child(2){border-bottom:0}
+.event-detail-row .event-detail-symbol{background:rgba(51,132,245,.13)!important;border-radius:12px!important;color:#368bfa!important;font-size:19px}
+.event-detail-row small,.event-detail-notes small{font-size:10px!important;font-weight:750!important;letter-spacing:1px!important;opacity:.68;color:inherit!important}
+.event-detail-row strong{display:block;margin-top:4px;font-size:14px!important;font-weight:650!important;line-height:1.4}
+.event-detail-notes{padding:15px 0;border-top:1px solid rgba(133,158,195,.20)}
+.event-detail-notes p{font-size:14px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:9px 0 0}
+.event-detail-actions{margin-top:17px!important;gap:10px!important}
+.event-detail-actions button{min-height:46px!important;border-radius:15px!important}
+.event-detail-cancel{background:rgba(133,160,200,.17)!important;border:1px solid rgba(137,163,201,.25)!important;color:inherit!important}
+.event-detail-edit{background:#287cf0!important;color:white!important;box-shadow:0 5px 16px rgba(30,106,220,.24)}
+@media(prefers-reduced-motion:reduce){.event-detail-panel{animation:none!important}}
+</style><style id="yaryane-assistant-v1">
+#yaneLaunch{position:fixed;right:17px;bottom:calc(91px + env(safe-area-inset-bottom));z-index:80;width:54px;height:54px;border-radius:19px;border:1px solid rgba(255,255,255,.46);background:linear-gradient(145deg,rgba(85,155,255,.91),rgba(81,84,208,.9));color:white;font-size:26px;box-shadow:0 8px 26px rgba(28,75,170,.28),inset 0 1px rgba(255,255,255,.48);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);display:grid;place-items:center;touch-action:manipulation}
+#yaneLaunch:active{transform:scale(.95)}
+#yaneOverlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,11,30,.43);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);padding:0 8px max(8px,env(safe-area-inset-bottom))}
+.yane-panel{width:100%;max-width:530px;height:min(76dvh,690px);min-height:360px;border-radius:27px;display:flex;flex-direction:column;overflow:hidden;color:#172844;background:linear-gradient(150deg,rgba(240,246,255,.94),rgba(216,232,254,.89));border:1px solid rgba(255,255,255,.7);box-shadow:0 18px 65px rgba(0,14,48,.3),inset 0 1px rgba(255,255,255,.9);-webkit-backdrop-filter:blur(34px) saturate(160%);backdrop-filter:blur(34px) saturate(160%)}
+html[data-theme=dark] .yane-panel{color:#f2f6ff;background:linear-gradient(145deg,rgba(37,56,92,.96),rgba(13,27,55,.95));border-color:rgba(181,210,255,.22)}
+.yane-head{display:flex;align-items:center;gap:11px;padding:17px 17px 14px;border-bottom:1px solid rgba(127,153,196,.2)}
+.yane-logo{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#4d9cf8,#7566e0);color:white;font-size:25px;box-shadow:0 5px 15px #3466bd44}
+.yane-head-copy{flex:1;min-width:0}.yane-head-copy strong{display:block;font-size:17px}.yane-head-copy small{font-size:11px;opacity:.65}
+.yane-x{width:35px;height:35px;border-radius:50%;background:rgba(137,162,202,.18);border:1px solid rgba(137,162,202,.22);color:inherit;font-size:23px}
+.yane-messages{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:13px;overscroll-behavior:contain}
+.yane-bubble{max-width:89%;border-radius:18px;padding:12px 14px;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.yane-bubble.bot{align-self:flex-start;background:rgba(255,255,255,.49);border:1px solid rgba(255,255,255,.45);border-bottom-left-radius:5px}
+html[data-theme=dark] .yane-bubble.bot{background:rgba(140,174,229,.12);border-color:rgba(192,214,255,.1)}
+.yane-bubble.user{align-self:flex-end;background:linear-gradient(130deg,#348cf8,#326fd7);color:#fff;border-bottom-right-radius:5px}
+.yane-quick{display:flex;gap:7px;overflow-x:auto;padding:10px 13px 8px;scrollbar-width:none}
+.yane-quick button{flex:0 0 auto;width:auto;min-height:34px;border-radius:100px;padding:7px 11px;border:1px solid rgba(108,146,204,.25);background:rgba(108,153,229,.12);color:inherit;font-size:11px;font-weight:650;white-space:nowrap}
+.yane-compose{display:flex;gap:8px;align-items:center;padding:10px 13px 13px;border-top:1px solid rgba(127,153,196,.2)}
+.yane-compose input{flex:1;min-width:0;height:44px;border-radius:14px;border:1px solid rgba(126,158,205,.28);background:rgba(255,255,255,.32);padding:0 12px;font-size:16px;color:inherit;outline:none}
+html[data-theme=dark] .yane-compose input{background:rgba(10,24,53,.3)}
+.yane-compose button{flex:0 0 43px;width:43px;height:43px;border-radius:14px;border:0;background:#3183ef;color:white;font-size:21px}
+.yane-foot{font-size:10px;opacity:.58;text-align:center;padding:0 12px 11px}
+</style><style id="yaryane-yane-hidden-fix">#yaneOverlay[hidden]{display:none!important;pointer-events:none!important}</style><style id="yaryane-stability-pass">#yaneOverlay[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}.event-readable .dots{position:relative;z-index:2;touch-action:manipulation}.event-detail-overlay,.yane-panel{overscroll-behavior:contain}.yane-panel{isolation:isolate}#yaneLaunch{z-index:79}@media(prefers-reduced-motion:reduce){.yane-panel,.event-detail-panel,.yaryane-page-enter{animation:none!important;transition:none!important}}</style><style id="yane-draft-v1">.yane-draft-card{align-self:flex-start;max-width:92%;padding:13px;border-radius:17px;background:rgba(65,130,231,.12);border:1px solid rgba(85,142,231,.23);font-size:13px}.yane-draft-card strong{display:block;font-size:13px}.yane-draft-card p{white-space:pre-line;line-height:1.6;margin:9px 0}.yane-draft-card button{border:0;border-radius:12px;background:#307fe9;color:white;font-weight:700;padding:11px 14px}.yane-form-notice{padding:12px;border-radius:13px;background:rgba(63,139,238,.12);border:1px solid rgba(65,136,228,.2);font-size:12px;line-height:1.5;margin-bottom:13px}</style><style id="yane-slot-actions-v1">.yane-slot-options{align-self:flex-start;display:flex;gap:7px;flex-wrap:wrap;padding:12px;border:1px solid rgba(86,143,230,.25);border-radius:16px;background:rgba(86,143,230,.1);max-width:95%}.yane-slot-options small{width:100%;opacity:.8;font-size:11px;margin-bottom:3px}.yane-slot-options button{width:auto;min-height:36px;padding:8px 11px;border-radius:12px;border:1px solid rgba(80,141,234,.3);background:rgba(255,255,255,.35);color:inherit;font-size:12px;font-weight:650}html[data-theme=dark] .yane-slot-options button{background:rgba(132,171,235,.14)}</style><style id="yaryane-conflict-ui">.yaryane-conflict-warning:not([hidden]){display:block;padding:12px 13px;margin:12px 0;border-radius:13px;background:rgba(255,163,54,.13);border:1px solid rgba(233,154,46,.36);color:var(--ink);font-size:12px;line-height:1.55}.yaryane-conflict-warning[hidden]{display:none!important}</style><style id="yane-welcome-v1">.yane-welcome{padding:15px;border-radius:20px;border:1px solid rgba(130,165,223,.3);background:linear-gradient(145deg,rgba(139,179,248,.2),rgba(255,255,255,.08));box-shadow:0 8px 30px rgba(40,75,140,.08);margin:0 0 10px}.yane-welcome-heading{font-size:19px;font-weight:760;letter-spacing:-.5px}.yane-welcome p{font-size:12px;opacity:.82;margin:7px 0 12px}.yane-welcome-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.yane-welcome-stats>div{border-radius:13px;background:rgba(127,166,232,.12);padding:10px 6px;text-align:center;min-width:0}.yane-welcome-stats strong{display:block;font-size:22px;line-height:1.2}.yane-welcome-stats small{display:block;font-size:10px;opacity:.8;line-height:1.25;margin-top:4px}.yane-welcome .yane-welcome-shift{font-size:12px;margin:12px 0 0}.yane-welcome-actions{display:flex;gap:8px;margin-top:13px}.yane-welcome-actions button{flex:1;min-height:36px;border-radius:12px;border:1px solid rgba(111,157,234,.3);background:rgba(121,167,237,.17);color:inherit;font-size:12px;font-weight:700}</style><style id="yane-upcoming-v1">.yane-upcoming{margin-top:14px;padding-top:12px;border-top:1px solid rgba(128,160,212,.2)}.yane-upcoming-label{font-size:11px;opacity:.72;font-weight:700;margin-bottom:8px}.yane-upcoming-item{display:flex;flex-direction:column;gap:3px;padding:8px 10px;margin:5px 0;border-radius:12px;background:rgba(120,162,226,.1);min-width:0}.yane-upcoming-item span{font-size:10px;opacity:.73}.yane-upcoming-item strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}</style><style id="yane-task-planner-v1">.yane-task-planner{align-self:stretch;display:flex;flex-direction:column;gap:9px;padding:13px;border-radius:17px;border:1px solid rgba(114,160,226,.28);background:rgba(113,157,225,.12);font-size:12px}.yane-task-planner>strong{font-size:13px}.yane-task-planner select{width:100%;min-height:39px;padding:7px 10px;border-radius:11px;border:1px solid rgba(125,159,206,.35);background:var(--card,rgba(255,255,255,.2));color:inherit;font-size:13px}.yane-task-planner button{min-height:38px;padding:8px 11px;border-radius:11px;border:1px solid rgba(89,146,234,.3);background:rgba(97,153,235,.19);color:inherit;font-size:12px;font-weight:700}.yane-task-results{display:flex;gap:7px;flex-wrap:wrap;font-size:12px;line-height:1.5}</style><style id="yane-week-cards-v1">.yane-week-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}.yane-week-card{display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:10px;border-radius:14px;border:1px solid rgba(124,165,231,.28);background:linear-gradient(150deg,rgba(133,180,247,.15),rgba(255,255,255,.04));min-width:0}.yane-week-day{font-size:13px;font-weight:760}.yane-week-card small{font-size:10px;opacity:.7}.yane-week-card button{font-size:11px;padding:7px 5px;min-height:32px}.yane-week-empty{font-size:10px;opacity:.6;line-height:1.3;padding:7px 0}.yane-task-planner .yane-week-grid{margin-top:4px}</style><style id="yane-week-status-v1">.yane-week-card{position:relative;transition:border-color .2s,background .2s}.yane-week-card.yane-week-good{border-color:rgba(55,174,130,.42);background:linear-gradient(145deg,rgba(69,185,143,.14),rgba(255,255,255,.04))}.yane-week-card.yane-week-limited{border-color:rgba(224,165,62,.4);background:linear-gradient(145deg,rgba(231,170,70,.12),rgba(255,255,255,.04))}.yane-week-card.yane-week-busy{border-color:rgba(135,149,174,.3);background:linear-gradient(145deg,rgba(137,151,176,.1),rgba(255,255,255,.03))}.yane-week-status{font-size:10px;font-weight:700;line-height:1.3}.yane-week-good .yane-week-status{color:#21966e}.yane-week-limited .yane-week-status{color:#b78325}.yane-week-busy .yane-week-status{color:var(--muted,#8590a0)}.yane-week-card .yane-week-status{margin:1px 0 3px}@media(prefers-reduced-motion:reduce){.yane-week-card{transition:none}}</style><style id="yane-week-summary-v1">.yane-week-summary{grid-column:1/-1;padding:13px 14px;border-radius:15px;border:1px solid rgba(101,150,228,.32);background:linear-gradient(125deg,rgba(93,155,245,.18),rgba(255,255,255,.05));line-height:1.5}.yane-week-summary strong{display:block;font-size:13px}.yane-week-summary p{font-size:12px;margin:6px 0}.yane-week-summary small{font-size:10px;opacity:.7;display:block}</style><style id="yane-best-slot-v1">.yane-week-summary .yane-best-slot{display:block;width:100%;margin:10px 0 7px;padding:10px 12px;min-height:42px;border-radius:12px;border:1px solid rgba(79,143,239,.48);background:linear-gradient(120deg,rgba(72,133,236,.29),rgba(117,168,239,.18));color:inherit;font-size:12px;font-weight:750;text-align:center;white-space:normal;line-height:1.4}</style><style id="yane-multi-v1">.yane-multi-choices{display:flex;flex-direction:column;gap:5px;max-height:170px;overflow:auto}.yane-multi-choices label{display:flex;align-items:center;gap:9px;padding:7px;border-radius:9px;background:rgba(130,166,218,.1);font-size:12px}.yane-multi-choices input{width:17px;height:17px;flex-shrink:0}.yane-multi-results{display:flex;flex-direction:column;gap:8px}.yane-multi-item{display:flex;flex-direction:column;gap:5px;padding:10px;border:1px solid rgba(124,165,231,.28);border-radius:12px;background:rgba(130,166,218,.1)}.yane-multi-item strong{font-size:12px}.yane-multi-item small{opacity:.75;font-size:11px}</style><style id="yaryane-reminders-v1">.yaryane-reminder-settings{padding:16px;display:flex;flex-direction:column;gap:10px}.yaryane-reminder-settings strong{font-size:15px}.yaryane-reminder-settings p,.yaryane-reminder-settings small{font-size:11px;line-height:1.5;color:var(--muted);margin:0}.yaryane-reminder-settings label{font-size:12px;font-weight:650}.yaryane-reminder-settings select{height:42px;border-radius:12px;border:1px solid var(--line);background:var(--glass);color:var(--ink);padding:0 12px}.yaryane-reminder-settings button{padding:11px;border-radius:12px;border:1px solid rgba(89,145,235,.3);background:rgba(96,154,239,.15);color:var(--ink);font-size:12px;font-weight:650}#yaryaneReminderToast{position:fixed;z-index:100000;top:calc(env(safe-area-inset-top) + 14px);left:12px;right:12px;max-width:490px;margin:auto;display:flex;gap:12px;align-items:center;justify-content:space-between;padding:15px;border-radius:17px;border:1px solid var(--line);background:var(--bg);box-shadow:var(--shadow);font-size:13px}#yaryaneReminderToast button{border:0;background:var(--accent);color:white;padding:9px 13px;border-radius:10px}</style><style id="yaryane-reminder-preview-v1">.yaryane-reminder-preview{display:flex;flex-direction:column;gap:7px;padding:12px;border-radius:13px;border:1px solid rgba(120,159,219,.23);background:rgba(115,153,214,.09)}.yaryane-reminder-preview>strong{font-size:12px}.yaryane-reminder-preview-row{display:flex;flex-direction:column;gap:3px;padding:7px 0;border-bottom:1px solid rgba(120,159,219,.16)}.yaryane-reminder-preview-row:last-child{border-bottom:0}.yaryane-reminder-preview-row span{font-size:12px;font-weight:650;overflow-wrap:anywhere}.yaryane-reminder-preview-row small{font-size:10px;color:var(--muted)}</style><style id="yaryane-liquid-glass-unified-v1">
+/* Einheitliches, kompaktes Liquid Glass – Design-Tokens für Hell/Dunkel */
+:root{--yg-radius:16px;--yg-radius-sm:11px;--yg-gap:9px;--yg-stroke:rgba(255,255,255,.63);--yg-highlight:rgba(255,255,255,.42);--yg-elevation:0 7px 22px rgba(30,66,130,.10);--yg-control:rgba(255,255,255,.48)}
+html[data-theme=dark]{--yg-stroke:rgba(171,196,246,.19);--yg-highlight:rgba(255,255,255,.10);--yg-elevation:0 8px 24px rgba(0,0,0,.20);--yg-control:rgba(27,47,81,.68)}
+.glass{border-radius:var(--yg-radius);border-color:var(--yg-stroke);box-shadow:var(--yg-elevation),inset 0 1px 0 var(--yg-highlight);-webkit-backdrop-filter:saturate(145%) blur(20px);backdrop-filter:saturate(145%) blur(20px)}
+.item{min-height:56px;margin:6px 0;padding:10px 12px;gap:10px;border-radius:var(--yg-radius)}
+.item strong{font-size:13px;line-height:1.35;letter-spacing:-.1px}
+.item small{font-size:11px;line-height:1.4}
+.sectionhead{margin:17px 0 9px}.sectionhead h2{font-size:17px;letter-spacing:-.3px}
+.page-title{font-size:22px;letter-spacing:-.5px;margin:10px 0 15px}
+.setting{padding:12px 13px;margin-bottom:7px;border-radius:var(--yg-radius)}
+.note{padding:13px;min-height:115px;border-radius:var(--yg-radius)}
+.pill{padding:8px 12px;border-radius:var(--yg-radius-sm)}
+.calendar{padding:11px;border-radius:var(--yg-radius)}
+.day{border-radius:var(--yg-radius-sm)}
+.nav{background:var(--glass);border-top-color:var(--yg-stroke);-webkit-backdrop-filter:saturate(160%) blur(24px);backdrop-filter:saturate(160%) blur(24px)}
+.nav button{border-radius:var(--yg-radius-sm);transition:background-color .15s ease,color .15s ease}
+.nav button.active{background:color-mix(in srgb,var(--accent) 13%,transparent)}
+.primary,.secondary{border-radius:var(--yg-radius-sm);min-height:40px;padding:10px 14px}
+.secondary{background:var(--yg-control);border-color:var(--yg-stroke)}
+.sheet{border:1px solid var(--yg-stroke);border-bottom:0;box-shadow:0 -10px 36px rgba(0,0,0,.14);border-radius:23px 23px 0 0}
+.sheet h2{font-size:20px;letter-spacing:-.35px}
+.field{margin:10px 0}
+.field input,.field select{border-radius:var(--yg-radius-sm);background:var(--yg-control);border-color:var(--yg-stroke)}
+.field textarea{border-radius:var(--yg-radius-sm);background:var(--yg-control);border-color:var(--yg-stroke)}
+.formactions{gap:8px;margin-top:14px}
+button,input,select,textarea{-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.nav button{transition:none}}
+@media(max-width:370px){.sectionhead h2{font-size:16px}.item{padding:9px 10px}.setting{padding:11px}}
+</style><style id="yaryane-liquid-glass-polish-v2">
+/* Konsistente Glasoberflächen auch für Einstellungen, Yane und Dialoge */
+:root{--yg-soft:rgba(90,143,228,.10);--yg-divider:rgba(80,117,180,.14)}
+html[data-theme=dark]{--yg-soft:rgba(112,156,230,.13);--yg-divider:rgba(157,187,242,.16)}
+.yaryane-reminder-settings{padding:13px;gap:9px;border-radius:var(--yg-radius)}
+.yaryane-reminder-settings select{height:40px;border-radius:var(--yg-radius-sm);border-color:var(--yg-stroke);background:var(--yg-control)}
+.yaryane-reminder-settings button{min-height:40px;padding:9px 12px;border-radius:var(--yg-radius-sm);border:1px solid var(--yg-divider);background:var(--yg-soft)}
+.yaryane-reminder-preview{border-radius:var(--yg-radius-sm);border-color:var(--yg-divider);background:var(--yg-soft)}
+.yaryane-reminder-preview-row{padding:7px 0;border-color:var(--yg-divider)}
+#yaryaneReminderToast{border-color:var(--yg-stroke);border-radius:var(--yg-radius);background:var(--glass);-webkit-backdrop-filter:saturate(155%) blur(22px);backdrop-filter:saturate(155%) blur(22px);box-shadow:var(--yg-elevation);padding:12px 13px}
+#yaryaneReminderToast button{min-height:36px;border-radius:var(--yg-radius-sm)}
+#yaneLaunch{box-shadow:var(--yg-elevation),inset 0 1px 0 var(--yg-highlight)}
+#yaneOverlay .glass{border-color:var(--yg-stroke);box-shadow:var(--yg-elevation),inset 0 1px 0 var(--yg-highlight)}
+.settings-section-title{letter-spacing:.075em}
+.settings-row{border-radius:var(--yg-radius)}
+.formactions button{min-width:0}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.glass,.nav,#yaryaneReminderToast{background:var(--bg)}}
+@media(prefers-contrast:more){.glass,.secondary,.yaryane-reminder-settings select{border-width:1.5px;border-color:var(--muted)}.muted,.item small{opacity:1}}
+@media(prefers-reduced-transparency:reduce){.glass,.nav,#yaryaneReminderToast{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
+</style><style id="yaryane-liquid-glass-details-v3">
+/* Feinabstimmung: Typografie, Touch-Ziele, Kalender und reduzierte Bewegung */
+:root{--yg-text-xs:11px;--yg-text-sm:12px;--yg-text-md:13px}
+.top{gap:10px}.brand{font-weight:800;letter-spacing:-.85px}
+.subtitle,.muted{line-height:1.45}
+.hero{border-radius:21px;min-height:160px;padding:18px 16px}
+.hero h1{font-size:22px;line-height:1.2}.hero p{line-height:1.45}
+.hero button{border-radius:13px;min-height:42px}
+.item .details{overflow-wrap:anywhere}
+.item .time{font-variant-numeric:tabular-nums}
+.dots{min-width:38px;min-height:38px;display:grid;place-items:center;border-radius:10px}
+.dots:active{background:var(--yg-soft)}
+.pillrow{scrollbar-width:none;-webkit-overflow-scrolling:touch}.pillrow::-webkit-scrollbar{display:none}
+.pill{min-height:36px;display:inline-flex;align-items:center;justify-content:center}
+.day{font-variant-numeric:tabular-nums}
+.day:focus-visible,.nav button:focus-visible,.dots:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nav button{min-height:48px;justify-content:center}
+.nav button .symbol{line-height:1.15}
+.note{overflow-wrap:anywhere}
+.note p{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.sheet{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.sheet .field input,.sheet .field select,.sheet .field textarea{max-width:100%;min-width:0}
+@media(max-width:370px){.hero{padding:16px 14px;min-height:150px}.hero h1{font-size:21px}.nav button{min-width:43px}.pill{padding:7px 10px}}
+@media(prefers-reduced-motion:reduce){.glass,.hero,.item,.nav,.sheet,.pill{animation:none!important;transition:none!important}}
+</style><style id="yaryane-liquid-glass-finish-v4">
+/* Konsistenter iPhone-Finish: subtile Interaktion, Kontrast und sichere Layouts */
+:root{--yg-pressed:rgba(70,128,230,.12)}
+html[data-theme=dark]{--yg-pressed:rgba(130,171,246,.16)}
+.avatar,.round,.add{flex-shrink:0;box-shadow:inset 0 1px 0 var(--yg-highlight)}
+.round,.avatar{background:var(--yg-control);border-color:var(--yg-stroke)}
+button{touch-action:manipulation}
+.item,.setting,.note,.pill,.round,.avatar,.add{transition:background-color .16s ease,border-color .16s ease,box-shadow .16s ease}
+.item:active,.setting:active,.note:active{background-color:var(--yg-pressed)}
+.round:active,.avatar:active,.pill:active{background-color:var(--yg-pressed)}
+.item:focus-within{border-color:color-mix(in srgb,var(--accent) 35%,var(--yg-stroke))}
+.sectionhead button,.textbtn{min-height:34px;display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:9px;font-weight:600}
+.sectionhead button:active,.textbtn:active{background:var(--yg-pressed)}
+.setting .arrow{flex-shrink:0}
+.notes{align-items:stretch}.note{height:100%}
+.empty{padding:20px 14px;line-height:1.55;border-radius:var(--yg-radius)}
+.legend{gap:9px}.legend div{line-height:1.4}
+.tag{border-radius:8px}
+.formactions{position:relative}
+.formactions button{font-size:13px}
+input,textarea,select{accent-color:var(--accent)}
+@media(hover:hover){.item:hover,.setting:hover,.note:hover{border-color:color-mix(in srgb,var(--accent) 24%,var(--yg-stroke))}}
+@media(prefers-reduced-motion:reduce){.item,.setting,.note,.pill,.round,.avatar,.add{transition:none}}
+</style><style id="yaryane-liquid-glass-yane-v5">
+/* Yane an die kompakten Glas-Tokens der Haupt-App angleichen */
+.yane-panel{border-radius:23px;border-color:var(--yg-stroke);box-shadow:0 16px 52px rgba(0,17,54,.24),inset 0 1px 0 var(--yg-highlight)}
+.yane-head{padding:12px 14px 11px;gap:10px;border-bottom-color:var(--yg-divider)}
+.yane-logo{width:38px;height:38px;border-radius:12px;font-size:22px}
+.yane-head-copy strong{font-size:16px;letter-spacing:-.25px}
+.yane-x{width:38px;height:38px;flex-shrink:0;border-radius:12px;border-color:var(--yg-divider)}
+.yane-messages{padding:13px 12px;gap:10px}
+.yane-bubble{border-radius:var(--yg-radius);padding:10px 12px;font-size:13px;line-height:1.48;overflow-wrap:anywhere}
+.yane-panel button{touch-action:manipulation}
+.yane-panel button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#yaneLaunch{width:50px;height:50px;border-radius:16px;font-size:24px}
+#yaneOverlay{overscroll-behavior:contain}
+@media(max-width:370px){.yane-panel{border-radius:19px}.yane-head{padding:10px 12px}.yane-messages{padding:11px 10px}#yaneLaunch{right:12px}}
+@media(prefers-reduced-motion:reduce){#yaneLaunch:active{transform:none}}
+@media(prefers-reduced-transparency:reduce){.yane-panel{background:var(--bg)!important;-webkit-backdrop-filter:none;backdrop-filter:none}#yaneOverlay{-webkit-backdrop-filter:none;backdrop-filter:none}}
+</style><style id="yaryane-liquid-glass-forms-v6">
+/* Editorfelder: dieselben Glasfarben, Fokuszustände und kompakten Abstände */
+#modal .sheet form label.field{font-size:12px;font-weight:600;line-height:1.4;color:var(--muted)}
+#modal .sheet form label.field>input:not([type="checkbox"]),
+#modal .sheet form label.field>select,
+#modal .sheet form label.field>textarea{
+ border-color:var(--yg-stroke)!important;
+ background:var(--yg-control)!important;
+ border-radius:var(--yg-radius-sm)!important;
+ box-shadow:inset 0 1px 0 var(--yg-highlight)!important;
+}
+#modal .sheet form label.field>input:focus,
+#modal .sheet form label.field>select:focus,
+#modal .sheet form label.field>textarea:focus{
+ border-color:var(--accent)!important;
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)!important;
+ outline:none!important;
+}
+#modal .sheet form label.field>input:disabled,
+#modal .sheet form label.field>select:disabled,
+#modal .sheet form label.field>textarea:disabled{opacity:.58}
+#modal .sheet form label.field>textarea{line-height:1.45!important}
+#modal .sheet form .formactions{padding-top:3px}
+#modal .sheet form .formactions button{min-height:42px}
+@media(prefers-contrast:more){
+ #modal .sheet form label.field>input:not([type="checkbox"]),
+ #modal .sheet form label.field>select,
+ #modal .sheet form label.field>textarea{border-color:var(--muted)!important}
+}
+</style><style id="yaryane-liquid-glass-event-details-v7">
+/* Termin-Detailansicht: kompakte Hierarchie und dieselben Glas-Tokens */
+.event-detail-overlay{overscroll-behavior:contain}
+.event-detail-panel{border-radius:23px!important;padding:10px 15px 16px!important;border-color:var(--yg-stroke)!important;box-shadow:0 16px 52px rgba(0,17,54,.26),inset 0 1px 0 var(--yg-highlight)!important}
+.event-detail-handle{margin-bottom:12px}
+.event-detail-header{margin-bottom:12px}
+.event-detail-tag{padding:6px 10px!important;font-size:11px!important}
+.event-detail-hero{gap:12px;padding:0 1px 16px}
+.event-detail-date-tile{width:60px;height:65px;flex-basis:60px;border-radius:15px}
+.event-detail-date-tile strong{font-size:26px}
+.event-detail-panel .event-detail-hero h2{font-size:22px!important;line-height:1.2}
+.event-detail-content{border-radius:var(--yg-radius);padding:3px 11px;border-color:var(--yg-stroke);background:var(--yg-control)}
+.event-detail-x{min-width:38px;min-height:38px;border-radius:var(--yg-radius-sm);border-color:var(--yg-divider)!important}
+.event-detail-panel button{touch-action:manipulation}
+.event-detail-panel button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(max-width:370px){.event-detail-panel{padding:9px 12px 14px!important}.event-detail-panel .event-detail-hero h2{font-size:20px!important}.event-detail-date-tile{width:55px;height:60px;flex-basis:55px}}
+@media(prefers-reduced-transparency:reduce){.event-detail-panel{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}.event-detail-overlay{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+</style><style id="yaryane-accessibility-consolidated-v12">\n/* yaryane-liquid-glass-accessibility-v8 */\n
+/* Präziser Abschluss: lesbare Systemschriften, Touch-Ziele, Tastaturfokus */
+:root{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{isolation:isolate}
+.item strong,.note strong,.setting strong{font-weight:680}
+.item small,.note p,.setting small{line-height:1.45}
+.nav{isolation:isolate}
+.nav button{position:relative}
+.nav button.active{font-weight:700}
+.nav button.active::after{content:"";position:absolute;left:24%;right:24%;bottom:2px;height:2px;border-radius:2px;background:var(--accent);opacity:.7}
+button:disabled{cursor:default;opacity:.52}
+button:not(:disabled):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#modal .sheet{scrollbar-width:thin}
+#modal .sheet input,#modal .sheet select,#modal .sheet textarea{color-scheme:light dark}
+html[data-theme=light] #modal .sheet input,html[data-theme=light] #modal .sheet select,html[data-theme=light] #modal .sheet textarea{color-scheme:light}
+html[data-theme=dark] #modal .sheet input,html[data-theme=dark] #modal .sheet select,html[data-theme=dark] #modal .sheet textarea{color-scheme:dark}
+@media(max-width:370px){.nav button.active::after{left:28%;right:28%}}
+@media(prefers-reduced-motion:reduce){html:focus-within{scroll-behavior:auto!important}}
+
+\n/* yaryane-nav-clarity-v9 */\n
+/* Semantisch markierter aktiver Tab und verlässliche kompakte Touch-Ziele */
+.nav button[aria-current="page"]{color:var(--accent)}
+.nav button[aria-current="page"] .symbol{font-weight:750}
+.nav button{white-space:nowrap;line-height:1.2}
+.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+@media(max-width:350px){.nav{padding-left:5px;padding-right:5px}.nav button{min-width:0;flex:1;font-size:9px;padding-left:2px;padding-right:2px}}
+
+\n/* yaryane-event-keyboard-v10 */\n.event-readable:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.event-readable .dots:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+\n/* yaryane-event-accessibility-v11 */\n
+/* Terminkarten als eindeutige Aktion und ruhige visuelle Hierarchie */
+.event-readable{cursor:pointer}
+.event-readable .details strong{line-height:1.35}
+.event-readable .details small{overflow-wrap:anywhere}
+.event-readable[role="button"]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.event-readable .dots{flex-shrink:0}
+@media(prefers-reduced-motion:reduce){.event-readable{transition:none}}
+</style></head><body><aside role="note" style="max-width:520px;margin:12px auto 0;padding:8px 17px;font:12px system-ui;color:inherit;opacity:.85">Testversion · Eigener Datenspeicher und getrennter Cloud-Testbereich.</aside><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_preview_v1_events',TK='yaryane_preview_tasks_v1',NK='yaryane_preview_notes_v1',SK='yaryane_preview_shifts_v1',THEME='yaryane_preview_theme';
 const get=(k,d)=>{try{return JSON.parse(storageGet(k))??d}catch{return d}};
 let events=get(K,[]),tasks=get(TK,[]),notes=get(NK,[]),shifts=get(SK,[]),page='home',selected=localDate(new Date()),month=new Date().getMonth(),year=new Date().getFullYear(),filter='Alle',shiftMode='Monat',edit=null;
@@ -16,24 +546,457 @@ function setTheme(t,persist=true){theme=t==='dark'?'dark':'light';document.docum
 setTheme(theme,false);
 const systemColorChange=()=>{if(!['light','dark'].includes(storageGet(THEME)))setTheme(systemColors?.matches?'dark':'light',false)};
 if(systemColors?.addEventListener)systemColors.addEventListener('change',systemColorChange);else if(systemColors?.addListener)systemColors.addListener(systemColorChange);
-function navigate(p){page=p;render();window.scrollTo(0,0)}
-function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
+function navigate(p){if(document.getElementById('yaneOverlay')&&!document.getElementById('yaneOverlay').hidden)closeYane();document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove());if(p===page)return;if(p==='notes'&&page==='more')window.yaryaneNotesFromMore=true;else if(p!=='notes')window.yaryaneNotesFromMore=false;page=p;window.scrollTo({top:0,left:0,behavior:'instant'});render();const content=document.getElementById('app');if(content){content.classList.remove('yaryane-page-enter');void content.offsetWidth;content.classList.add('yaryane-page-enter')}}
+const yaneHistory=[];let yaneLastDraft=null,yaneLastSlots=[];
+function yaneToday(){return localDate(new Date())}
+function yaneFreeSlots(q){
+ yaneLastSlots=[];const now=new Date(),base=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+ const low=q.toLocaleLowerCase('de-DE');
+ if(/übermorgen/.test(low))base.setDate(base.getDate()+2);else if(/morgen/.test(low))base.setDate(base.getDate()+1);
+ const weekdays={sonntag:0,montag:1,dienstag:2,mittwoch:3,donnerstag:4,freitag:5,samstag:6};
+ const day=low.match(/(?:nächsten?|kommenden?)?\s*(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)/);
+ if(day){let offset=(weekdays[day[1]]-base.getDay()+7)%7;if(offset===0||/nächsten|kommenden/.test(day[0]))offset=offset||7;base.setDate(base.getDate()+offset)}
+ const iso=low.match(/\b(\d{4})-(\d{2})-(\d{2})\b/),german=low.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/);
+ if(iso||german){const y=Number(iso?iso[1]:german[3]),m=Number(iso?iso[2]:german[2]),d=Number(iso?iso[3]:german[1]);const test=new Date(y,m-1,d,12);if(test.getFullYear()!==y||test.getMonth()!==m-1||test.getDate()!==d)return 'Dieses Datum ist ungültig.';base.setTime(test.getTime())}
+ const date=localDate(base),start=8*60,end=20*60,blocked=[],unknown=[];yaneLastSlots=[];
+ const minutes=t=>{if(!/^\d{1,2}:\d{2}$/.test(String(t||'')))return null;const [h,m]=t.split(':').map(Number);return h<24&&m<60?h*60+m:null};
+ const busy=yaryaneBlockedDay(date);blocked.push(...busy.blocked);unknown.push(...busy.unknown);
+ blocked.sort((a,b)=>a[0]-b[0]);
+ const free=[];let cursor=start;
+ for(const [a,b] of blocked){if(a>cursor&&a-cursor>=30)free.push([cursor,Math.min(a,end)]);cursor=Math.max(cursor,b);if(cursor>=end)break}
+ if(end-cursor>=30)free.push([cursor,end]);
+ const clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+ const earliest=date===localDate(now)?Math.ceil((now.getHours()*60+now.getMinutes())/15)*15:start;const valid=free.map(([a,b])=>[Math.max(a,earliest),Math.min(b,end)]).filter(([a,b])=>b-a>=30);
+ const list=valid.slice(0,6).map(([a,b])=>'• '+clock(a)+'–'+clock(b)+' Uhr');
+ if(!unknown.length)yaneLastSlots=valid.slice(0,4).map(([a,b])=>({date,start:clock(Math.max(a,date===localDate(now)?Math.ceil((now.getHours()*60+now.getMinutes())/15)*15:a)),end:clock(b)})).filter(x=>x.start<x.end);
+ return 'Mögliche Zeitfenster · '+fmt(date)+' ✨\n\n'+(list.length?list.join('\n'):'Zwischen 08:00 und 20:00 Uhr ist kein freies Zeitfenster von mindestens 30 Minuten erkennbar.')+(unknown.length?'\n\n⚠️ '+unknown.length+' Eintrag/Einträge ohne vollständige Uhrzeiten – die Vorschläge können sich überschneiden.':'')+'\n\nNur anhand deiner eingetragenen Zeiten, keine Verfügbarkeitsgarantie.';
+}
+function yaneDaySuggestions(){
+ const date=localDate(new Date()),now=new Date(),clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+ const minutes=v=>{const m=String(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],n=+m[2];return h<24&&n<60?h*60+n:null};
+ const blocked=[],unknown=[];
+ const busy=yaryaneBlockedDay(date);blocked.push(...busy.blocked);unknown.push(...busy.unknown);
+ const start=Math.max(8*60,Math.ceil((now.getHours()*60+now.getMinutes())/15)*15),end=20*60;
+ if(start>=end)return 'Für heute ist mein Planungszeitraum (08:00–20:00 Uhr) vorbei. Du kannst mich morgen erneut fragen.';
+ blocked.sort((a,b)=>a[0]-b[0]);let cursor=start;const slots=[];
+ for(const [a,b] of blocked){const stop=Math.min(a,end);if(stop-cursor>=30)slots.push([cursor,stop]);cursor=Math.max(cursor,b);if(cursor>=end)break}
+ if(end-cursor>=30)slots.push([cursor,end]);
+ const pending=tasks.filter(t=>!t.done&&(!t.date||t.date<=date)).sort((a,b)=>(a.priority==='high'?-1:0)-(b.priority==='high'?-1:0)||String(a.date||'9999').localeCompare(String(b.date||'9999')));
+ let lines=['Deine Tagesideen ✨',''];
+ if(pending.length)lines.push('Offene Aufgaben für heute oder früher:',...pending.slice(0,4).map(t=>'• '+(t.title||t.name||'Aufgabe')+(t.priority==='high'?' · hohe Priorität':'')),'');
+ else lines.push('Keine offenen Aufgaben mit Fälligkeit bis heute gefunden.','');
+ if(slots.length){lines.push('Mögliche Zeit zum Erledigen:');slots.slice(0,3).forEach(([a,b])=>lines.push('• '+clock(a)+'–'+clock(b)+' Uhr'));}else lines.push('Kein freies Zeitfenster ab 30 Minuten im Planungszeitraum erkannt.');
+ if(unknown.length)lines.push('','⚠️ '+unknown.length+' Termin-/Schichteinträge ohne vollständige Uhrzeiten. Die Vorschläge können unvollständig sein.');
+ lines.push('','Ich kenne keine Dauer deiner Aufgaben. Das sind unverbindliche Ideen, keine automatisch geplanten Termine.');
+ return lines.join('\n');
+}
+function yaneReply(question){
+ const q=String(question||'').toLocaleLowerCase('de-DE').trim(),today=yaneToday();
+ const pending=tasks.filter(t=>!t.done),todayEvents=events.filter(e=>e.date===today).sort((a,b)=>(a.start||'').localeCompare(b.start||''));
+ const todayShifts=shifts.filter(x=>x.date===today);
+ const shiftLabel=x=>({early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst',free:'Frei',off:'Frei',vacation:'Urlaub',sick:'Krank'}[x.type]||x.label||x.name||x.type||'Schicht');
+ const taskLabel=t=>t.title||t.name||t.text||'Aufgabe';
+ const eventLine=e=>'• '+fmt(e.date)+' · '+(e.start||'Ganztägig')+' · '+(e.name||'Termin');
+ if(/wochenplanung|wochenplan|aufgaben.*(woche|7 tage)|woche.*aufgaben/.test(q))return 'Wochenplanung ✨\n\nWähle unten eine offene Aufgabe und ihre Dauer. Ich suche passende Zeitfenster in den nächsten sieben Tagen. Ein Kalendereintrag entsteht erst nach deiner Bestätigung.';
+ if(/tagesvorschl|tagesplan|tagesideen|aufgaben.*(einplan|heute)|was soll ich (heute )?(erledigen|machen)/.test(q))return yaneDaySuggestions();
+ if(/frei(e|en|es)? (zeit|slot|fenster)|zeitfenster|wann (habe|hab|ist) (ich )?zeit|wann passt|lücke(n)? im kalender/.test(q))return yaneFreeSlots(q);
+ if(/^(hi|hey|hallo|guten morgen|guten abend)[! .]*$/.test(q))return 'Hallo! ✨ Ich bin Yane. Ich kann deine Termine, Aufgaben und Schichten auswerten und dir Yaryane erklären.';
+ if(/hilfe|wer bist|was kannst|was ist yane|ki\b/.test(q))return 'Ich bin Yane ✦ – dein lokaler Assistent. Ich kann deinen Tag, die nächsten Termine, offene Aufgaben und den Dienstplan zusammenfassen. Ich bin noch keine generative KI und ändere keine Daten.';
+ if(/backup|sicher|cloud|sync|konto|anmeld/.test(q))return 'Deine Daten sichern ☁️\n\nÖffne „Mehr“ und suche die Backup- und Cloud-Einstellungen. Du kannst eine JSON-Sicherung erstellen. Die Cloud-Funktionen verwendest du nur nach Anmeldung und Aktivierung.';
+ if(/notiz/.test(q))return 'Notizen 📝\n\nDu hast '+notes.length+' gespeicherte Notiz(en). Du findest sie unter „Mehr“ → „Notizen“.';
+ if(/design|hell|dunkel|modus|einstellung|profil/.test(q))return 'Unter „Mehr“ findest du Darstellung und Profil. Dort kannst du den Modus, deinen Namen und dein Profilbild ändern.';
+ if(/aufgabe|todo|to-do|erledigen/.test(q))return 'Offene Aufgaben ✓\n\n'+(pending.length?pending.slice(0,8).map(t=>'• '+taskLabel(t)+(t.date?' ('+fmt(t.date)+')':'')).join('\n'):'Keine offenen Aufgaben.')+(pending.length>8?'\n… und '+(pending.length-8)+' weitere.':'');
+ if(/frei|dienst|schicht|früh|spät|nacht|urlaub/.test(q)){
+   const monthKey=today.slice(0,7),monthShifts=shifts.filter(x=>String(x.date||'').startsWith(monthKey));
+   const upcoming=shifts.filter(x=>x.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+   return 'Dein Dienstplan ▣\n\n'+monthShifts.length+' Einträge in diesem Monat.\n\nNächste Einträge:\n'+(upcoming.length?upcoming.map(x=>'• '+fmt(x.date)+' · '+shiftLabel(x)).join('\n'):'Keine kommenden Einträge.')+'\n\nNicht eingetragene Tage sind nicht automatisch freie Tage.';
+ }
+ if(/woche|nächste 7 tage|kommende 7 tage/.test(q)){
+   const end=new Date(today+'T12:00:00');end.setDate(end.getDate()+7);const limit=localDate(end);
+   const weekEvents=events.filter(e=>e.date>=today&&e.date<limit).sort((a,b)=>(a.date+(a.start||'')).localeCompare(b.date+(b.start||'')));
+   return 'Deine nächsten 7 Tage 📅\n\n'+(weekEvents.length?weekEvents.slice(0,10).map(eventLine).join('\n'):'Keine Termine eingetragen.')+'\n\n'+pending.filter(t=>t.date>=today&&t.date<limit).length+' offene Aufgaben mit Fälligkeit in diesem Zeitraum.';
+ }
+ if(/termin|kalender|morgen|nächste/.test(q)){
+   const next=events.filter(e=>e.date>=today).sort((a,b)=>(a.date+(a.start||'')).localeCompare(b.date+(b.start||''))).slice(0,7);
+   return 'Deine nächsten Termine 📅\n\n'+(next.length?next.map(eventLine).join('\n'):'Keine kommenden Termine gefunden.');
+ }
+ if(/heute|tagesübersicht|tag geplant|was steht/.test(q))return 'Heute · '+fmt(today)+'\n\n📅 '+todayEvents.length+' Termin(e)'+(todayEvents.length?'\n'+todayEvents.slice(0,5).map(e=>'• '+(e.start||'Ganztägig')+' · '+(e.name||'Termin')).join('\n'):'')+'\n\n✓ '+pending.length+' offene Aufgabe(n) insgesamt\n▣ '+todayShifts.length+' Dienstplaneinträge heute'+(todayShifts.length?'\n'+todayShifts.map(x=>'• '+shiftLabel(x)).join('\n'):'');
+ return 'Das kann ich in meiner lokalen Version noch nicht sicher beantworten. ✨\n\nFrag mich nach „Heute“, „Nächste Woche“, „Meine Termine“, „Meine Aufgaben“, „Dienstplan“ oder „Backup“.';
+}
+function yaneEscape(s){return esc(s)}
+function yaneDraw(){const box=document.getElementById('yaneMessages');if(!box)return;box.innerHTML=yaneHistory.map(m=>'<div class="yane-bubble '+(m.role==='user'?'user':'bot')+'">'+yaneEscape(m.text)+'</div>').join('');box.scrollTop=box.scrollHeight}
+function yaneDraft(q){
+ const raw=String(q||'').trim(),lower=raw.toLocaleLowerCase('de-DE');
+ const kind=/(termin|treffen|arzt|zahnarzt|besprechung)/i.test(lower)?'event':/(aufgabe|erledigen|todo|to-do|erinner mich|denk dran)/i.test(lower)?'task':null;
+ if(!kind||!/(erstell|trag|hinzufüg|hinzufueg|notier|mach|plan|erinner|denk dran|füg)/i.test(lower))return null;
+ const now=new Date(),date=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+ if(/übermorgen/i.test(raw))date.setDate(date.getDate()+2);else if(/morgen/i.test(raw))date.setDate(date.getDate()+1);else if(/nächste woche/i.test(raw))date.setDate(date.getDate()+7);
+ const weekdays={sonntag:0,montag:1,dienstag:2,mittwoch:3,donnerstag:4,freitag:5,samstag:6};
+ const weekday=lower.match(/(?:nächsten?|kommenden?)?\s*(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)/);
+ if(weekday){let diff=(weekdays[weekday[1]]-date.getDay()+7)%7;if(diff===0||/nächsten|kommenden/.test(weekday[0]))diff=diff||7;date.setDate(date.getDate()+diff)}
+ const iso=raw.match(/\b(\d{4})-(\d{2})-(\d{2})\b/),german=raw.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/);
+ if(iso||german){const y=Number(iso?iso[1]:german[3]),m=Number(iso?iso[2]:german[2]),d=Number(iso?iso[3]:german[1]);const test=new Date(y,m-1,d,12);if(test.getFullYear()!==y||test.getMonth()!==m-1||test.getDate()!==d)return {error:'Das Datum ist ungültig. Bitte verwende zum Beispiel 05.11.2026.'};date.setTime(test.getTime())}
+ const time=raw.match(/\b(?:um\s+)?(\d{1,2})(?::(\d{2}))?\s*uhr\b/i);
+ if(time&&(Number(time[1])>23||Number(time[2]||0)>59))return {error:'Die Uhrzeit ist ungültig. Bitte verwende zum Beispiel 15:30 Uhr.'};
+ let title=raw.replace(/^(bitte\s+)?(erstelle?|trage?|hinzufügen|füge?|notiere?|mache?|plane?|erinner mich|denk dran)\s*/i,'').replace(/^(mir\s+)?(einen?\s+)?(termin|eine\s+aufgabe|aufgabe|ein\s+treffen)\s*/i,'').replace(/\b(heute|morgen|übermorgen|nächste woche|nächsten?|kommenden?)\b/gi,'').replace(/\b(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\b/gi,'').replace(/\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}\.\d{1,2}\.\d{4}\b/g,'').replace(/\b(?:um\s+)?\d{1,2}(?::\d{2})?\s*uhr\b/gi,'').replace(/\s+/g,' ').trim().replace(/^(für|am|ein|eine|den)\s+/i,'').trim();
+ if(!title)title=kind==='event'?'Neuer Termin':'Neue Aufgabe';
+ return {kind,title,date:localDate(date),time:time?String(time[1]).padStart(2,'0')+':'+(time[2]||'00'):''};
+}
+function yaneDraftOpen(d){
+ closeYane();openForm(d.kind);
+ const modal=document.getElementById('modal'),form=modal&&modal.querySelector('form');if(!form)return;
+ const title=form.querySelector('[name="title"]'),date=form.querySelector('[name="date"]'),start=form.querySelector('[name="start"]');
+ if(title)title.value=d.title;if(date)date.value=d.date;if(start&&d.time)start.value=d.time;const end=form.querySelector('[name="end"]');if(end&&d.end)end.value=d.end;
+ const heading=modal.querySelector('.toolbar h2');if(heading)heading.textContent='Yane-Vorschlag prüfen';
+ const info=document.createElement('div');info.className='yane-form-notice';info.textContent='✦ Yane hat diesen Entwurf vorbereitet. Bitte Titel, Datum und Uhrzeit kontrollieren. Erst „Speichern“ übernimmt ihn.';
+ form.insertBefore(info,form.firstChild);
+}
+function yaneDraftShow(d){
+ const box=document.getElementById('yaneMessages');if(!box)return;
+ const card=document.createElement('div');card.className='yane-draft-card';
+ const label=document.createElement('strong');label.textContent='✦ '+(d.kind==='event'?'Terminvorschlag':'Aufgabenvorschlag');
+ const detail=document.createElement('p');detail.textContent=d.title+'\n'+fmt(d.date)+(d.time?' · '+d.time+' Uhr':'');
+ const btn=document.createElement('button');btn.type='button';btn.textContent='Vorschlag prüfen';btn.onclick=()=>yaneDraftOpen(d);
+ card.append(label,detail,btn);box.appendChild(card);box.scrollTop=box.scrollHeight;
+}
+function yaneMultiPlanner(){
+ const box=document.getElementById('yaneMessages');if(!box)return;
+ const pending=tasks.filter(t=>!t.done).sort((a,b)=>String(a.date||'9999-12-31').localeCompare(String(b.date||'9999-12-31'))).slice(0,12);
+ const wrap=document.createElement('div');wrap.className='yane-task-planner yane-multi-planner';
+ const head=document.createElement('strong');head.textContent='✦ Mehrere Aufgaben für die Woche';wrap.appendChild(head);
+ if(!pending.length){const p=document.createElement('p');p.textContent='Keine offenen Aufgaben vorhanden.';wrap.appendChild(p);box.appendChild(wrap);return}
+ const help=document.createElement('small');help.textContent='Wähle bis zu 5 Aufgaben. Aufgaben mit Fälligkeitsdatum werden zuerst eingeplant, möglichst rechtzeitig. Nichts wird automatisch gespeichert.';wrap.appendChild(help);
+ const choices=document.createElement('div');choices.className='yane-multi-choices';
+ pending.forEach(t=>{const row=document.createElement('label');const check=document.createElement('input');check.type='checkbox';check.value=String(t.id);const name=document.createElement('span');name.textContent=(t.title||t.name||'Aufgabe')+(t.date?' · fällig '+fmt(t.date):'');check.addEventListener('change',()=>{const checked=[...choices.querySelectorAll('input:checked')];if(checked.length>5){check.checked=false;const msg=wrap.querySelector('.yane-multi-limit');if(msg)msg.textContent='Bitte höchstens fünf Aufgaben auswählen.'}});row.append(check,name);choices.appendChild(row)});wrap.appendChild(choices);const limit=document.createElement('small');limit.className='yane-multi-limit';wrap.appendChild(limit);
+ const duration=document.createElement('select');duration.setAttribute('aria-label','Dauer pro Aufgabe');
+ [[30,'30 Minuten je Aufgabe'],[60,'60 Minuten je Aufgabe'],[90,'90 Minuten je Aufgabe'],[120,'120 Minuten je Aufgabe']].forEach(([n,label])=>{const option=document.createElement('option');option.value=String(n);option.textContent=label;duration.appendChild(option)});
+ const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
+ [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=label;preference.appendChild(opt)});
+ let prefs={};try{prefs=JSON.parse(storageGet('yaryane_preview_yane_planner_prefs_v1')||'{}')||{}}catch(e){}
+ if(['30','60','90','120'].includes(String(prefs.duration)))duration.value=String(prefs.duration);
+ if(['all','morning','afternoon','evening'].includes(prefs.time))preference.value=prefs.time;
+ const go=document.createElement('button');go.type='button';go.textContent='Wochenvorschläge erstellen';
+ const results=document.createElement('div');results.className='yane-multi-results';
+ go.onclick=()=>{
+  results.replaceChildren();
+  const selected=[...choices.querySelectorAll('input:checked')].slice(0,5).map(c=>pending.find(t=>String(t.id)===c.value)).filter(Boolean);
+  if(!selected.length){results.textContent='Bitte wähle mindestens eine Aufgabe aus.';return}
+  try{localStorage.setItem('yaryane_preview_yane_planner_prefs_v1',JSON.stringify({duration:duration.value,time:preference.value}))}catch(e){}
+  const bounds=preference.value==='morning'?[480,720]:preference.value==='afternoon'?[720,1020]:preference.value==='evening'?[1020,1200]:[480,1200];
+  const needed=Number(duration.value),clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0'),intervals=[];
+  for(let i=0;i<7;i++){const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+i);yaneFreeSlots('Freie Zeitfenster '+localDate(date));for(const slot of yaneLastSlots){const [a,b]=slot.start.split(':').map(Number),[c,d]=slot.end.split(':').map(Number);{const from=Math.max(a*60+b,bounds[0]),to=Math.min(c*60+d,bounds[1]);if(to-from>=needed)intervals.push({date:slot.date,from,to})}}}
+  yaneLastSlots=[];
+  let count=0;
+  selected.sort((a,b)=>String(a.date||'9999-12-31').localeCompare(String(b.date||'9999-12-31'))).forEach(t=>{
+   const idx=intervals.findIndex(x=>x.to-x.from>=needed&&(!t.date||x.date<=t.date));
+   if(idx<0){const note=document.createElement('p');note.textContent='Kein passender Platz'+(t.date?' bis zum Fälligkeitsdatum':'')+' für: '+(t.title||t.name||'Aufgabe');results.appendChild(note);return}
+   const slot=intervals[idx],start=clock(slot.from),end=clock(slot.from+needed);slot.from+=needed;if(slot.to-slot.from<30)intervals.splice(idx,1);
+   const card=document.createElement('div');card.className='yane-multi-item';
+   const title=document.createElement('strong');title.textContent=t.title||t.name||'Aufgabe';
+   const info=document.createElement('small');info.textContent=fmt(slot.date)+' · '+start+'–'+end+' Uhr'+(t.date?' · fällig '+fmt(t.date):'');
+   const btn=document.createElement('button');btn.type='button';btn.textContent='Termin prüfen';btn.onclick=()=>{yaneLastDraft={kind:'event',title:t.title||t.name||'Aufgabe',date:slot.date,time:start,end};yaneDraftOpen(yaneLastDraft)};
+   card.append(title,info,btn);results.appendChild(card);count++;
+  });
+  const note=document.createElement('small');note.textContent=count+' von '+selected.length+' Aufgaben vorgeschlagen. Bitte jeden Termin einzeln prüfen und speichern.';results.prepend(note);
+ };
+ wrap.append(duration,preference,go,results);box.appendChild(wrap);box.scrollTop=box.scrollHeight;
+}
+function yaneTaskPlanner(weekMode=false){
+ const box=document.getElementById('yaneMessages');if(!box)return;
+ const pending=tasks.filter(t=>!t.done).sort((a,b)=>(a.priority==='high'?-1:0)-(b.priority==='high'?-1:0)||String(a.date||'9999').localeCompare(String(b.date||'9999'))).slice(0,8);
+ const wrap=document.createElement('div');wrap.className='yane-task-planner';
+ const head=document.createElement('strong');head.textContent=weekMode?'Aufgabe in den nächsten 7 Tagen planen':'Aufgabe für heute einplanen';wrap.appendChild(head);
+ if(!pending.length){const msg=document.createElement('p');msg.textContent='Du hast aktuell keine offenen Aufgaben.';wrap.appendChild(msg)}
+ else{
+ const select=document.createElement('select');select.setAttribute('aria-label','Aufgabe auswählen');
+ pending.forEach(t=>{const option=document.createElement('option');option.value=String(t.id);option.textContent=t.title||t.name||'Aufgabe';select.appendChild(option)});
+ const duration=document.createElement('select');duration.setAttribute('aria-label','Dauer auswählen');
+ [[30,'30 Minuten'],[60,'60 Minuten'],[90,'90 Minuten'],[120,'2 Stunden']].forEach(([n,label])=>{const opt=document.createElement('option');opt.value=String(n);opt.textContent=label;duration.appendChild(opt)});
+ const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
+ [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;preference.appendChild(option)});
+ const settingsKey='yaryane_preview_yane_planner_prefs_v1';
+ let savedPrefs={};try{savedPrefs=JSON.parse(storageGet(settingsKey)||'{}')||{}}catch(e){}
+ if(['30','60','90','120'].includes(String(savedPrefs.duration)))duration.value=String(savedPrefs.duration);
+ if(['all','morning','afternoon','evening'].includes(savedPrefs.time))preference.value=savedPrefs.time;
+ const savePrefs=()=>{try{localStorage.setItem(settingsKey,JSON.stringify({duration:duration.value,time:preference.value}))}catch(e){}};
+ duration.addEventListener('change',savePrefs);preference.addEventListener('change',savePrefs);
+ const go=document.createElement('button');go.type='button';go.textContent='Freie Zeiten anzeigen';
+ go.onclick=()=>{
+ const task=pending.find(t=>String(t.id)===select.value);if(!task)return;savePrefs();
+ const needed=Number(duration.value),available=[],preferred=preference.value;
+ const bounds=preferred==='morning'?[480,720]:preferred==='afternoon'?[720,1020]:preferred==='evening'?[1020,1200]:[480,1200];
+ const clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+ const days=weekMode?7:1;
+ for(let day=0;day<days;day++){
+  const date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()+day);
+  const query='Freie Zeitfenster '+localDate(date);
+  yaneFreeSlots(query);
+  available.push(...yaneLastSlots.map(x=>{const [h1,m1]=x.start.split(':').map(Number),[h2,m2]=x.end.split(':').map(Number);const from=Math.max(h1*60+m1,bounds[0]),to=Math.min(h2*60+m2,bounds[1]);return {...x,start:clock(from),end:clock(to),duration:to-from}}).filter(x=>x.duration>=needed).slice(0,2));
+ }
+ yaneLastSlots=[];
+ const previous=wrap.querySelector('.yane-task-results');if(previous)previous.remove();
+ const results=document.createElement('div');results.className='yane-task-results';
+ if(weekMode){
+  results.classList.add('yane-week-grid');
+  const weekdays=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const daysSummary=[];
+  for(let day=0;day<7;day++){
+   const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+day);
+   const iso=localDate(d),slots=available.filter(x=>x.date===iso);
+   const card=document.createElement('div');card.className='yane-week-card';
+   const status=slots.length>=2?'good':slots.length===1?'limited':'busy';card.classList.add('yane-week-'+status);
+   const heading=document.createElement('div');heading.className='yane-week-day';heading.textContent=weekdays[d.getDay()]+' · '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.';
+   card.appendChild(heading);
+   const count=events.filter(e=>e.date===iso).length,shift=shifts.find(x=>x.date===iso);
+   daysSummary.push({date:iso,label:weekdays[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.',slots:slots.length,events:count});
+   const meta=document.createElement('small');meta.textContent=count+' Termin'+(count===1?'':'e')+(shift?' · Dienstplan':'');card.appendChild(meta);
+   const state=document.createElement('span');state.className='yane-week-status';state.textContent=status==='good'?'● Gute Auswahl':status==='limited'?'● Wenig Auswahl':'● Kein passendes Zeitfenster';card.appendChild(state);
+   if(!slots.length){const empty=document.createElement('span');empty.className='yane-week-empty';empty.textContent='Kein passendes Fenster';card.appendChild(empty)}
+   slots.forEach(slot=>{
+    const btn=document.createElement('button');btn.type='button';
+    const [h,m]=slot.start.split(':').map(Number),finish=h*60+m+needed,end=String(Math.floor(finish/60)).padStart(2,'0')+':'+String(finish%60).padStart(2,'0');
+    btn.textContent=slot.start+'–'+end;
+    btn.onclick=()=>{yaneLastDraft={kind:'event',title:task.title||task.name||'Aufgabe erledigen',date:slot.date,time:slot.start,end};yaneDraftOpen(yaneLastDraft)};
+    card.appendChild(btn);
+   });
+   results.appendChild(card);
+  }
+  const summary=document.createElement('div');summary.className='yane-week-summary';
+  const suitable=daysSummary.filter(d=>d.slots>0).sort((a,b)=>b.slots-a.slots||a.events-b.events||a.date.localeCompare(b.date));
+  const title=document.createElement('strong');title.textContent='✦ Deine Wochenübersicht';summary.appendChild(title);
+  const text=document.createElement('p');text.textContent=suitable.length?'Am besten geeignet: '+suitable[0].label+' · '+suitable[0].slots+' passende Zeitfenster. Insgesamt '+suitable.length+' von 7 Tagen mit mindestens einem Vorschlag.':'Für die gewählte Dauer wurde in den nächsten sieben Tagen kein passendes Zeitfenster erkannt.';summary.appendChild(text);
+  if(suitable.length){
+   const bestDay=suitable[0],bestSlot=available.filter(x=>x.date===bestDay.date).sort((a,b)=>a.start.localeCompare(b.start))[0];
+   if(bestSlot){const [h,m]=bestSlot.start.split(':').map(Number),finish=h*60+m+needed,end=String(Math.floor(finish/60)).padStart(2,'0')+':'+String(finish%60).padStart(2,'0');
+    const recommended=document.createElement('button');recommended.type='button';recommended.className='yane-best-slot';recommended.textContent='✦ Vorschlag übernehmen · '+bestDay.label+' '+bestSlot.start+'–'+end;
+    recommended.onclick=()=>{yaneLastDraft={kind:'event',title:task.title||task.name||'Aufgabe erledigen',date:bestSlot.date,time:bestSlot.start,end};yaneDraftOpen(yaneLastDraft)};
+    summary.appendChild(recommended);
+   }
+  }
+  const hint=document.createElement('small');hint.textContent='Die Einschätzung basiert auf deinen eingetragenen Uhrzeiten, der Dauer und deiner bevorzugten Tageszeit.';summary.appendChild(hint);
+  results.insertBefore(summary,results.firstChild);
+ }else if(!available.length){results.textContent='Kein passendes freies Zeitfenster gefunden. Versuche eine kürzere Dauer.'}
+ else available.slice(0,3).forEach(slot=>{const btn=document.createElement('button');btn.type='button';const [h,m]=slot.start.split(':').map(Number),finish=h*60+m+needed,end=String(Math.floor(finish/60)).padStart(2,'0')+':'+String(finish%60).padStart(2,'0');btn.textContent=slot.start+'–'+end+' Uhr';btn.onclick=()=>{yaneLastDraft={kind:'event',title:task.title||task.name||'Aufgabe erledigen',date:slot.date,time:slot.start,end};yaneDraftOpen(yaneLastDraft)};results.appendChild(btn)});
+ wrap.appendChild(results);
+ };
+ wrap.append(select,duration,preference,go);
+ }
+ box.appendChild(wrap);box.scrollTop=box.scrollHeight;
+}
+function yaneSlotButtons(){
+ const box=document.getElementById('yaneMessages');if(!box||!yaneLastSlots.length)return;
+ const wrap=document.createElement('div');wrap.className='yane-slot-options';
+ const label=document.createElement('small');label.textContent='Termin für ein Zeitfenster vorbereiten:';wrap.appendChild(label);
+ yaneLastSlots.forEach(slot=>{const btn=document.createElement('button');btn.type='button';btn.textContent=slot.start+' – '+slot.end;btn.onclick=()=>{yaneLastDraft={kind:'event',title:'Neuer Termin',date:slot.date,time:slot.start,end:slot.end};yaneDraftOpen(yaneLastDraft)};wrap.appendChild(btn)});
+ box.appendChild(wrap);box.scrollTop=box.scrollHeight;
+}
+function yaneAsk(q){q=String(q||'').trim().slice(0,350);if(!q)return;const isMultiPlanner=/mehrere aufgaben|aufgaben verteilen|wochenaufgaben|mehrfachplanung/i.test(q);const isWeekPlanner=/wochenplanung|wochenplan|aufgaben.*(woche|7 tage)|woche.*aufgaben/i.test(q);const isPlanner=isWeekPlanner||/aufgabe(n)? (einplanen|planen)|aufgabenplanung|aufgabe in kalender/i.test(q);const isSlotQuestion=/frei(e|en|es)? (zeit|slot|fenster)|zeitfenster|wann (habe|hab|ist) (ich )?zeit|wann passt|lücke(n)? im kalender/i.test(q);if(!isSlotQuestion)yaneLastSlots=[];const draft=yaneDraft(q);yaneLastDraft=draft&&!draft.error?draft:null;yaneHistory.push({role:'user',text:q},{role:'bot',text:draft?(draft.error||'Ich habe einen Entwurf vorbereitet. Bitte prüfe die Angaben, bevor du ihn speicherst. ✨'):yaneReply(q)});if(yaneHistory.length>24)yaneHistory.splice(0,yaneHistory.length-24);yaneDraw();if(draft&&!draft.error)yaneDraftShow(draft);else if(isMultiPlanner)yaneMultiPlanner();else if(isPlanner)yaneTaskPlanner(isWeekPlanner);else if(isSlotQuestion)yaneSlotButtons();const input=document.getElementById('yaneInput');if(input)input.value=''}
+function yaneWelcome(){
+ const now=new Date(),hour=now.getHours(),greeting=hour<11?'Guten Morgen':hour<18?'Guten Tag':'Guten Abend',today=localDate(now);
+ const todays=events.filter(e=>e.date===today),active=tasks.filter(t=>!t.done),due=active.filter(t=>t.date&&t.date<=today),shift=shifts.find(x=>x.date===today);
+ const shiftNames={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst',free:'Frei',off:'Frei',vacation:'Urlaub',sick:'Krank'};
+ const panel=document.createElement('div');panel.className='yane-welcome';const profileName=(storageGet('yaryane_preview_profile_name_v1')||'').trim().slice(0,40);
+ const heading=document.createElement('div');heading.className='yane-welcome-heading';heading.textContent=greeting+(profileName?', '+profileName:'')+' ✨';
+ const intro=document.createElement('p');intro.textContent='Hier ist dein Überblick für heute.';
+ const stats=document.createElement('div');stats.className='yane-welcome-stats';
+ [[String(todays.length),'Termine'],[String(active.length),'Offene Aufgaben'],[String(due.length),'Heute fällig']].forEach(([n,label])=>{const item=document.createElement('div');const strong=document.createElement('strong');strong.textContent=n;const small=document.createElement('small');small.textContent=label;item.append(strong,small);stats.appendChild(item)});
+ panel.append(heading,intro,stats);
+ const upcoming=events.filter(e=>e.date>=today).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.start||'').localeCompare(String(b.start||''))).slice(0,3);
+ if(upcoming.length){const section=document.createElement('div');section.className='yane-upcoming';const label=document.createElement('div');label.className='yane-upcoming-label';label.textContent='Als Nächstes';section.appendChild(label);upcoming.forEach(e=>{const item=document.createElement('div');item.className='yane-upcoming-item';const when=document.createElement('span');when.textContent=fmt(e.date)+(e.start?' · '+e.start:'');const title=document.createElement('strong');title.textContent=e.name||'Termin';item.append(when,title);section.appendChild(item)});panel.appendChild(section)}
+ if(shift){const line=document.createElement('p');line.className='yane-welcome-shift';line.textContent='▣ Dienstplan: '+(shiftNames[shift.type]||shift.type||'Eintrag')+(shift.start?' · '+shift.start+(shift.end?'–'+shift.end:''):'');panel.appendChild(line)}
+ const actions=document.createElement('div');actions.className='yane-welcome-actions';
+ [['Tagesideen','Meine Tagesideen'],['Freie Zeit','Freie Zeitfenster heute'],['Aufgabe planen','Aufgabe einplanen'],['Wochenplan','Wochenplanung für Aufgaben'],['Aufgaben verteilen','Mehrere Aufgaben verteilen']].forEach(([label,q])=>{const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.onclick=()=>yaneAsk(q);actions.appendChild(btn)});
+ panel.appendChild(actions);return panel;
+}
+function openYane(){document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove());const overlay=document.getElementById('yaneOverlay');if(!overlay)return;if(!overlay.hidden)return;if(!yaneHistory.length)yaneHistory.push({role:'bot',text:'Ich bin Yane ✦ und helfe dir bei Terminen, Aufgaben und deinem Dienstplan. Was möchtest du wissen?'});overlay.hidden=false;overlay.style.display='flex';overlay.innerHTML='<section class="yane-panel" role="dialog" aria-modal="true" aria-label="Yane Assistent"><div class="yane-head"><div class="yane-logo">✦</div><div class="yane-head-copy"><strong>Yane</strong><small>Dein lokaler Yaryane-Assistent</small></div><button class="yane-x" type="button" aria-label="Schließen" onclick="closeYane()">×</button></div><div class="yane-messages" id="yaneMessages"></div><div class="yane-quick"><button onclick="yaneAsk(\'Was steht heute an?\')">Heute ✨</button><button onclick="yaneAsk(\'Meine Tagesideen\')">Tagesideen</button><button onclick="yaneAsk(\'Wochenplanung für Aufgaben\')">Wochenplan</button><button onclick="yaneAsk(\'Meine nächsten Termine\')">Termine</button><button onclick="yaneAsk(\'Meine Aufgaben\')">Aufgaben</button><button onclick="yaneAsk(\'Mein Dienstplan\')">Dienstplan</button><button onclick="yaneAsk(\'Freie Zeitfenster morgen\')">Freie Zeit</button><button onclick="yaneAsk(\'Wie sichere ich meine Daten?\')">App-Hilfe</button></div><form class="yane-compose" onsubmit="event.preventDefault();yaneAsk(document.getElementById(\'yaneInput\').value)"><input id="yaneInput" maxlength="350" placeholder="Frag Yane etwas …" autocomplete="off" aria-label="Nachricht an Yane"><button type="submit" aria-label="Senden">↑</button></form><div class="yane-foot">Lokal auf deinem Gerät · Noch keine externe KI</div></section>';overlay.onclick=e=>{if(e.target===overlay)closeYane()};yaneDraw();if(yaneHistory.length<=1){const messages=document.getElementById('yaneMessages');if(messages)messages.prepend(yaneWelcome())}if(yaneLastDraft)yaneDraftShow(yaneLastDraft);else if(yaneLastSlots.length)yaneSlotButtons()}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(document.getElementById('yaneOverlay')&&!document.getElementById('yaneOverlay').hidden)closeYane();document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove())}});
+function closeYane(){const overlay=document.getElementById('yaneOverlay');if(overlay){overlay.hidden=true;overlay.style.display='none';overlay.innerHTML=''}}
+function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button type="button" aria-label="'+t+'" '+(page===id||page==='notes'&&id==='more'?'aria-current="page" ':'')+'class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
 function head(title,plus){return '<div class="toolbar"><h2>'+title+'</h2><div class="actions">'+(plus?'<button class="add" aria-label="Hinzufügen" onclick="openForm(\''+plus+'\')">+</button>':'')+'</div></div>'}
-function eventList(date){let e=events.filter(x=>x.date===date).sort((a,b)=>(a.start||'').localeCompare(b.start||''));return e.length?e.map(x=>'<div class="glass item stripe" style="border-left-color:'+(x.kind==='work'?'#0c86ff':x.kind==='free'?'#2dc49b':'#fa659c')+'"><span class="time">'+esc(x.start||'Ganztägig')+'</span><span class="iconbox">'+(x.kind==='work'?'💼':x.kind==='free'?'🌿':'📅')+'</span><div class="details"><strong>'+esc(x.name)+'</strong><small>'+esc(x.notes||x.end||'Termin')+'</small></div><button class="dots" onclick="openForm(\'event\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Noch keine Termine für diesen Tag. ✨</div>'}
-function home(){let today=localDate(new Date());return '<div class="top"><div><div class="brand">🪷 Yary<span>ane</span> ✦</div><div class="subtitle">Dein Kalender. Dein Leben.</div></div><button class="avatar" onclick="navigate(\'more\')">●</button></div><section class="glass hero"><h1>Yaryane ☾</h1><p>Dein Kalender. Dein Leben.</p><button onclick="openForm(\'event\')">Neuen Termin hinzufügen… <b>+</b></button></section><div class="sectionhead"><h2>Heute</h2><button onclick="navigate(\'calendar\')">Alle anzeigen ›</button></div><div class="muted">'+fmt(today)+'</div>'+eventList(today)+'<div class="sectionhead"><h2>Deine Aufgaben</h2><button onclick="navigate(\'tasks\')">Alle anzeigen ›</button></div>'+taskList(tasks.filter(x=>!x.done).slice(0,3))+'<div class="sectionhead"><h2>Schnellzugriff</h2></div><div class="notes"><button class="glass note" onclick="navigate(\'shifts\')"><strong>▣ Dienstplan</strong><p>Deine Schichten im Blick</p></button><button class="glass note" onclick="navigate(\'notes\')"><strong>▤ Notizen</strong><p>Ideen und Listen festhalten</p></button></div>'}
-function calGrid(forShifts){let first=new Date(year,month,1),offset=(first.getDay()+6)%7,last=new Date(year,month+1,0).getDate(),total=Math.ceil((offset+last)/7)*7,out='<div class="glass calendar"><div class="weekdays">'+days.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="days">';for(let i=0;i<total;i++){let d=new Date(year,month,i-offset+1),date=localDate(d),sh=shifts.find(x=>x.date===date),ev=events.some(x=>x.date===date),other=d.getMonth()!==month;out+='<button class="day '+(other?'other ':'')+(selected===date?'selected ':'')+(forShifts&&sh?'shift '+sh.type:'')+'" onclick="chooseDate(\''+date+'\')">'+d.getDate()+(forShifts&&sh?'<i style="background:'+types[sh.type][2]+'"></i>':ev?'<i></i>':'')+'</button>'}return out+'</div></div>'}
+function eventList(date){let e=events.filter(x=>x.date===date).sort((a,b)=>(a.start||'').localeCompare(b.start||''));return e.length?e.map(x=>'<div class="glass item stripe event-readable" tabindex="0" role="button" aria-label="Termindetails öffnen: '+esc(x.name)+'" onkeydown="if((event.keyCode===13||event.keyCode===32)&&event.target===this){event.preventDefault();showEventDetails(this.dataset.id)}" onclick="showEventDetails(this.dataset.id)" data-id="'+esc(x.id)+'" style="border-left-color:'+(x.kind==='work'?'#0c86ff':x.kind==='free'?'#2dc49b':'#fa659c')+'"><span class="time">'+esc(x.start||'Ganztägig')+'</span><span class="iconbox">'+(x.kind==='work'?'💼':x.kind==='free'?'🌿':'📅')+'</span><div class="details"><strong>'+esc(x.name)+'</strong><small>'+esc(x.notes||x.end||'Termin')+'</small></div><button class="dots" type="button" aria-label="Termin bearbeiten" onclick="event.stopPropagation();openForm(\'event\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Noch keine Termine für diesen Tag. ✨</div>'}
+function home(){let today=localDate(new Date());return '<div class="top"><div><div class="brand">🪷 Yary<span>ane</span> ✦</div><div class="subtitle">Dein Kalender. Dein Leben.</div></div><button class="avatar home-profile-avatar" type="button" aria-label="Mein Profil öffnen" onclick="navigate(\'more\')">'+(storageGet('yaryane_preview_profile_photo_v1')?'<img src="'+esc(storageGet('yaryane_preview_profile_photo_v1'))+'" alt="">':'<span>'+esc((storageGet('yaryane_preview_profile_name_v1')||'Y').charAt(0).toLocaleUpperCase('de'))+'</span>')+'</button></div><section class="glass hero"><h1>Yaryane ☾</h1><p>Dein Kalender. Dein Leben.</p><button onclick="openForm(\'event\')">Neuen Termin hinzufügen… <b>+</b></button></section><div class="sectionhead"><h2>Heute</h2><button onclick="navigate(\'calendar\')">Alle anzeigen ›</button></div><div class="muted">'+fmt(today)+'</div>'+eventList(today)+'<div class="sectionhead"><h2>Deine Aufgaben</h2><button onclick="navigate(\'tasks\')">Alle anzeigen ›</button></div>'+taskList(tasks.filter(x=>!x.done).slice(0,3))+'<div class="sectionhead"><h2>Schnellzugriff</h2></div><div class="notes"><button class="glass note" onclick="navigate(\'shifts\')"><strong>▣ Dienstplan</strong><p>Deine Schichten im Blick</p></button><button class="glass note" onclick="navigate(\'notes\')"><strong>▤ Notizen</strong><p>Ideen und Listen festhalten</p></button></div>'}
+function calGrid(forShifts){let first=new Date(year,month,1),offset=(first.getDay()+6)%7,last=new Date(year,month+1,0).getDate(),total=Math.ceil((offset+last)/7)*7,out='<div class="glass calendar"><div class="weekdays">'+days.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="days">';for(let i=0;i<total;i++){let d=new Date(year,month,i-offset+1),date=localDate(d),sh=shifts.find(x=>x.date===date),ev=events.filter(x=>x.date===date),other=d.getMonth()!==month,today=date===localDate(new Date());out+='<button aria-label="'+fmt(date)+(ev.length?', '+ev.length+' Termine':'')+'" class="day '+(other?'other ':'')+(selected===date?'selected ':'')+(today?'today-mark ':'')+(forShifts&&sh?'shift '+sh.type:'')+'" onclick="chooseDate(\''+date+'\')">'+d.getDate()+(forShifts&&sh?'<i style="background:'+types[sh.type][2]+'"></i>':ev.length?'<i style="background:'+(ev.some(x=>x.kind==='work')?'#268aff':'#fa638e')+'"></i>':'')+'</button>'}return out+'</div></div>'}
 function monthbar(){return '<div class="toolbar"><button class="round" onclick="moveMonth(-1)">‹</button><h2>'+new Date(year,month,1).toLocaleDateString('de-DE',{month:'long',year:'numeric'})+'</h2><button class="round" onclick="moveMonth(1)">›</button></div>'}
 function moveMonth(n){let d=new Date(year,month+n,1);month=d.getMonth();year=d.getFullYear();const day=Math.min(Number(selected.slice(-2))||1,new Date(year,month+1,0).getDate());selected=localDate(new Date(year,month,day));render()}function chooseDate(d){selected=d;let a=d.split('-');year=+a[0];month=+a[1]-1;render()}
-function calendar(){return '<div class="top"><div class="brand">Kalender</div><button class="add" onclick="openForm(\'event\')">+</button></div>'+monthbar()+calGrid(false)+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'event\')">+ Termin</button></div>'+eventList(selected)}
-function taskList(a){return a.length?a.map(x=>'<div class="glass item '+(x.done?'done':'')+'"><input class="check" type="checkbox" '+(x.done?'checked':'')+' onchange="toggleTask(\''+esc(x.id)+'\')"><span class="iconbox">'+esc(x.icon||'📌')+'</span><div class="details"><strong>'+esc(x.title)+'</strong><small>'+esc(x.date?fmt(x.date):'Ohne Datum')+'</small></div><button class="dots" onclick="openForm(\'task\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Hier ist noch alles frei. ✨</div>'}
-function tasksPage(){let a=tasks.filter(x=>filter==='Erledigt'?x.done:filter==='Heute'?x.date===localDate(new Date())&&!x.done:filter==='Diese Woche'?x.date&&Math.abs(new Date(x.date+'T12:00:00')-new Date())<604800000&&!x.done:!x.done);return '<div class="top"><div class="brand">Aufgaben</div><button class="add" onclick="openForm(\'task\')">+</button></div><div class="pillrow">'+['Alle','Heute','Diese Woche','Erledigt'].map(x=>'<button class="pill '+(filter===x?'active':'')+'" onclick="filter=\''+x+'\';render()">'+x+'</button>').join('')+'</div>'+taskList(a)}
-function shiftsPage(){let sh=shifts.find(x=>x.date===selected);return '<div class="top"><div class="brand">Dienstplan</div><button class="add" onclick="openForm(\'shift\')">+</button></div>'+monthbar()+'<div class="pillrow"><button class="pill '+(shiftMode==='Monat'?'active':'')+'" onclick="shiftMode=\'Monat\';render()">Monat</button><button class="pill '+(shiftMode==='Liste'?'active':'')+'" onclick="shiftMode=\'Liste\';render()">Liste</button></div>'+(shiftMode==='Monat'?calGrid(true):shifts.filter(x=>x.date.startsWith(year+'-'+String(month+1).padStart(2,'0'))).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>'<button class="glass setting" onclick="openForm(\'shift\',\''+x.id+'\')"><span class="tag" style="background:'+types[x.type][2]+'55">'+types[x.type][0]+'</span><span>'+fmt(x.date)+' · '+types[x.type][1]+'</span><span class="arrow">›</span></button>').join('')||'<div class="glass empty">Noch keine Schichten eingetragen.</div>')+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'shift\',\''+(sh?sh.id:'')+'\')">'+(sh?'Bearbeiten':'+ Schicht')+'</button></div>'+(sh?'<div class="glass item"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+'</small></div></div>':'<div class="glass empty">Für diesen Tag ist keine Schicht eingetragen.</div>')+'<div class="glass" style="padding:14px;margin-top:15px"><strong>Schichtfarben</strong><div class="legend">'+Object.entries(types).map(([k,v])=>'<div><span class="tag" style="background:'+v[2]+'55">'+v[0]+'</span>'+v[1]+'</div>').join('')+'</div></div>'}
-function notesPage(){return '<div class="top"><div class="brand">Notizen</div><button class="add" onclick="openForm(\'note\')">+</button></div><div class="notes">'+notes.map(x=>'<button class="glass note" onclick="openForm(\'note\',\''+esc(x.id)+'\')"><strong>'+esc(x.icon||'📝')+' '+esc(x.title)+'</strong><p>'+esc(x.body.slice(0,120))+'</p><small>'+fmt(x.date)+'</small></button>').join('')+'</div>'+(notes.length?'':'<div class="glass empty">Dein Platz für Ideen, Listen und Erinnerungen. ✨</div>')}
-function morePage(){return '<div class="top"><div class="brand">Einstellungen</div></div><button class="glass setting" onclick="alert(\'Yaryane – Dein persönlicher Kalender\')"><span>👤</span><span><strong>Yaryane</strong><small class="muted" style="display:block">Dein persönlicher Kalender</small></span><span class="arrow">›</span></button>'+[['▤','Notizen','notes'],['▦','Kalender','calendar'],['✓','Aufgaben','tasks'],['▣','Dienstplan','shifts']].map(([i,t,p])=>'<button class="glass setting" onclick="navigate(\''+p+'\')"><span>'+i+'</span><span>'+t+'</span><span class="arrow">›</span></button>').join('')+'<button class="glass setting" onclick="setTheme(theme===\'dark\'?\'light\':\'dark\');render()"><span>◐</span><span>Design</span><span class="muted">'+(theme==='dark'?'Dunkel':'Hell')+' ↔</span></button><button class="glass setting" onclick="exportData()"><span>⇩</span><span>Datensicherung exportieren</span><span class="arrow">›</span></button><label class="glass setting" style="cursor:pointer"><span>⇧</span><span>Datensicherung importieren</span><input type="file" accept="application/json" style="display:none" onchange="importData(this)"></label><div class="muted" style="padding:15px">Alle Daten werden auf diesem Gerät im Browser gespeichert. Bitte regelmäßig sichern.</div>'}
-function render(){nav();document.getElementById('app').innerHTML=page==='home'?home():page==='calendar'?calendar():page==='tasks'?tasksPage():page==='shifts'?shiftsPage():page==='notes'?notesPage():morePage()}
-function openForm(type,id){yaryaneFormReturnFocus=document.activeElement;document.getElementById('app').inert=true;document.getElementById('nav').inert=true;document.body.classList.add('yaryane-modal-open');let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label>':'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="entryFormTitle" onclick="event.stopPropagation()"><div class="toolbar"><h2 id="entryFormTitle">' +(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>';const firstInput=document.querySelector('#modal input:not([type=hidden]),#modal select');firstInput?.focus()}
-function exportData(){try{let data=JSON.stringify(backupPayload(),null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung-'+localDate(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);try{localStorage.setItem('yaryane_preview_last_export_v1',new Date().toISOString())}catch{}alert('Sicherungsdatei wurde zum Download bereitgestellt. Bitte in Dateien speichern und aufbewahren.')}catch(e){alert('Sicherung konnte nicht erstellt werden: '+e.message)}}
+function calendar(){let today=localDate(new Date()),sh=shifts.find(x=>x.date===selected),count=events.filter(x=>x.date.startsWith(year+'-'+String(month+1).padStart(2,'0'))).length;return '<div class="top"><div><div class="brand">Kalender</div><div class="subtitle">Alle Termine auf einen Blick</div></div><button class="add" onclick="openForm(\'event\')">+</button></div>'+monthbar()+'<div class="toolbar"><span class="muted">'+count+' Termine in diesem Monat</span><button class="textbtn" onclick="chooseDate(\''+today+'\')">Heute anzeigen</button></div>'+calGrid(false)+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'event\')">+ Termin</button></div>'+(sh?'<div class="glass item" style="margin-bottom:8px"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+'</small></div><button class="textbtn" onclick="navigate(\'shifts\')">Dienstplan ›</button></div>':'')+eventList(selected)}
+function taskPriority(x){return x.priority==='high'?'Hoch':x.priority==='low'?'Niedrig':'Normal'}
+function taskList(a){let today=localDate(new Date());return a.length?a.map(x=>'<div class="glass item '+(x.done?'done':'')+'" style="border-left:3px solid '+(x.priority==='high'?'#f56c82':x.priority==='low'?'#38bf9a':'#458ff4')+'"><input aria-label="Aufgabe erledigen" class="check" type="checkbox" '+(x.done?'checked':'')+' onchange="toggleTask(\''+esc(x.id)+'\')"><span class="iconbox">'+esc(x.icon||'📌')+'</span><div class="details"><strong>'+esc(x.title)+'</strong><small>'+(x.date?fmt(x.date):'Ohne Datum')+(x.date&&!x.done&&x.date<today?' · Überfällig':'')+' · '+taskPriority(x)+(x.details?' · '+esc(x.details):'')+'</small></div><button aria-label="Aufgabe bearbeiten" class="dots" onclick="openForm(\'task\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Hier ist noch alles frei. ✨</div>'}
+function tasksPage(){let today=localDate(new Date()),weekEnd=new Date(today+'T12:00:00');weekEnd.setDate(weekEnd.getDate()+7);let end=localDate(weekEnd),a=tasks.filter(x=>filter==='Erledigt'?x.done:filter==='Heute'?!x.done&&x.date===today:filter==='Diese Woche'?!x.done&&x.date&&x.date>=today&&x.date<end:filter==='Überfällig'?!x.done&&x.date&&x.date<today:!x.done);a.sort((x,y)=>((x.date||'9999').localeCompare(y.date||'9999'))||(({high:0,normal:1,low:2}[x.priority||'normal'])-({high:0,normal:1,low:2}[y.priority||'normal'])));let open=tasks.filter(x=>!x.done).length,overdue=tasks.filter(x=>!x.done&&x.date&&x.date<today).length;return '<div class="top"><div><div class="brand">Aufgaben</div><div class="subtitle">Organisiert durch den Tag</div></div><button class="add" onclick="openForm(\'task\')">+</button></div><div class="glass" style="padding:15px;display:flex;justify-content:space-around;text-align:center"><div><strong style="font-size:23px">'+open+'</strong><div class="muted">Offen</div></div><div><strong style="font-size:23px">'+overdue+'</strong><div class="muted">Überfällig</div></div><div><strong style="font-size:23px">'+tasks.filter(x=>x.done).length+'</strong><div class="muted">Erledigt</div></div></div><div class="pillrow">'+['Alle','Heute','Diese Woche','Überfällig','Erledigt'].map(x=>'<button class="pill '+(filter===x?'active':'')+'" onclick="filter=\''+x+'\';render()">'+x+'</button>').join('')+'</div>'+taskList(a)}
+function shiftHours(x){if(!x.start||!x.end||!['early','late','night'].includes(x.type))return 0;let [a,b]=x.start.split(':').map(Number),[c,d]=x.end.split(':').map(Number);let mins=(c*60+d)-(a*60+b);if(mins<0)mins+=1440;return Math.max(0,(mins-(Number(x.breakMinutes)||0))/60)}
+function shiftStats(){let prefix=year+'-'+String(month+1).padStart(2,'0'),arr=shifts.filter(x=>x.date.startsWith(prefix)),hours=arr.reduce((n,x)=>n+shiftHours(x),0);return '<div class="glass" style="padding:14px;margin:12px 0 17px"><div class="muted" style="margin-bottom:10px">Dein Monat im Überblick</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center"><div><strong style="font-size:21px">'+arr.filter(x=>['early','late','night'].includes(x.type)).length+'</strong><div class="muted">Dienste</div></div><div><strong style="font-size:21px">'+hours.toLocaleString('de-DE',{maximumFractionDigits:1})+' h</strong><div class="muted">Arbeitszeit</div></div><div><strong style="font-size:21px">'+arr.filter(x=>x.type==='free'||x.type==='vacation').length+'</strong><div class="muted">Frei / Urlaub</div></div></div></div>'}
+function shiftsPage(){let sh=shifts.find(x=>x.date===selected),prefix=year+'-'+String(month+1).padStart(2,'0'),monthShifts=shifts.filter(x=>x.date.startsWith(prefix)).sort((a,b)=>a.date.localeCompare(b.date));return '<div class="top"><div><div class="brand">Dienstplan</div><div class="subtitle">Deine Schichten auf einen Blick</div></div><button class="add" aria-label="Schicht hinzufügen" onclick="openForm(\'shift\')">+</button></div>'+monthbar()+shiftStats()+'<div class="pillrow"><button class="pill '+(shiftMode==='Monat'?'active':'')+'" onclick="shiftMode=\'Monat\';render()">Monat</button><button class="pill '+(shiftMode==='Liste'?'active':'')+'" onclick="shiftMode=\'Liste\';render()">Liste</button></div>'+(shiftMode==='Monat'?calGrid(true):monthShifts.map(x=>'<button class="glass setting" onclick="openForm(\'shift\',\''+x.id+'\')"><span class="tag" style="background:'+types[x.type][2]+'55">'+types[x.type][0]+'</span><span>'+fmt(x.date)+' · '+types[x.type][1]+'<small class="muted" style="display:block">'+esc(x.start||'')+(x.end?' – '+esc(x.end):'')+(shiftHours(x)?' · '+shiftHours(x).toLocaleString('de-DE',{maximumFractionDigits:1})+' h':'')+'</small></span><span class="arrow">›</span></button>').join('')||'<div class="glass empty">Noch keine Schichten eingetragen.</div>')+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'shift\',\''+(sh?sh.id:'')+'\')">'+(sh?'Bearbeiten':'+ Schicht')+'</button></div>'+(sh?'<div class="glass item"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+(shiftHours(sh)?' · '+shiftHours(sh).toLocaleString('de-DE',{maximumFractionDigits:1})+' h':'')+'</small></div></div>':'<div class="glass empty">Für diesen Tag ist keine Schicht eingetragen.</div>')+'<div class="glass" style="padding:14px;margin-top:15px"><strong>Schichtfarben</strong><div class="legend">'+Object.entries(types).map(([k,v])=>'<div><span class="tag" style="background:'+v[2]+'55">'+v[0]+'</span>'+v[1]+'</div>').join('')+'</div></div><p class="muted" style="padding:4px 8px">Arbeitszeit = Schichtdauer abzüglich Pause. Nachtdienste über Mitternacht werden berücksichtigt.</p>'}
+let noteSearch='',noteFilter='Alle';
+function noteLines(x){return String(x.body||'').split('\n')}
+function notesPage(){let query=noteSearch.trim().toLocaleLowerCase('de'),list=notes.filter(x=>(!query||(String(x.title||'')+' '+String(x.body||'')).toLocaleLowerCase('de').includes(query))&&(noteFilter==='Alle'||(noteFilter==='Angeheftet'?x.pinned:noteFilter==='Checklisten'?x.checklist:false)));list.sort((x,y)=>Number(!!y.pinned)-Number(!!x.pinned)||String(y.updated||y.date||'').localeCompare(String(x.updated||x.date||'')));return '<div class="top"><div><div class="brand">'+(window.yaryaneNotesFromMore?'<button type="button" class="yaryane-back" onclick="navigate(\'more\')" aria-label="Zurück zu Mehr">‹ <span>Mehr</span></button>':'')+'Notizen</div><div class="subtitle">Deine Ideen an einem Ort</div></div><button class="add" onclick="openForm(\'note\')">+</button></div><label class="field" style="margin:0 0 12px"><input aria-label="Notizen durchsuchen" placeholder="⌕ Notizen durchsuchen" value="'+esc(noteSearch)+'" oninput="noteSearch=this.value;renderNotesResults()" style="margin:0"></label><div class="pillrow" id="noteFilters">'+['Alle','Angeheftet','Checklisten'].map(x=>'<button class="pill '+(noteFilter===x?'active':'')+'" onclick="noteFilter=\''+x+'\';render()">'+x+'</button>').join('')+'</div><div id="noteResults">'+noteCards(list)+'</div>'}
+function noteCards(list){return '<div class="notes">'+list.map(x=>'<button class="glass note" style="border-top:3px solid '+({blue:'#398eff',violet:'#a080f3',pink:'#f47ea7',mint:'#45c8a5',amber:'#efbb57'}[x.color]||'#398eff')+'" onclick="openForm(\'note\',\''+esc(x.id)+'\')"><strong>'+(x.pinned?'📌 ':'')+esc(x.icon||'📝')+' '+esc(x.title||'Ohne Titel')+'</strong><p>'+(x.checklist?noteLines(x).slice(0,5).map(t=>'☐ '+esc(t)).join('\n'):esc(String(x.body||'').slice(0,140)))+'</p><small>'+esc(x.updated||x.date?fmt(x.updated||x.date):'')+'</small></button>').join('')+'</div>'+(list.length?'':'<div class="glass empty">Keine passenden Notizen gefunden. ✨</div>')}
+function renderNotesResults(){let q=noteSearch.trim().toLocaleLowerCase('de'),list=notes.filter(x=>(!q||(String(x.title||'')+' '+String(x.body||'')).toLocaleLowerCase('de').includes(q))&&(noteFilter==='Alle'||(noteFilter==='Angeheftet'?x.pinned:x.checklist)));list.sort((x,y)=>Number(!!y.pinned)-Number(!!x.pinned)||String(y.updated||y.date||'').localeCompare(String(x.updated||x.date||'')));document.getElementById('noteResults').innerHTML=noteCards(list)}
+const PROFILE_NAME_KEY='yaryane_preview_profile_name_v1',PROFILE_PHOTO_KEY='yaryane_preview_profile_photo_v1';
+function editProfileName(){
+ const existing=document.querySelector('.profile-editor-overlay');if(existing)return;
+ const current=storageGet(PROFILE_NAME_KEY)||'';
+ const overlay=document.createElement('div');overlay.className='profile-editor-overlay';overlay.setAttribute('role','presentation');
+ overlay.innerHTML='<form class="profile-editor" role="dialog" aria-modal="true" aria-labelledby="profileEditTitle"><div class="profile-editor-top"><span class="profile-editor-mark">✎</span><button type="button" class="profile-editor-close" aria-label="Schließen">×</button></div><h3 id="profileEditTitle">Profil bearbeiten</h3><p>Wähle den Namen, der in deinem Profil angezeigt wird.</p><label for="profileNameInput">ANZEIGENAME</label><input id="profileNameInput" name="displayName" maxlength="45" autocomplete="nickname" placeholder="Dein Name" required><div class="profile-editor-actions"><button type="button" class="profile-editor-cancel">Abbrechen</button><button type="submit" class="profile-editor-save">Änderungen speichern</button></div></form>';
+ document.body.appendChild(overlay);const input=overlay.querySelector('input');input.value=current;
+ const previousScroll=window.scrollY;const close=()=>{overlay.remove();requestAnimationFrame(()=>window.scrollTo({top:previousScroll,left:0,behavior:'instant'}))};overlay.querySelector('.profile-editor-close').onclick=close;overlay.querySelector('.profile-editor-cancel').onclick=close;
+ overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+ overlay.querySelector('form').onsubmit=e=>{e.preventDefault();const name=input.value.trim();if(!name)return;localStorage.setItem(PROFILE_NAME_KEY,name);close();render();window.dispatchEvent(new Event('yaryane-local-change'))};
+ requestAnimationFrame(()=>{input.focus({preventScroll:true});window.scrollTo({top:previousScroll,left:0,behavior:'instant'})})
+}
+function removeProfilePhoto(){if(!storageGet(PROFILE_PHOTO_KEY))return;if(!confirm('Profilbild entfernen?'))return;localStorage.removeItem(PROFILE_PHOTO_KEY);render();window.dispatchEvent(new Event('yaryane-local-change'))}
+function updateProfilePhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Bitte ein Bild auswählen.');return}if(file.size>12000000){alert('Das Foto ist zu groß. Bitte ein kleineres Bild wählen.');return}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{try{const canvas=document.createElement('canvas'),size=192;canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');const side=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);localStorage.setItem(PROFILE_PHOTO_KEY,canvas.toDataURL('image/jpeg',.76));render();window.dispatchEvent(new Event('yaryane-local-change'))}catch(e){alert('Profilbild konnte nicht gespeichert werden.')}};img.onerror=()=>alert('Foto konnte nicht geöffnet werden.');img.src=reader.result};reader.readAsDataURL(file)}
+function refreshProfileHeader(){const el=document.getElementById('profileAccountStatus');if(el)el.textContent=window.yaryaneAccountEmail?'Angemeldet · '+window.yaryaneAccountEmail:'Ohne Anmeldung · nur auf diesem Gerät'}
+const YARYANE_REMINDER_KEY='yaryane_preview_reminder_lead_v1';
+function yaryaneReminderLead(){const raw=storageGet(YARYANE_REMINDER_KEY);const n=Number(raw);return raw!==null&&[0,5,15,30,60].includes(n)?n:15}
+function yaryaneSetReminderLead(v){const n=Number(v);if([0,5,15,30,60].includes(n)){localStorage.setItem(YARYANE_REMINDER_KEY,String(n));yaryaneReminderPreview();yaryaneReminderCheck()}}
+function yaryaneRequestNotification(){
+ if(!('Notification' in window)){alert('Dieser Browser unterstützt keine Web-Mitteilungen. Nutze für Hintergrund-Erinnerungen den Kalenderexport.');return}
+ if(Notification.permission==='granted'){alert('Mitteilungen sind bereits erlaubt. Yaryane prüft Erinnerungen, solange die App geöffnet ist.');return}
+ Notification.requestPermission().then(p=>alert(p==='granted'?'Mitteilungen aktiviert – solange Yaryane geöffnet ist.':'Mitteilungen nicht aktiviert. Der Kalenderexport bleibt verfügbar.')).catch(()=>alert('Mitteilungen konnten nicht aktiviert werden.'))
+}
+function yaryaneValidClock(t){if(!/^\d{1,2}:\d{2}$/.test(String(t||'')))return false;const [h,m]=String(t).split(':').map(Number);return h>=0&&h<24&&m>=0&&m<60}
+function yaryaneValidDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(d||'')))return false;const parsed=new Date(d+'T12:00:00');return Number.isFinite(parsed.getTime())&&localDate(parsed)===d}
+function yaryaneClock(t){const [h,m]=String(t).split(':');return h.padStart(2,'0')+':'+m}
+function yaryaneReminderItems(){
+ const list=[];
+ for(const e of events){if(yaryaneValidDate(e.date)&&yaryaneValidClock(e.start))list.push({id:'event-'+e.id,date:e.date,start:yaryaneClock(e.start),end:yaryaneValidClock(e.end)?yaryaneClock(e.end):e.end,title:e.name||'Termin',type:'Termin'})}
+ for(const x of shifts){if(yaryaneValidDate(x.date)&&yaryaneValidClock(x.start)&&!['free','off','vacation','sick'].includes(x.type)){const labels={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'};list.push({id:'shift-'+x.id,date:x.date,start:yaryaneClock(x.start),end:yaryaneValidClock(x.end)?yaryaneClock(x.end):x.end,title:labels[x.type]||'Schicht',type:'Schicht'})}}
+ return list;
+}
+function yaryaneReminderCheck(){
+ const now=Date.now(),lead=yaryaneReminderLead()*60000;
+ const seenKey='yaryane_preview_reminders_seen_v1';let seen={};try{seen=JSON.parse(storageGet(seenKey)||'{}')||{}}catch(e){}
+ let changed=false;
+ for(const key of Object.keys(seen))if(!Number.isFinite(seen[key])||seen[key]<now-3*86400000){delete seen[key];changed=true}
+ for(const item of yaryaneReminderItems()){
+  const start=new Date(item.date+'T'+item.start+':00').getTime();
+  if(!Number.isFinite(start))continue;
+  const key=item.id+'-'+item.date+'-'+item.start+'-'+lead;
+  if(now>=start-lead&&now<start+60000&&!seen[key]){
+   seen[key]=now;changed=true;
+   const message=item.title+' · '+item.start+' Uhr';
+   if('Notification' in window&&Notification.permission==='granted'){try{new Notification('Yaryane · '+item.type,{body:message,tag:key})}catch(e){yaryaneReminderToast(message)}}
+   else yaryaneReminderToast(message);
+  }
+ }
+ if(changed){try{localStorage.setItem(seenKey,JSON.stringify(seen))}catch(e){}}
+}
+const yaryaneReminderQueue=[];
+function yaryaneReminderUpdateButton(){
+ const active=document.getElementById('yaryaneReminderToast');
+ const button=active&&active.querySelector('button');
+ if(!button)return;
+ const pending=yaryaneReminderQueue.length;
+ button.textContent=pending?'Weiter ('+pending+')':'OK';
+ button.setAttribute('aria-label',pending?'Nächste Erinnerung anzeigen':'Erinnerung schließen');
+}
+function yaryaneReminderToast(message){
+ yaryaneReminderQueue.push(String(message));
+ yaryaneReminderShowNext();
+ yaryaneReminderUpdateButton();
+}
+function yaryaneReminderShowNext(){
+ if(document.getElementById('yaryaneReminderToast')||!yaryaneReminderQueue.length)return;
+ const message=yaryaneReminderQueue.shift();
+ const el=document.createElement('div');el.id='yaryaneReminderToast';el.setAttribute('role','alert');
+ const text=document.createElement('span');text.textContent='⏰ '+message;
+ const close=document.createElement('button');close.type='button';close.textContent=yaryaneReminderQueue.length?'Weiter':'OK';
+ close.setAttribute('aria-label',yaryaneReminderQueue.length?'Nächste Erinnerung anzeigen':'Erinnerung schließen');
+ close.onclick=()=>{el.remove();yaryaneReminderShowNext()};
+ el.append(text,close);document.body.appendChild(el);
+}
+function yaryaneReminderTest(){yaryaneReminderToast('TEST · So sieht ein Hinweis in Yaryane aus. Dies ist kein echter Termin.')}
+function yaryaneReminderPreview(){
+ const root=document.getElementById('yaryaneReminderPreview');if(!root)return;
+ root.replaceChildren();
+ const heading=document.createElement('strong');heading.textContent='Nächste Erinnerungen';root.appendChild(heading);
+ const now=Date.now(),lead=yaryaneReminderLead()*60000,limit=now+7*86400000;
+ const allItems=yaryaneReminderItems();
+ const missingTime=events.filter(e=>e.date&&(!yaryaneValidDate(e.date)||!yaryaneValidClock(e.start))).length+shifts.filter(x=>x.date&&!['free','off','vacation','sick'].includes(x.type)&&(!yaryaneValidDate(x.date)||!yaryaneValidClock(x.start))).length;
+ if(missingTime){const warning=document.createElement('small');warning.textContent=missingTime+' Einträge ohne gültiges Datum oder Startzeit können nicht erinnert oder mit Alarm exportiert werden.';root.appendChild(warning)}
+ const upcoming=allItems.map(item=>({...item,at:new Date(item.date+'T'+item.start+':00').getTime()})).filter(item=>Number.isFinite(item.at)&&item.at>=now&&item.at-lead<=limit).sort((a,b)=>a.at-b.at).slice(0,5);
+ if(!upcoming.length){const empty=document.createElement('small');empty.textContent='In den nächsten 7 Tagen sind keine Termine oder Schichten mit Startzeit eingetragen.';root.appendChild(empty);return}
+ upcoming.forEach(item=>{const row=document.createElement('div');row.className='yaryane-reminder-preview-row';const title=document.createElement('span');title.textContent=(item.type==='Schicht'?'▣ ':'◷ ')+item.title;const date=document.createElement('small');date.textContent=fmt(item.date)+' · '+item.start+' Uhr · '+yaryaneReminderLead()+' Min. vorher';row.append(title,date);root.appendChild(row)});
+}
+function yaryaneExportCalendar(){
+ const lead=yaryaneReminderLead(),items=yaryaneReminderItems().filter(x=>new Date(x.date+'T'+x.start+':00').getTime()>=Date.now()).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+ if(!items.length){alert('Keine zukünftigen Termine oder Schichten mit Startzeit zum Exportieren vorhanden.');return}
+ const escapeICS=v=>String(v||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+ const stamp=(date,time)=>date.replace(/-/g,'')+'T'+time.replace(':','')+'00';
+ const dtstamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+ let exported=0;
+ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Yaryane//Erinnerungen//DE','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Yaryane Erinnerungen'];
+ for(const item of items){
+  const start=new Date(item.date+'T'+item.start+':00');if(Number.isNaN(start.getTime()))continue;
+  const end=new Date(start);
+  if(yaryaneValidClock(item.end)){const [h,m]=item.end.split(':').map(Number);end.setHours(h,m,0,0);if(end<=start)end.setDate(end.getDate()+1)}else end.setHours(start.getHours()+1,start.getMinutes(),0,0);
+  const endDate=localDate(end),endTime=String(end.getHours()).padStart(2,'0')+':'+String(end.getMinutes()).padStart(2,'0');
+  exported++;
+  lines.push('BEGIN:VEVENT','UID:'+escapeICS(item.id)+'@yaryane.husnu.de','DTSTAMP:'+dtstamp,'DTSTART:'+stamp(item.date,item.start),'DTEND:'+stamp(endDate,endTime),'SUMMARY:'+escapeICS(item.title),'DESCRIPTION:'+escapeICS('Aus Yaryane exportierter '+item.type),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escapeICS(item.title),'TRIGGER:-PT'+lead+'M','END:VALARM','END:VEVENT');
+ }
+ if(!exported){alert('Keine gültigen Einträge zum Exportieren vorhanden.');return}
+ lines.push('END:VCALENDAR');
+ const folded=[];for(const line of lines){let part='';for(const ch of line){if(new TextEncoder().encode(part+ch).length>75){folded.push(part);part=' '+ch}else part+=ch}folded.push(part)}
+ const blob=new Blob([folded.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Yaryane-Erinnerungen.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+ alert('Kalenderdatei erstellt ('+exported+' Einträge). Bitte importiere sie in deine Kalender-App und prüfe dort die Alarme. Der Export synchronisiert sich nicht automatisch.');
+}
+window.addEventListener('focus',()=>{yaryaneReminderCheck();yaryaneReminderPreview()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){yaryaneReminderCheck();yaryaneReminderPreview()}});
+setInterval(()=>{if(!document.hidden)yaryaneReminderCheck()},30000);
+setTimeout(yaryaneReminderCheck,1200);
+window.addEventListener('yaryane-local-change',()=>{yaryaneReminderCheck();yaryaneReminderPreview()});
+function morePage(){
+ const total=events.length+tasks.length+notes.length+shifts.length;
+ const backup=!!storageGet('yaryane_preview_preimport_backup_v1');
+ const displayName=storageGet(PROFILE_NAME_KEY)||'Mein Profil';
+ const photo=storageGet(PROFILE_PHOTO_KEY);
+ const initial=(displayName==='Mein Profil'?'Y':displayName.charAt(0)).toLocaleUpperCase('de');
+ return '<div class="top"><div><div class="brand">Einstellungen</div><div class="subtitle">Persönlich & übersichtlich</div></div></div>'
+ +'<div class="glass profile-card"><div class="profile-banner"></div><div class="profile-content"><label class="profile-avatar" aria-label="Profilbild auswählen">'+(photo?'<img src="'+esc(photo)+'" alt="Dein Profilbild">':'<span>'+esc(initial)+'</span>')+'<span class="profile-camera">✎</span><input type="file" accept="image/*" style="display:none" onchange="updateProfilePhoto(this)"></label><div class="profile-details"><strong>'+esc(displayName)+'</strong><small id="profileAccountStatus">'+(window.yaryaneAccountEmail?'Angemeldet · '+esc(window.yaryaneAccountEmail):'Ohne Anmeldung · nur auf diesem Gerät')+'</small></div><button type="button" class="profile-edit" onclick="editProfileName()" aria-label="Profilnamen bearbeiten">Bearbeiten</button></div><p class="profile-hint">Tippe auf das Profilbild, um ein eigenes Foto auszuwählen.</p></div>'
+ +(photo?'<button type="button" class="profile-remove" onclick="removeProfilePhoto()">Profilbild entfernen</button>':'')
+ +'<div class="settings-section-title">ORGANISATION</div>'
+ +'<button class="glass setting settings-row" onclick="navigate(\'notes\')"><span class="settings-icon">📝</span><span class="settings-row-text"><strong>Notizen</strong><small>Ideen und Checklisten verwalten</small></span><span class="arrow">›</span></button>'
+ +'<div class="settings-section-title">ERINNERUNGEN</div>'
+ +'<div class="glass yaryane-reminder-settings"><strong>Termine & Schichten</strong><p>Hinweise in Yaryane funktionieren bei geöffneter App. Für Erinnerungen bei geschlossener App nutze den Kalenderexport mit Alarm.</p><label for="yaryaneReminderLead">Erinnerung vorher</label><select id="yaryaneReminderLead" onchange="yaryaneSetReminderLead(this.value)"><option value="0"'+(yaryaneReminderLead()===0?' selected':'')+'>Zum Beginn</option><option value="5"'+(yaryaneReminderLead()===5?' selected':'')+'>5 Minuten</option><option value="15"'+(yaryaneReminderLead()===15?' selected':'')+'>15 Minuten</option><option value="30"'+(yaryaneReminderLead()===30?' selected':'')+'>30 Minuten</option><option value="60"'+(yaryaneReminderLead()===60?' selected':'')+'>1 Stunde</option></select><button type="button" onclick="yaryaneRequestNotification()">Mitteilungen für geöffnete App aktivieren</button><button type="button" onclick="yaryaneExportCalendar()">Kalenderdatei mit Alarmen exportieren</button><button type="button" onclick="yaryaneReminderTest()">Test-Erinnerung anzeigen</button><div id="yaryaneReminderPreview" class="yaryane-reminder-preview" aria-live="polite"></div><small>Die Kalenderdatei muss in eine Kalender-App importiert werden. Prüfe beim erneuten Import auf Duplikate: Ein erneuter Export aktualisiert bereits importierte Termine nicht automatisch. Einträge ohne Uhrzeit können keinen Alarm erhalten.</small></div>'
+ +'<div class="settings-section-title">DARSTELLUNG</div>'
+ +'<button class="glass setting settings-row" onclick="setTheme(theme===\'dark\'?\'light\':\'dark\');render()"><span class="settings-icon">◐</span><span class="settings-row-text"><strong>Erscheinungsbild</strong><small>Aktuell: '+(theme==='dark'?'Dunkel':'Hell')+' · Tippen zum Wechseln</small></span><span class="arrow">›</span></button>'
+ +'<div class="settings-section-title">DATEN & SICHERHEIT</div>'
+ +'<div class="glass settings-overview"><span class="settings-overview-number">'+total+'</span><span class="settings-row-text"><strong>Einträge auf diesem Gerät</strong><small>'+events.length+' Termine · '+tasks.length+' Aufgaben · '+notes.length+' Notizen · '+shifts.length+' Schichten</small></span></div>'
+ +'<button class="glass setting settings-row" onclick="exportData()"><span class="settings-icon">↓</span><span class="settings-row-text"><strong>Backup erstellen</strong><small>Daten als JSON-Datei exportieren</small></span><span class="arrow">›</span></button>'
+ +'<label class="glass setting settings-row settings-import"><span class="settings-icon">↑</span><span class="settings-row-text"><strong>Backup wiederherstellen</strong><small>Gespeicherte JSON-Datei auswählen</small></span><span class="arrow">›</span><input type="file" accept=".json,application/json" style="display:none" onchange="importData(this)"></label>'
+ +(backup?'<button class="glass setting settings-row" onclick="restoreSnapshot()"><span class="settings-icon">↶</span><span class="settings-row-text"><strong>Letzten Import rückgängig machen</strong><small>Vorherige lokale Daten wiederherstellen</small></span><span class="arrow">›</span></button>':'')
+ +'<div class="settings-section-title">KONTO & CLOUD</div>'
+ +'<div class="glass settings-sync"><div class="settings-sync-head"><span class="settings-icon">☁</span><div><strong>Synchronisierung</strong><p class="muted" id="syncStatus">Verbindung wird geprüft …</p></div></div><div id="syncControls"><p class="muted">Cloud-Verbindung wird geladen …</p></div></div>'
+ +'<div class="settings-section-title">ÜBER YARYANE</div>'
+ +'<div class="glass settings-about"><strong>Yaryane</strong><span>Dein persönlicher Kalender</span><small>Web-App · Daten werden auf diesem Gerät gespeichert, bis du eine Cloud-Sicherung aktivierst.</small></div>';
+}
+function render(){try{if(!Array.isArray(events))events=[];if(!Array.isArray(tasks))tasks=[];if(!Array.isArray(notes))notes=[];if(!Array.isArray(shifts))shifts=[];nav();document.getElementById('app').innerHTML=page==='home'?home():page==='calendar'?calendar():page==='tasks'?tasksPage():page==='shifts'?shiftsPage():page==='notes'?notesPage():morePage();if(page==='more'){if(window.yaryaneSyncRefresh)window.yaryaneSyncRefresh();yaryaneReminderPreview()}}catch(err){console.error('Yaryane render error',err);const el=document.getElementById('app');if(el)el.innerHTML='<div class="top"><div class="brand">Yaryane</div></div><div class="glass" style="padding:22px"><h2>Anzeige konnte nicht geladen werden</h2><p>Deine Daten bleiben gespeichert. Bitte versuche, die Startseite erneut zu öffnen.</p><button class="primary" type="button" onclick="page=\'home\';render()">Startseite öffnen</button></div>';}}
+function showEventDetails(id){
+ document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove());
+ const x=events.find(e=>String(e.id)===String(id));if(!x)return;
+ const overlay=document.createElement('div');overlay.className='event-detail-overlay';
+ const panel=document.createElement('section');panel.className='event-detail-panel';panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','Termindetails');
+ const category=x.kind==='work'?'Arbeit':x.kind==='free'?'Freizeit':'Privat';
+ const date=x.date?new Date(x.date+'T12:00:00').toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Kein Datum';
+ const time=x.start?(x.start+(x.end?' – '+x.end:'')+' Uhr'):'Ganztägig';
+ const initialDate=x.date?new Date(x.date+'T12:00:00'):null;
+ const day=initialDate?initialDate.toLocaleDateString('de-DE',{day:'2-digit'}):'–';
+ const month=initialDate?initialDate.toLocaleDateString('de-DE',{month:'short'}):'';
+ panel.innerHTML='<div class="event-detail-handle" aria-hidden="true"></div><div class="event-detail-header"><span class="event-detail-tag"><span class="event-detail-dot"></span>'+esc(category)+'</span><button type="button" class="event-detail-x" aria-label="Schließen">×</button></div><div class="event-detail-hero"><div class="event-detail-date-tile"><span>'+esc(month)+'</span><strong>'+esc(day)+'</strong></div><div class="event-detail-hero-text"><small>DEIN TERMIN</small><h2>'+esc(x.name||'Termin')+'</h2></div></div><div class="event-detail-content"><div class="event-detail-row"><span class="event-detail-symbol">▦</span><div><small>DATUM</small><strong>'+esc(date)+'</strong></div></div><div class="event-detail-row"><span class="event-detail-symbol">◷</span><div><small>UHRZEIT</small><strong>'+esc(time)+'</strong></div></div>'+(x.notes?'<div class="event-detail-notes"><small>NOTIZEN</small><p>'+esc(x.notes)+'</p></div>':'')+'</div><div class="event-detail-actions"><button type="button" class="event-detail-cancel">Fertig</button><button type="button" class="event-detail-edit">✎ &nbsp; Bearbeiten</button></div>';
+ overlay.appendChild(panel);document.body.appendChild(overlay);
+ const close=()=>overlay.remove();panel.querySelector('.event-detail-x').onclick=close;panel.querySelector('.event-detail-cancel').onclick=close;overlay.onclick=e=>{if(e.target===overlay)close()};panel.querySelector('.event-detail-edit').onclick=()=>{close();openForm('event',id)};
+}
+function openForm(type,id){yaryaneFormReturnFocus=document.activeElement;document.getElementById('app').inert=true;document.getElementById('nav').inert=true;document.body.classList.add('yaryane-modal-open');document.body.classList.add('yaryane-modal-open');let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Wiederholung<select name="repeat"><option value="1">Nur dieser Tag</option><option value="7">7 Tage hintereinander</option><option value="14">14 Tage hintereinander</option><option value="28">28 Tage hintereinander</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label><label class="field">Priorität<select name="priority"><option value="normal" '+((x.priority||'normal')==='normal'?'selected':'')+'>Normal</option><option value="high" '+(x.priority==='high'?'selected':'')+'>Hoch</option><option value="low" '+(x.priority==='low'?'selected':'')+'>Niedrig</option></select></label><label class="field">Beschreibung<textarea name="details">'+esc(x.details||'')+'</textarea></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Pause (Minuten)<input type="number" name="breakMinutes" min="0" max="600" step="5" value="'+esc(x.breakMinutes||0)+'"></label>'+(id?'':'<label class="field">Wiederholung<select name="repeat"><option value="1">Einmalig</option><option value="7">7 Tage</option><option value="14">14 Tage</option><option value="28">28 Tage</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label>'):'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label><label class="field">Farbe<select name="color">'+[['blue','Blau'],['violet','Violett'],['pink','Rosa'],['mint','Mint'],['amber','Gold']].map(([v,t])=>'<option value="'+v+'" '+((x.color||'blue')===v?'selected':'')+'>'+t+'</option>').join('')+'</select></label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="pinned" '+(x.pinned?'checked':'')+' style="width:auto;margin:0"> Notiz anheften</label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="checklist" '+(x.checklist?'checked':'')+' style="width:auto;margin:0"> Als Checkliste anzeigen (eine Zeile je Punkt)</label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="entryFormTitle" onclick="event.stopPropagation()"><div class="toolbar"><h2 id="entryFormTitle">' +(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>';if(type==='event'){const warning=document.createElement('div');warning.className='yaryane-conflict-warning';warning.hidden=true;const form=document.querySelector('#modal form');if(form){form.insertBefore(warning,form.querySelector('.formactions'));form.addEventListener('input',()=>yaryaneCheckEventForm(form));form.addEventListener('change',()=>yaryaneCheckEventForm(form));yaryaneCheckEventForm(form)}};const firstInput=document.querySelector('#modal input:not([type=hidden]),#modal select');firstInput?.focus()}
+function yaryaneCheckEventForm(form){
+ const date=form.querySelector('[name="date"]')?.value,start=form.querySelector('[name="start"]')?.value,end=form.querySelector('[name="end"]')?.value;
+ const box=form.querySelector('.yaryane-conflict-warning');if(!box)return;
+ if(!date||!start||!end){box.hidden=true;box.textContent='';return}
+ const conflicts=yaryaneEventConflicts({date,start,end},edit?.id);
+ box.hidden=!conflicts.length;
+ box.textContent=conflicts.length?'⚠️ Zeitüberschneidung mit: '+conflicts.slice(0,3).join(' · ')+(conflicts.length>3?' und weiteren Einträgen':'')+'. Du kannst den Termin trotzdem speichern.':'';
+}
 function backupPayload(){return {version:3,exportedAt:new Date().toISOString(),events,tasks,notes,shifts}}
+function exportData(){try{let data=JSON.stringify(backupPayload(),null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung-'+localDate(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);try{localStorage.setItem('yaryane_preview_last_export_v1',new Date().toISOString())}catch{}alert('Sicherungsdatei wurde zum Download bereitgestellt. Bitte in Dateien speichern und aufbewahren.')}catch(e){alert('Sicherung konnte nicht erstellt werden: '+e.message)}}
 // Shared data-integrity helpers for the current app and its legacy preview.
 function storageGet(key){try{return localStorage.getItem(key)}catch{return null}}
 let yaryaneIdCounter=0;
@@ -215,4 +1178,58 @@ function importData(input){
 }
 
 render();
+document.addEventListener('dblclick',function(e){if(e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault()},{passive:false});
+// Prefer native iOS touch-action behavior; don't cancel real second taps.
+</script><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,signOut} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+import {getFirestore,doc,getDoc,setDoc} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+const config={apiKey:"AIzaSyAc8nFeX52QlgO0Q3CQO36j6kXnb3dcnYE",authDomain:"yaryane.firebaseapp.com",projectId:"yaryane",storageBucket:"yaryane.firebasestorage.app",messagingSenderId:"251667285319",appId:"1:251667285319:web:c087369c2953cfb8a73862"};
+let auth,db,user=null,cloudExists=false,active=false,busy=false,timer=null,lastMessage='Noch nicht angemeldet';
+const keys=['yaryane_preview_v1_events','yaryane_preview_tasks_v1','yaryane_preview_notes_v1','yaryane_preview_shifts_v1'];
+const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const snapshot=()=>({events:JSON.parse(storageGet(keys[0])||'[]'),tasks:JSON.parse(storageGet(keys[1])||'[]'),notes:JSON.parse(storageGet(keys[2])||'[]'),shifts:JSON.parse(storageGet(keys[3])||'[]'),profile:{name:storageGet('yaryane_preview_profile_name_v1')||'',photo:storageGet('yaryane_preview_profile_photo_v1')||''}});
+const reference=()=>doc(db,'users',user.uid,'sync','preview-data');
+const setStatus=t=>{lastMessage=t;draw()};
+let syncMode='choice',dirty=false,localRevision=0,authRevision=0;
+function flushDirty(){if(active&&user&&dirty&&!busy){clearTimeout(timer);timer=setTimeout(uploadChanges,1200)}}
+function draw(){const el=document.getElementById('syncControls'),status=document.getElementById('syncStatus');if(!el||!status)return;status.textContent=lastMessage;if(!user){
+if(syncMode==='choice'){el.innerHTML='<p class="muted">Yaryane funktioniert auch ohne Konto. Für die Cloud-Sicherung kannst du ein kostenloses Konto erstellen.</p><button type="button" class="primary" style="width:100%" id="syncGoRegister">Kostenlos registrieren</button><button type="button" class="secondary" style="width:100%;margin-top:10px" id="syncGoLogin">Ich habe bereits ein Konto · Anmelden</button>';document.getElementById('syncGoRegister').onclick=()=>{syncMode='register';lastMessage='Neues Konto erstellen';draw()};document.getElementById('syncGoLogin').onclick=()=>{syncMode='login';lastMessage='Mit vorhandenem Konto anmelden';draw()};return}
+const registering=syncMode==='register';
+el.innerHTML='<p class="muted">'+(registering?'Neues Yaryane-Konto erstellen. Wähle ein neues Passwort mit mindestens 6 Zeichen.':'Mit deinem bestehenden Yaryane-Konto anmelden.')+'</p><form id="syncLogin"><label class="field">E-Mail<input name="email" type="email" autocomplete="email" inputmode="email" required></label><label class="field">Passwort<input name="password" type="password" autocomplete="'+(registering?'new-password':'current-password')+'" minlength="6" required></label><button class="primary" style="width:100%" type="submit">'+(registering?'Konto jetzt erstellen':'Anmelden')+'</button></form><button type="button" class="secondary" style="width:100%;margin-top:10px" id="syncBack">← Zurück</button>'+(registering?'':'<button type="button" class="secondary" style="width:100%;margin-top:9px" id="syncReset">Passwort vergessen?</button>');
+el.querySelector('form').onsubmit=registering?register:login;document.getElementById('syncBack').onclick=()=>{syncMode='choice';lastMessage='Noch nicht angemeldet';draw()};if(!registering)document.getElementById('syncReset').onclick=resetPassword;return}
+el.innerHTML='<p class="muted">Angemeldet: '+safe(user.email)+'</p>'+(active?'<p class="muted">Lokale Änderungen werden automatisch in der Cloud gesichert. Auf weiteren Geräten bitte zuerst Cloud-Daten laden.</p>':'<p class="muted">Deine lokalen Daten bleiben unverändert, bis du den ersten Abgleich bestätigst.</p>')+'<div class="sync-actions"><button class="sync-action sync-action-main" type="button" id="syncUpload"><span class="sync-action-icon">☁️</span><span class="sync-action-copy"><strong>In Cloud sichern</strong><small>Deine Daten sicher speichern</small></span><span class="sync-action-chevron">›</span></button><button class="sync-action" type="button" id="syncDownload"><span class="sync-action-icon">↓</span><span class="sync-action-copy"><strong>Cloud-Daten laden</strong><small>Gespeicherte Daten übernehmen</small></span><span class="sync-action-chevron">›</span></button><button class="sync-action sync-action-logout" type="button" id="syncLogout"><span class="sync-action-icon">↪</span><span class="sync-action-copy"><strong>Abmelden</strong></span><span class="sync-action-chevron">›</span></button></div>';
+document.getElementById('syncUpload').onclick=uploadConfirm;document.getElementById('syncDownload').onclick=downloadConfirm;document.getElementById('syncLogout').onclick=()=>signOut(auth)}
+function friendlyError(err){const code=err.code||'';return ({'auth/email-already-in-use':'Diese E-Mail-Adresse ist bereits registriert. Bitte anmelden.','auth/invalid-email':'Bitte eine gültige E-Mail-Adresse eingeben.','auth/weak-password':'Das Passwort ist zu schwach. Bitte ein stärkeres Passwort verwenden.','auth/invalid-credential':'E-Mail oder Passwort ist falsch.','auth/network-request-failed':'Keine Netzwerkverbindung. Bitte erneut versuchen.','auth/operation-not-allowed':'Registrierung ist in Firebase noch nicht aktiviert.'})[code]||code||err.message}
+async function login(e){e.preventDefault();const f=new FormData(e.target);const email=String(f.get('email')).trim(),password=String(f.get('password'));lastMessage='Anmeldung läuft …';const status=document.getElementById('syncStatus');if(status)status.textContent=lastMessage;try{await signInWithEmailAndPassword(auth,email,password)}catch(err){setStatus('Anmeldung fehlgeschlagen: '+friendlyError(err))}}
+async function register(e){e.preventDefault();const form=e.currentTarget;const f=new FormData(form),email=String(f.get('email')).trim(),password=String(f.get('password'));if(password.length<6){setStatus('Bitte mindestens 6 Zeichen für dein Passwort verwenden.');return}const status=document.getElementById('syncStatus');if(status)status.textContent='Konto wird erstellt …';try{await createUserWithEmailAndPassword(auth,email,password)}catch(err){setStatus('Registrierung fehlgeschlagen: '+friendlyError(err))}}
+async function resetPassword(){const email=prompt('Für welche E-Mail-Adresse möchtest du einen Link zum Zurücksetzen des Passworts erhalten?');if(!email)return;try{await sendPasswordResetEmail(auth,email.trim());alert('Falls die E-Mail-Adresse registriert ist, erhältst du eine Nachricht zum Zurücksetzen des Passworts.')}catch(err){alert('Zurücksetzen fehlgeschlagen: '+friendlyError(err))}}
+async function checkCloud(){if(!user)return;try{let x=await getDoc(reference());cloudExists=x.exists();setStatus(cloudExists?'Cloud-Daten vorhanden. Bitte Abgleich auswählen.':'Cloud noch leer. Deine lokalen Daten sind unverändert.')}catch(err){setStatus('Cloud-Prüfung fehlgeschlagen: '+(err.code||err.message))}}
+async function uploadConfirm(){
+ if(!user||busy)return;
+ if(!confirm(cloudExists?'Vorhandene Cloud-Daten durch dieses Gerät ersetzen?':'Lokale Daten erstmals in deiner privaten Cloud sichern?'))return;
+ const generation=authRevision;
+ try{busy=true;dirty=false;const data=yaryaneNormalizeBackup(snapshot());await setDoc(reference(),{...data,updatedAt:new Date().toISOString(),schemaVersion:1});if(generation!==authRevision)return;cloudExists=true;active=true;setStatus('Cloud-Sicherung erfolgreich. Lokale Änderungen werden künftig hochgeladen.')}
+ catch(err){if(generation===authRevision){dirty=true;setStatus('Upload fehlgeschlagen: '+(err.code||err.message))}}
+ finally{busy=false;flushDirty()}
+}
+async function downloadConfirm(){
+ if(!user||busy)return;
+ if(!confirm('Cloud-Daten laden? Eine lokale Rückfallkopie wird angelegt. Aktuelle Daten werden ersetzt.'))return;
+ const generation=authRevision,revision=localRevision;
+ try{busy=true;const result=await getDoc(reference());if(generation!==authRevision)return;if(!result.exists())throw Error('Keine Cloud-Daten vorhanden');
+ const data=yaryaneNormalizeBackup(result.data());if(localRevision!==revision)throw Error('Lokale Daten wurden während des Ladens geändert. Bitte den Abgleich erneut starten.');
+ const wasActive=active;active=false;try{yaryaneApplySnapshot(data)}catch(err){active=wasActive;throw err}dirty=false;active=true;render();setStatus('Cloud-Daten geladen. Rückfallkopie lokal gespeichert.')}
+ catch(err){if(generation===authRevision)setStatus('Download fehlgeschlagen: '+(err.code||err.message))}
+ finally{busy=false;flushDirty()}
+}
+async function uploadChanges(){
+ if(!active||!user)return;if(busy){dirty=true;return}
+ const generation=authRevision;
+ try{busy=true;dirty=false;const data=yaryaneNormalizeBackup(snapshot());await setDoc(reference(),{...data,updatedAt:new Date().toISOString(),schemaVersion:1});if(generation!==authRevision)return;cloudExists=true;setStatus('Änderungen in Cloud gesichert.')}
+ catch(err){if(generation===authRevision)setStatus('Cloud-Sicherung fehlgeschlagen. Änderungen bleiben lokal: '+(err.code||err.message))}
+ finally{busy=false;flushDirty()}
+}
+window.addEventListener('yaryane-local-change',()=>{localRevision++;if(!user)return;dirty=true;flushDirty()});
+try{const app=initializeApp(config,'yaryane-preview');auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,async u=>{clearTimeout(timer);authRevision++;dirty=false;user=u;window.yaryaneAccountEmail=u?.email||'';refreshProfileHeader();active=false;cloudExists=false;if(u){setStatus('Angemeldet. Cloud wird geprüft …');await checkCloud()}else setStatus('Nicht angemeldet · Daten nur lokal')});window.yaryaneSyncRefresh=draw;draw()}catch(err){setStatus('Firebase konnte nicht gestartet werden: '+(err.code||err.message))}
 </script></body></html>
