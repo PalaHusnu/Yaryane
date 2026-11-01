@@ -1,0 +1,24 @@
+name: Data integrity checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  data-integrity:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        timezone: [Europe/Berlin, UTC]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test app and mocked cloud
+        env:
+          TZ: ${{ matrix.timezone }}
+        run: node tests/cloud-integrity.cjs

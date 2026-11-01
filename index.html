@@ -534,19 +534,23 @@ html[data-theme=dark] #modal .sheet input,html[data-theme=dark] #modal .sheet se
 @media(prefers-reduced-motion:reduce){.event-readable{transition:none}}
 </style></head><body><div class="app" id="app"><div class="top"><div class="brand">Yaryane</div></div><p class="muted">App wird geladen …</p></div><nav class="nav" id="nav"></nav><div id="modal"></div><button id="yaneLaunch" type="button" aria-label="Yane öffnen" onclick="openYane()">✦</button><div id="yaneOverlay" hidden></div><script>
 const K='yaryane_v1_events',TK='yaryane_tasks_v1',NK='yaryane_notes_v1',SK='yaryane_shifts_v1',THEME='yaryane_theme';
-const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if([K,TK,NK,SK].includes(k))window.dispatchEvent(new Event('yaryane-local-change'))};
+const get=(k,d)=>{try{return JSON.parse(storageGet(k))??d}catch{return d}};
 let events=get(K,[]),tasks=get(TK,[]),notes=get(NK,[]),shifts=get(SK,[]),page='home',selected=localDate(new Date()),month=new Date().getMonth(),year=new Date().getFullYear(),filter='Alle',shiftMode='Monat',edit=null;
 function localDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('de-DE',{day:'numeric',month:'short',year:'numeric'});
 const days=['Mo','Di','Mi','Do','Fr','Sa','So'],types={early:['F','Frühdienst','#2dc49b'],late:['S','Spätdienst','#8c70f6'],night:['N','Nachtdienst','#f5b13f'],free:['F','Frei','#4ba8ea'],vacation:['U','Urlaub','#ef79a2'],sick:['K','Krankheit','#fa637b']};
-let theme=localStorage.getItem(THEME)|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-function setTheme(t){theme=t;document.documentElement.dataset.theme=t;localStorage.setItem(THEME,t);document.querySelector('meta[name=theme-color]').content=t==='dark'?'#061225':'#dce9ff'}setTheme(theme);
+const systemColors=typeof matchMedia==='function'?matchMedia('(prefers-color-scheme: dark)'):null;
+let theme=['light','dark'].includes(storageGet(THEME))?storageGet(THEME):(systemColors?.matches?'dark':'light');
+function setTheme(t,persist=true){theme=t==='dark'?'dark':'light';document.documentElement.dataset.theme=theme;if(persist){try{localStorage.setItem(THEME,theme)}catch{alert('Darstellung nur für diese Sitzung geändert. Browser-Speicher nicht verfügbar.')}}document.querySelector('meta[name=theme-color]').content=theme==='dark'?'#061225':'#dce9ff'}
+setTheme(theme,false);
+const systemColorChange=()=>{if(!['light','dark'].includes(storageGet(THEME)))setTheme(systemColors?.matches?'dark':'light',false)};
+if(systemColors?.addEventListener)systemColors.addEventListener('change',systemColorChange);else if(systemColors?.addListener)systemColors.addListener(systemColorChange);
 function navigate(p){if(document.getElementById('yaneOverlay')&&!document.getElementById('yaneOverlay').hidden)closeYane();document.querySelectorAll('.event-detail-overlay').forEach(el=>el.remove());if(p===page)return;if(p==='notes'&&page==='more')window.yaryaneNotesFromMore=true;else if(p!=='notes')window.yaryaneNotesFromMore=false;page=p;window.scrollTo({top:0,left:0,behavior:'instant'});render();const content=document.getElementById('app');if(content){content.classList.remove('yaryane-page-enter');void content.offsetWidth;content.classList.add('yaryane-page-enter')}}
 const yaneHistory=[];let yaneLastDraft=null,yaneLastSlots=[];
 function yaneToday(){return localDate(new Date())}
 function yaneFreeSlots(q){
- const now=new Date(),base=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+ yaneLastSlots=[];const now=new Date(),base=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
  const low=q.toLocaleLowerCase('de-DE');
  if(/übermorgen/.test(low))base.setDate(base.getDate()+2);else if(/morgen/.test(low))base.setDate(base.getDate()+1);
  const weekdays={sonntag:0,montag:1,dienstag:2,mittwoch:3,donnerstag:4,freitag:5,samstag:6};
@@ -556,14 +560,13 @@ function yaneFreeSlots(q){
  if(iso||german){const y=Number(iso?iso[1]:german[3]),m=Number(iso?iso[2]:german[2]),d=Number(iso?iso[3]:german[1]);const test=new Date(y,m-1,d,12);if(test.getFullYear()!==y||test.getMonth()!==m-1||test.getDate()!==d)return 'Dieses Datum ist ungültig.';base.setTime(test.getTime())}
  const date=localDate(base),start=8*60,end=20*60,blocked=[],unknown=[];yaneLastSlots=[];
  const minutes=t=>{if(!/^\d{1,2}:\d{2}$/.test(String(t||'')))return null;const [h,m]=t.split(':').map(Number);return h<24&&m<60?h*60+m:null};
- for(const e of events.filter(x=>x.date===date)){const a=minutes(e.start),b=minutes(e.end);if(a===null||b===null){unknown.push(e.name||'Termin');continue}blocked.push([a,b<=a?1440:b])}
- for(const x of shifts.filter(x=>x.date===date)){if(['free','off','vacation','sick'].includes(x.type))continue;const a=minutes(x.start),b=minutes(x.end);if(a===null||b===null){unknown.push('Dienstplaneintrag');continue}blocked.push([a,b<=a?1440:b])}
+ const busy=yaryaneBlockedDay(date);blocked.push(...busy.blocked);unknown.push(...busy.unknown);
  blocked.sort((a,b)=>a[0]-b[0]);
  const free=[];let cursor=start;
  for(const [a,b] of blocked){if(a>cursor&&a-cursor>=30)free.push([cursor,Math.min(a,end)]);cursor=Math.max(cursor,b);if(cursor>=end)break}
  if(end-cursor>=30)free.push([cursor,end]);
  const clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
- const valid=free.filter(([a,b])=>b>a&&b-a>=30&&!(date===localDate(now)&&b<=now.getHours()*60+now.getMinutes()));
+ const earliest=date===localDate(now)?Math.ceil((now.getHours()*60+now.getMinutes())/15)*15:start;const valid=free.map(([a,b])=>[Math.max(a,earliest),Math.min(b,end)]).filter(([a,b])=>b-a>=30);
  const list=valid.slice(0,6).map(([a,b])=>'• '+clock(a)+'–'+clock(b)+' Uhr');
  if(!unknown.length)yaneLastSlots=valid.slice(0,4).map(([a,b])=>({date,start:clock(Math.max(a,date===localDate(now)?Math.ceil((now.getHours()*60+now.getMinutes())/15)*15:a)),end:clock(b)})).filter(x=>x.start<x.end);
  return 'Mögliche Zeitfenster · '+fmt(date)+' ✨\n\n'+(list.length?list.join('\n'):'Zwischen 08:00 und 20:00 Uhr ist kein freies Zeitfenster von mindestens 30 Minuten erkennbar.')+(unknown.length?'\n\n⚠️ '+unknown.length+' Eintrag/Einträge ohne vollständige Uhrzeiten – die Vorschläge können sich überschneiden.':'')+'\n\nNur anhand deiner eingetragenen Zeiten, keine Verfügbarkeitsgarantie.';
@@ -572,8 +575,7 @@ function yaneDaySuggestions(){
  const date=localDate(new Date()),now=new Date(),clock=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
  const minutes=v=>{const m=String(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],n=+m[2];return h<24&&n<60?h*60+n:null};
  const blocked=[],unknown=[];
- for(const e of events.filter(x=>x.date===date)){const a=minutes(e.start),b=minutes(e.end);if(a===null||b===null){unknown.push(e.name||'Termin');continue}blocked.push([a,b<=a?1440:b])}
- for(const x of shifts.filter(x=>x.date===date&&!['free','off','vacation','sick'].includes(x.type))){const a=minutes(x.start),b=minutes(x.end);if(a===null||b===null){unknown.push('Schicht');continue}blocked.push([a,b<=a?1440:b])}
+ const busy=yaryaneBlockedDay(date);blocked.push(...busy.blocked);unknown.push(...busy.unknown);
  const start=Math.max(8*60,Math.ceil((now.getHours()*60+now.getMinutes())/15)*15),end=20*60;
  if(start>=end)return 'Für heute ist mein Planungszeitraum (08:00–20:00 Uhr) vorbei. Du kannst mich morgen erneut fragen.';
  blocked.sort((a,b)=>a[0]-b[0]);let cursor=start;const slots=[];
@@ -670,7 +672,7 @@ function yaneMultiPlanner(){
  [[30,'30 Minuten je Aufgabe'],[60,'60 Minuten je Aufgabe'],[90,'90 Minuten je Aufgabe'],[120,'120 Minuten je Aufgabe']].forEach(([n,label])=>{const option=document.createElement('option');option.value=String(n);option.textContent=label;duration.appendChild(option)});
  const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
  [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const opt=document.createElement('option');opt.value=value;opt.textContent=label;preference.appendChild(opt)});
- let prefs={};try{prefs=JSON.parse(localStorage.getItem('yaryane_yane_planner_prefs_v1')||'{}')||{}}catch(e){}
+ let prefs={};try{prefs=JSON.parse(storageGet('yaryane_yane_planner_prefs_v1')||'{}')||{}}catch(e){}
  if(['30','60','90','120'].includes(String(prefs.duration)))duration.value=String(prefs.duration);
  if(['all','morning','afternoon','evening'].includes(prefs.time))preference.value=prefs.time;
  const go=document.createElement('button');go.type='button';go.textContent='Wochenvorschläge erstellen';
@@ -713,7 +715,7 @@ function yaneTaskPlanner(weekMode=false){
  const preference=document.createElement('select');preference.setAttribute('aria-label','Bevorzugte Tageszeit');
  [['all','Jede Tageszeit'],['morning','Vormittags · 08–12 Uhr'],['afternoon','Nachmittags · 12–17 Uhr'],['evening','Abends · 17–20 Uhr']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;preference.appendChild(option)});
  const settingsKey='yaryane_yane_planner_prefs_v1';
- let savedPrefs={};try{savedPrefs=JSON.parse(localStorage.getItem(settingsKey)||'{}')||{}}catch(e){}
+ let savedPrefs={};try{savedPrefs=JSON.parse(storageGet(settingsKey)||'{}')||{}}catch(e){}
  if(['30','60','90','120'].includes(String(savedPrefs.duration)))duration.value=String(savedPrefs.duration);
  if(['all','morning','afternoon','evening'].includes(savedPrefs.time))preference.value=savedPrefs.time;
  const savePrefs=()=>{try{localStorage.setItem(settingsKey,JSON.stringify({duration:duration.value,time:preference.value}))}catch(e){}};
@@ -793,7 +795,7 @@ function yaneWelcome(){
  const now=new Date(),hour=now.getHours(),greeting=hour<11?'Guten Morgen':hour<18?'Guten Tag':'Guten Abend',today=localDate(now);
  const todays=events.filter(e=>e.date===today),active=tasks.filter(t=>!t.done),due=active.filter(t=>t.date&&t.date<=today),shift=shifts.find(x=>x.date===today);
  const shiftNames={early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst',free:'Frei',off:'Frei',vacation:'Urlaub',sick:'Krank'};
- const panel=document.createElement('div');panel.className='yane-welcome';const profileName=(localStorage.getItem('yaryane_profile_name_v1')||'').trim().slice(0,40);
+ const panel=document.createElement('div');panel.className='yane-welcome';const profileName=(storageGet('yaryane_profile_name_v1')||'').trim().slice(0,40);
  const heading=document.createElement('div');heading.className='yane-welcome-heading';heading.textContent=greeting+(profileName?', '+profileName:'')+' ✨';
  const intro=document.createElement('p');intro.textContent='Hier ist dein Überblick für heute.';
  const stats=document.createElement('div');stats.className='yane-welcome-stats';
@@ -812,15 +814,14 @@ function closeYane(){const overlay=document.getElementById('yaneOverlay');if(ove
 function nav(){let arr=[['home','⌂','Heute'],['calendar','▦','Kalender'],['tasks','✓','Aufgaben'],['shifts','▣','Dienstplan'],['more','⚙','Mehr']];document.getElementById('nav').innerHTML=arr.map(([id,i,t])=>'<button type="button" aria-label="'+t+'" '+(page===id||page==='notes'&&id==='more'?'aria-current="page" ':'')+'class="'+(page===id||page==='notes'&&id==='more'?'active':'')+'" onclick="navigate(\''+id+'\')"><span class="symbol">'+i+'</span>'+t+'</button>').join('')}
 function head(title,plus){return '<div class="toolbar"><h2>'+title+'</h2><div class="actions">'+(plus?'<button class="add" aria-label="Hinzufügen" onclick="openForm(\''+plus+'\')">+</button>':'')+'</div></div>'}
 function eventList(date){let e=events.filter(x=>x.date===date).sort((a,b)=>(a.start||'').localeCompare(b.start||''));return e.length?e.map(x=>'<div class="glass item stripe event-readable" tabindex="0" role="button" aria-label="Termindetails öffnen: '+esc(x.name)+'" onkeydown="if((event.keyCode===13||event.keyCode===32)&&event.target===this){event.preventDefault();showEventDetails(this.dataset.id)}" onclick="showEventDetails(this.dataset.id)" data-id="'+esc(x.id)+'" style="border-left-color:'+(x.kind==='work'?'#0c86ff':x.kind==='free'?'#2dc49b':'#fa659c')+'"><span class="time">'+esc(x.start||'Ganztägig')+'</span><span class="iconbox">'+(x.kind==='work'?'💼':x.kind==='free'?'🌿':'📅')+'</span><div class="details"><strong>'+esc(x.name)+'</strong><small>'+esc(x.notes||x.end||'Termin')+'</small></div><button class="dots" type="button" aria-label="Termin bearbeiten" onclick="event.stopPropagation();openForm(\'event\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Noch keine Termine für diesen Tag. ✨</div>'}
-function home(){let today=localDate(new Date());return '<div class="top"><div><div class="brand">🪷 Yary<span>ane</span> ✦</div><div class="subtitle">Dein Kalender. Dein Leben.</div></div><button class="avatar home-profile-avatar" type="button" aria-label="Mein Profil öffnen" onclick="navigate(\'more\')">'+(localStorage.getItem('yaryane_profile_photo_v1')?'<img src="'+localStorage.getItem('yaryane_profile_photo_v1')+'" alt="">':'<span>'+esc((localStorage.getItem('yaryane_profile_name_v1')||'Y').charAt(0).toLocaleUpperCase('de'))+'</span>')+'</button></div><section class="glass hero"><h1>Yaryane ☾</h1><p>Dein Kalender. Dein Leben.</p><button onclick="openForm(\'event\')">Neuen Termin hinzufügen… <b>+</b></button></section><div class="sectionhead"><h2>Heute</h2><button onclick="navigate(\'calendar\')">Alle anzeigen ›</button></div><div class="muted">'+fmt(today)+'</div>'+eventList(today)+'<div class="sectionhead"><h2>Deine Aufgaben</h2><button onclick="navigate(\'tasks\')">Alle anzeigen ›</button></div>'+taskList(tasks.filter(x=>!x.done).slice(0,3))+'<div class="sectionhead"><h2>Schnellzugriff</h2></div><div class="notes"><button class="glass note" onclick="navigate(\'shifts\')"><strong>▣ Dienstplan</strong><p>Deine Schichten im Blick</p></button><button class="glass note" onclick="navigate(\'notes\')"><strong>▤ Notizen</strong><p>Ideen und Listen festhalten</p></button></div>'}
-function calGrid(forShifts){let first=new Date(year,month,1),offset=(first.getDay()+6)%7,last=new Date(year,month+1,0).getDate(),total=Math.ceil((offset+last)/7)*7,out='<div class="glass calendar"><div class="weekdays">'+days.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="days">';for(let i=0;i<total;i++){let d=new Date(year,month,i-offset+1),date=localDate(d),sh=shifts.find(x=>x.date===date),ev=events.filter(x=>x.date===date),other=d.getMonth()!==month,today=date===localDate(new Date());out+='<button aria-label="'+fmt(date)+(ev.length?', '+ev.length+' Termine':'')+'" class="day '+(other?'other ':'')+(selected===date?'selected ':'')+(today?'today-mark ':'')+(forShifts&&sh?'shift '+sh.type:'')+'" onclick="chooseDate(\''+date+'\')">'+d.getDate()+(forShifts&&sh?'<i style="background:'+types[sh.type][2]+'"></i>':ev.length?'<i style="background:'+(ev.some(x=>x.kind==='work')?'#268aff':'#fa638e')+'"></i>':'')+'</button>'}return out+'</div></div>'}
+function home(){let today=localDate(new Date());return '<div class="top"><div><div class="brand">🪷 Yary<span>ane</span> ✦</div><div class="subtitle">Dein Kalender. Dein Leben.</div></div><button class="avatar home-profile-avatar" type="button" aria-label="Mein Profil öffnen" onclick="navigate(\'more\')">'+(storageGet('yaryane_profile_photo_v1')?'<img src="'+esc(storageGet('yaryane_profile_photo_v1'))+'" alt="">':'<span>'+esc((storageGet('yaryane_profile_name_v1')||'Y').charAt(0).toLocaleUpperCase('de'))+'</span>')+'</button></div><section class="glass hero"><h1>Yaryane ☾</h1><p>Dein Kalender. Dein Leben.</p><button onclick="openForm(\'event\')">Neuen Termin hinzufügen… <b>+</b></button></section><div class="sectionhead"><h2>Heute</h2><button onclick="navigate(\'calendar\')">Alle anzeigen ›</button></div><div class="muted">'+fmt(today)+'</div>'+eventList(today)+'<div class="sectionhead"><h2>Deine Aufgaben</h2><button onclick="navigate(\'tasks\')">Alle anzeigen ›</button></div>'+taskList(tasks.filter(x=>!x.done).slice(0,3))+'<div class="sectionhead"><h2>Schnellzugriff</h2></div><div class="notes"><button class="glass note" onclick="navigate(\'shifts\')"><strong>▣ Dienstplan</strong><p>Deine Schichten im Blick</p></button><button class="glass note" onclick="navigate(\'notes\')"><strong>▤ Notizen</strong><p>Ideen und Listen festhalten</p></button></div>'}
+function calGrid(forShifts){let first=new Date(year,month,1),offset=(first.getDay()+6)%7,last=new Date(year,month+1,0).getDate(),total=Math.ceil((offset+last)/7)*7,out='<div class="glass calendar"><div class="weekdays">'+days.map(x=>'<span>'+x+'</span>').join('')+'</div><div class="days">';for(let i=0;i<total;i++){let d=new Date(year,month,i-offset+1),date=localDate(d),sh=shifts.find(x=>x.date===date),ev=events.filter(x=>x.date===date),other=d.getMonth()!==month,today=date===localDate(new Date());out+='<button aria-label="'+fmt(date)+(ev.length?', '+ev.length+' Termin'+(ev.length===1?'':'e'):'')+'" class="day '+(other?'other ':'')+(selected===date?'selected ':'')+(today?'today-mark ':'')+(forShifts&&sh?'shift '+sh.type:'')+'" onclick="chooseDate(\''+date+'\')">'+d.getDate()+(forShifts&&sh?'<i style="background:'+types[sh.type][2]+'"></i>':ev.length?'<i style="background:'+(ev.some(x=>x.kind==='work')?'#268aff':'#fa638e')+'"></i>':'')+'</button>'}return out+'</div></div>'}
 function monthbar(){return '<div class="toolbar"><button class="round" onclick="moveMonth(-1)">‹</button><h2>'+new Date(year,month,1).toLocaleDateString('de-DE',{month:'long',year:'numeric'})+'</h2><button class="round" onclick="moveMonth(1)">›</button></div>'}
-function moveMonth(n){let d=new Date(year,month+n,1);month=d.getMonth();year=d.getFullYear();render()}function chooseDate(d){selected=d;let a=d.split('-');year=+a[0];month=+a[1]-1;render()}
+function moveMonth(n){let d=new Date(year,month+n,1);month=d.getMonth();year=d.getFullYear();const day=Math.min(Number(selected.slice(-2))||1,new Date(year,month+1,0).getDate());selected=localDate(new Date(year,month,day));render()}function chooseDate(d){selected=d;let a=d.split('-');year=+a[0];month=+a[1]-1;render()}
 function calendar(){let today=localDate(new Date()),sh=shifts.find(x=>x.date===selected),count=events.filter(x=>x.date.startsWith(year+'-'+String(month+1).padStart(2,'0'))).length;return '<div class="top"><div><div class="brand">Kalender</div><div class="subtitle">Alle Termine auf einen Blick</div></div><button class="add" onclick="openForm(\'event\')">+</button></div>'+monthbar()+'<div class="toolbar"><span class="muted">'+count+' Termine in diesem Monat</span><button class="textbtn" onclick="chooseDate(\''+today+'\')">Heute anzeigen</button></div>'+calGrid(false)+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'event\')">+ Termin</button></div>'+(sh?'<div class="glass item" style="margin-bottom:8px"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+'</small></div><button class="textbtn" onclick="navigate(\'shifts\')">Dienstplan ›</button></div>':'')+eventList(selected)}
 function taskPriority(x){return x.priority==='high'?'Hoch':x.priority==='low'?'Niedrig':'Normal'}
 function taskList(a){let today=localDate(new Date());return a.length?a.map(x=>'<div class="glass item '+(x.done?'done':'')+'" style="border-left:3px solid '+(x.priority==='high'?'#f56c82':x.priority==='low'?'#38bf9a':'#458ff4')+'"><input aria-label="Aufgabe erledigen" class="check" type="checkbox" '+(x.done?'checked':'')+' onchange="toggleTask(\''+esc(x.id)+'\')"><span class="iconbox">'+esc(x.icon||'📌')+'</span><div class="details"><strong>'+esc(x.title)+'</strong><small>'+(x.date?fmt(x.date):'Ohne Datum')+(x.date&&!x.done&&x.date<today?' · Überfällig':'')+' · '+taskPriority(x)+(x.details?' · '+esc(x.details):'')+'</small></div><button aria-label="Aufgabe bearbeiten" class="dots" onclick="openForm(\'task\',\''+esc(x.id)+'\')">•••</button></div>').join(''):'<div class="glass empty">Hier ist noch alles frei. ✨</div>'}
 function tasksPage(){let today=localDate(new Date()),weekEnd=new Date(today+'T12:00:00');weekEnd.setDate(weekEnd.getDate()+7);let end=localDate(weekEnd),a=tasks.filter(x=>filter==='Erledigt'?x.done:filter==='Heute'?!x.done&&x.date===today:filter==='Diese Woche'?!x.done&&x.date&&x.date>=today&&x.date<end:filter==='Überfällig'?!x.done&&x.date&&x.date<today:!x.done);a.sort((x,y)=>((x.date||'9999').localeCompare(y.date||'9999'))||(({high:0,normal:1,low:2}[x.priority||'normal'])-({high:0,normal:1,low:2}[y.priority||'normal'])));let open=tasks.filter(x=>!x.done).length,overdue=tasks.filter(x=>!x.done&&x.date&&x.date<today).length;return '<div class="top"><div><div class="brand">Aufgaben</div><div class="subtitle">Organisiert durch den Tag</div></div><button class="add" onclick="openForm(\'task\')">+</button></div><div class="glass" style="padding:15px;display:flex;justify-content:space-around;text-align:center"><div><strong style="font-size:23px">'+open+'</strong><div class="muted">Offen</div></div><div><strong style="font-size:23px">'+overdue+'</strong><div class="muted">Überfällig</div></div><div><strong style="font-size:23px">'+tasks.filter(x=>x.done).length+'</strong><div class="muted">Erledigt</div></div></div><div class="pillrow">'+['Alle','Heute','Diese Woche','Überfällig','Erledigt'].map(x=>'<button class="pill '+(filter===x?'active':'')+'" onclick="filter=\''+x+'\';render()">'+x+'</button>').join('')+'</div>'+taskList(a)}
-function toggleTask(id){let t=tasks.find(x=>String(x.id)===String(id));if(t){t.done=!t.done;save(TK,tasks);render()}}
 function shiftHours(x){if(!x.start||!x.end||!['early','late','night'].includes(x.type))return 0;let [a,b]=x.start.split(':').map(Number),[c,d]=x.end.split(':').map(Number);let mins=(c*60+d)-(a*60+b);if(mins<0)mins+=1440;return Math.max(0,(mins-(Number(x.breakMinutes)||0))/60)}
 function shiftStats(){let prefix=year+'-'+String(month+1).padStart(2,'0'),arr=shifts.filter(x=>x.date.startsWith(prefix)),hours=arr.reduce((n,x)=>n+shiftHours(x),0);return '<div class="glass" style="padding:14px;margin:12px 0 17px"><div class="muted" style="margin-bottom:10px">Dein Monat im Überblick</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center"><div><strong style="font-size:21px">'+arr.filter(x=>['early','late','night'].includes(x.type)).length+'</strong><div class="muted">Dienste</div></div><div><strong style="font-size:21px">'+hours.toLocaleString('de-DE',{maximumFractionDigits:1})+' h</strong><div class="muted">Arbeitszeit</div></div><div><strong style="font-size:21px">'+arr.filter(x=>x.type==='free'||x.type==='vacation').length+'</strong><div class="muted">Frei / Urlaub</div></div></div></div>'}
 function shiftsPage(){let sh=shifts.find(x=>x.date===selected),prefix=year+'-'+String(month+1).padStart(2,'0'),monthShifts=shifts.filter(x=>x.date.startsWith(prefix)).sort((a,b)=>a.date.localeCompare(b.date));return '<div class="top"><div><div class="brand">Dienstplan</div><div class="subtitle">Deine Schichten auf einen Blick</div></div><button class="add" aria-label="Schicht hinzufügen" onclick="openForm(\'shift\')">+</button></div>'+monthbar()+shiftStats()+'<div class="pillrow"><button class="pill '+(shiftMode==='Monat'?'active':'')+'" onclick="shiftMode=\'Monat\';render()">Monat</button><button class="pill '+(shiftMode==='Liste'?'active':'')+'" onclick="shiftMode=\'Liste\';render()">Liste</button></div>'+(shiftMode==='Monat'?calGrid(true):monthShifts.map(x=>'<button class="glass setting" onclick="openForm(\'shift\',\''+x.id+'\')"><span class="tag" style="background:'+types[x.type][2]+'55">'+types[x.type][0]+'</span><span>'+fmt(x.date)+' · '+types[x.type][1]+'<small class="muted" style="display:block">'+esc(x.start||'')+(x.end?' – '+esc(x.end):'')+(shiftHours(x)?' · '+shiftHours(x).toLocaleString('de-DE',{maximumFractionDigits:1})+' h':'')+'</small></span><span class="arrow">›</span></button>').join('')||'<div class="glass empty">Noch keine Schichten eingetragen.</div>')+'<div class="sectionhead"><h2>'+fmt(selected)+'</h2><button onclick="openForm(\'shift\',\''+(sh?sh.id:'')+'\')">'+(sh?'Bearbeiten':'+ Schicht')+'</button></div>'+(sh?'<div class="glass item"><span class="tag" style="background:'+types[sh.type][2]+'55">'+types[sh.type][0]+'</span><div class="details"><strong>'+types[sh.type][1]+'</strong><small>'+esc(sh.start||'')+(sh.end?' – '+esc(sh.end):'')+(shiftHours(sh)?' · '+shiftHours(sh).toLocaleString('de-DE',{maximumFractionDigits:1})+' h':'')+'</small></div></div>':'<div class="glass empty">Für diesen Tag ist keine Schicht eingetragen.</div>')+'<div class="glass" style="padding:14px;margin-top:15px"><strong>Schichtfarben</strong><div class="legend">'+Object.entries(types).map(([k,v])=>'<div><span class="tag" style="background:'+v[2]+'55">'+v[0]+'</span>'+v[1]+'</div>').join('')+'</div></div><p class="muted" style="padding:4px 8px">Arbeitszeit = Schichtdauer abzüglich Pause. Nachtdienste über Mitternacht werden berücksichtigt.</p>'}
@@ -832,7 +833,7 @@ function renderNotesResults(){let q=noteSearch.trim().toLocaleLowerCase('de'),li
 const PROFILE_NAME_KEY='yaryane_profile_name_v1',PROFILE_PHOTO_KEY='yaryane_profile_photo_v1';
 function editProfileName(){
  const existing=document.querySelector('.profile-editor-overlay');if(existing)return;
- const current=localStorage.getItem(PROFILE_NAME_KEY)||'';
+ const current=storageGet(PROFILE_NAME_KEY)||'';
  const overlay=document.createElement('div');overlay.className='profile-editor-overlay';overlay.setAttribute('role','presentation');
  overlay.innerHTML='<form class="profile-editor" role="dialog" aria-modal="true" aria-labelledby="profileEditTitle"><div class="profile-editor-top"><span class="profile-editor-mark">✎</span><button type="button" class="profile-editor-close" aria-label="Schließen">×</button></div><h3 id="profileEditTitle">Profil bearbeiten</h3><p>Wähle den Namen, der in deinem Profil angezeigt wird.</p><label for="profileNameInput">ANZEIGENAME</label><input id="profileNameInput" name="displayName" maxlength="45" autocomplete="nickname" placeholder="Dein Name" required><div class="profile-editor-actions"><button type="button" class="profile-editor-cancel">Abbrechen</button><button type="submit" class="profile-editor-save">Änderungen speichern</button></div></form>';
  document.body.appendChild(overlay);const input=overlay.querySelector('input');input.value=current;
@@ -841,11 +842,11 @@ function editProfileName(){
  overlay.querySelector('form').onsubmit=e=>{e.preventDefault();const name=input.value.trim();if(!name)return;localStorage.setItem(PROFILE_NAME_KEY,name);close();render();window.dispatchEvent(new Event('yaryane-local-change'))};
  requestAnimationFrame(()=>{input.focus({preventScroll:true});window.scrollTo({top:previousScroll,left:0,behavior:'instant'})})
 }
-function removeProfilePhoto(){if(!localStorage.getItem(PROFILE_PHOTO_KEY))return;if(!confirm('Profilbild entfernen?'))return;localStorage.removeItem(PROFILE_PHOTO_KEY);render();window.dispatchEvent(new Event('yaryane-local-change'))}
+function removeProfilePhoto(){if(!storageGet(PROFILE_PHOTO_KEY))return;if(!confirm('Profilbild entfernen?'))return;localStorage.removeItem(PROFILE_PHOTO_KEY);render();window.dispatchEvent(new Event('yaryane-local-change'))}
 function updateProfilePhoto(input){const file=input.files&&input.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Bitte ein Bild auswählen.');return}if(file.size>12000000){alert('Das Foto ist zu groß. Bitte ein kleineres Bild wählen.');return}const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{try{const canvas=document.createElement('canvas'),size=192;canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');const side=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-side)/2,(img.height-side)/2,side,side,0,0,size,size);localStorage.setItem(PROFILE_PHOTO_KEY,canvas.toDataURL('image/jpeg',.76));render();window.dispatchEvent(new Event('yaryane-local-change'))}catch(e){alert('Profilbild konnte nicht gespeichert werden.')}};img.onerror=()=>alert('Foto konnte nicht geöffnet werden.');img.src=reader.result};reader.readAsDataURL(file)}
 function refreshProfileHeader(){const el=document.getElementById('profileAccountStatus');if(el)el.textContent=window.yaryaneAccountEmail?'Angemeldet · '+window.yaryaneAccountEmail:'Ohne Anmeldung · nur auf diesem Gerät'}
 const YARYANE_REMINDER_KEY='yaryane_reminder_lead_v1';
-function yaryaneReminderLead(){const raw=localStorage.getItem(YARYANE_REMINDER_KEY);const n=Number(raw);return raw!==null&&[0,5,15,30,60].includes(n)?n:15}
+function yaryaneReminderLead(){const raw=storageGet(YARYANE_REMINDER_KEY);const n=Number(raw);return raw!==null&&[0,5,15,30,60].includes(n)?n:15}
 function yaryaneSetReminderLead(v){const n=Number(v);if([0,5,15,30,60].includes(n)){localStorage.setItem(YARYANE_REMINDER_KEY,String(n));yaryaneReminderPreview();yaryaneReminderCheck()}}
 function yaryaneRequestNotification(){
  if(!('Notification' in window)){alert('Dieser Browser unterstützt keine Web-Mitteilungen. Nutze für Hintergrund-Erinnerungen den Kalenderexport.');return}
@@ -863,7 +864,7 @@ function yaryaneReminderItems(){
 }
 function yaryaneReminderCheck(){
  const now=Date.now(),lead=yaryaneReminderLead()*60000;
- const seenKey='yaryane_reminders_seen_v1';let seen={};try{seen=JSON.parse(localStorage.getItem(seenKey)||'{}')||{}}catch(e){}
+ const seenKey='yaryane_reminders_seen_v1';let seen={};try{seen=JSON.parse(storageGet(seenKey)||'{}')||{}}catch(e){}
  let changed=false;
  for(const key of Object.keys(seen))if(!Number.isFinite(seen[key])||seen[key]<now-3*86400000){delete seen[key];changed=true}
  for(const item of yaryaneReminderItems()){
@@ -946,12 +947,12 @@ setTimeout(yaryaneReminderCheck,1200);
 window.addEventListener('yaryane-local-change',()=>{yaryaneReminderCheck();yaryaneReminderPreview()});
 function morePage(){
  const total=events.length+tasks.length+notes.length+shifts.length;
- const backup=!!localStorage.getItem('yaryane_preimport_backup_v1');
- const displayName=localStorage.getItem(PROFILE_NAME_KEY)||'Mein Profil';
- const photo=localStorage.getItem(PROFILE_PHOTO_KEY);
+ const backup=!!storageGet('yaryane_preimport_backup_v1');
+ const displayName=storageGet(PROFILE_NAME_KEY)||'Mein Profil';
+ const photo=storageGet(PROFILE_PHOTO_KEY);
  const initial=(displayName==='Mein Profil'?'Y':displayName.charAt(0)).toLocaleUpperCase('de');
  return '<div class="top"><div><div class="brand">Einstellungen</div><div class="subtitle">Persönlich & übersichtlich</div></div></div>'
- +'<div class="glass profile-card"><div class="profile-banner"></div><div class="profile-content"><label class="profile-avatar" aria-label="Profilbild auswählen">'+(photo?'<img src="'+photo+'" alt="Dein Profilbild">':'<span>'+esc(initial)+'</span>')+'<span class="profile-camera">✎</span><input type="file" accept="image/*" style="display:none" onchange="updateProfilePhoto(this)"></label><div class="profile-details"><strong>'+esc(displayName)+'</strong><small id="profileAccountStatus">'+(window.yaryaneAccountEmail?'Angemeldet · '+esc(window.yaryaneAccountEmail):'Ohne Anmeldung · nur auf diesem Gerät')+'</small></div><button type="button" class="profile-edit" onclick="editProfileName()" aria-label="Profilnamen bearbeiten">Bearbeiten</button></div><p class="profile-hint">Tippe auf das Profilbild, um ein eigenes Foto auszuwählen.</p></div>'
+ +'<div class="glass profile-card"><div class="profile-banner"></div><div class="profile-content"><label class="profile-avatar" aria-label="Profilbild auswählen">'+(photo?'<img src="'+esc(photo)+'" alt="Dein Profilbild">':'<span>'+esc(initial)+'</span>')+'<span class="profile-camera">✎</span><input type="file" accept="image/*" style="display:none" onchange="updateProfilePhoto(this)"></label><div class="profile-details"><strong>'+esc(displayName)+'</strong><small id="profileAccountStatus">'+(window.yaryaneAccountEmail?'Angemeldet · '+esc(window.yaryaneAccountEmail):'Ohne Anmeldung · nur auf diesem Gerät')+'</small></div><button type="button" class="profile-edit" onclick="editProfileName()" aria-label="Profilnamen bearbeiten">Bearbeiten</button></div><p class="profile-hint">Tippe auf das Profilbild, um ein eigenes Foto auszuwählen.</p></div>'
  +(photo?'<button type="button" class="profile-remove" onclick="removeProfilePhoto()">Profilbild entfernen</button>':'')
  +'<div class="settings-section-title">ORGANISATION</div>'
  +'<button class="glass setting settings-row" onclick="navigate(\'notes\')"><span class="settings-icon">📝</span><span class="settings-row-text"><strong>Notizen</strong><small>Ideen und Checklisten verwalten</small></span><span class="arrow">›</span></button>'
@@ -985,18 +986,7 @@ function showEventDetails(id){
  overlay.appendChild(panel);document.body.appendChild(overlay);
  const close=()=>overlay.remove();panel.querySelector('.event-detail-x').onclick=close;panel.querySelector('.event-detail-cancel').onclick=close;overlay.onclick=e=>{if(e.target===overlay)close()};panel.querySelector('.event-detail-edit').onclick=()=>{close();openForm('event',id)};
 }
-function openForm(type,id){document.body.classList.add('yaryane-modal-open');let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+date+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Wiederholung<select name="repeat"><option value="1">Nur dieser Tag</option><option value="7">7 Tage hintereinander</option><option value="14">14 Tage hintereinander</option><option value="28">28 Tage hintereinander</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label><label class="field">Priorität<select name="priority"><option value="normal" '+((x.priority||'normal')==='normal'?'selected':'')+'>Normal</option><option value="high" '+(x.priority==='high'?'selected':'')+'>Hoch</option><option value="low" '+(x.priority==='low'?'selected':'')+'>Niedrig</option></select></label><label class="field">Beschreibung<textarea name="details">'+esc(x.details||'')+'</textarea></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+date+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Pause (Minuten)<input type="number" name="breakMinutes" min="0" max="600" step="5" value="'+esc(x.breakMinutes||0)+'"></label>'+(id?'':'<label class="field">Wiederholung<select name="repeat"><option value="1">Einmalig</option><option value="7">7 Tage</option><option value="14">14 Tage</option><option value="28">28 Tage</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label>'):'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label><label class="field">Farbe<select name="color">'+[['blue','Blau'],['violet','Violett'],['pink','Rosa'],['mint','Mint'],['amber','Gold']].map(([v,t])=>'<option value="'+v+'" '+((x.color||'blue')===v?'selected':'')+'>'+t+'</option>').join('')+'</select></label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="pinned" '+(x.pinned?'checked':'')+' style="width:auto;margin:0"> Notiz anheften</label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="checklist" '+(x.checklist?'checked':'')+' style="width:auto;margin:0"> Als Checkliste anzeigen (eine Zeile je Punkt)</label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" onclick="event.stopPropagation()"><div class="toolbar"><h2>'+(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>';if(type==='event'){const warning=document.createElement('div');warning.className='yaryane-conflict-warning';warning.hidden=true;const form=document.querySelector('#modal form');if(form){form.insertBefore(warning,form.querySelector('.formactions'));form.addEventListener('input',()=>yaryaneCheckEventForm(form));form.addEventListener('change',()=>yaryaneCheckEventForm(form));yaryaneCheckEventForm(form)}}}
-function closeForm(){document.getElementById('modal').innerHTML='';document.body.classList.remove('yaryane-modal-open');edit=null}
-function yaryaneEventConflicts(candidate,excludeId){
- const toMinutes=v=>{const m=String(v||'').match(/^(\d{1,2}):(\d{2})$/);if(!m)return null;const h=+m[1],n=+m[2];return h<24&&n<60?h*60+n:null};
- const a=toMinutes(candidate.start),b=toMinutes(candidate.end);
- if(a===null||b===null)return [];
- const finish=b<=a?b+1440:b,items=[];
- const compare=(x,label)=>{const c=toMinutes(x.start),d=toMinutes(x.end);if(c===null||d===null)return;const stop=d<=c?d+1440:d;if(a<stop&&finish>c)items.push(label+' · '+(x.start||'')+'–'+(x.end||''))};
- events.filter(x=>x.date===candidate.date&&String(x.id)!==String(excludeId)).forEach(x=>compare(x,x.name||'Termin'));
- shifts.filter(x=>x.date===candidate.date&&!['free','off','vacation','sick'].includes(x.type)).forEach(x=>compare(x,({early:'Frühdienst',late:'Spätdienst',night:'Nachtdienst'}[x.type]||'Schicht')));
- return items;
-}
+function openForm(type,id){yaryaneFormReturnFocus=document.activeElement;document.getElementById('app').inert=true;document.getElementById('nav').inert=true;const assistantButton=document.getElementById('yaneLaunch');if(assistantButton)assistantButton.inert=true;document.body.classList.add('yaryane-modal-open');document.body.classList.add('yaryane-modal-open');let arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,x=arr.find(v=>String(v.id)===String(id))||{},date=x.date||selected;edit={type,id:x.id};let fields=type==='event'?'<label class="field">Titel<input name="title" required value="'+esc(x.name)+'"></label><label class="field">Kategorie<select name="kind">'+[['private','Privat'],['work','Arbeit'],['free','Frei']].map(([k,v])=>'<option value="'+k+'" '+((x.kind||'private')===k?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Wiederholung<select name="repeat"><option value="1">Nur dieser Tag</option><option value="7">7 Tage hintereinander</option><option value="14">14 Tage hintereinander</option><option value="28">28 Tage hintereinander</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label><label class="field">Notizen<textarea name="body">'+esc(x.notes)+'</textarea></label>':type==='task'?'<label class="field">Aufgabe<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📌','💼','🛒','🏃','🎁','🏠','📋'].map(v=>'<option '+((x.icon||'📌')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Fällig am<input type="date" name="date" value="'+esc(x.date)+'"></label><label class="field">Priorität<select name="priority"><option value="normal" '+((x.priority||'normal')==='normal'?'selected':'')+'>Normal</option><option value="high" '+(x.priority==='high'?'selected':'')+'>Hoch</option><option value="low" '+(x.priority==='low'?'selected':'')+'>Niedrig</option></select></label><label class="field">Beschreibung<textarea name="details">'+esc(x.details||'')+'</textarea></label>':type==='shift'?'<label class="field">Datum<input type="date" name="date" required value="'+esc(date)+'"></label><label class="field">Schicht<select name="shiftType">'+Object.entries(types).map(([k,v])=>'<option value="'+k+'" '+((x.type||'early')===k?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label><label class="field">Beginn<input type="time" name="start" value="'+esc(x.start)+'"></label><label class="field">Ende<input type="time" name="end" value="'+esc(x.end)+'"></label><label class="field">Pause (Minuten)<input type="number" name="breakMinutes" min="0" max="600" step="5" value="'+esc(x.breakMinutes||0)+'"></label>'+(id?'':'<label class="field">Wiederholung<select name="repeat"><option value="1">Einmalig</option><option value="7">7 Tage</option><option value="14">14 Tage</option><option value="28">28 Tage</option><option value="weekly4">Wöchentlich · 4 Wochen</option><option value="weekly8">Wöchentlich · 8 Wochen</option></select></label>'):'<label class="field">Titel<input name="title" required value="'+esc(x.title)+'"></label><label class="field">Symbol<select name="icon">'+['📝','💡','🛒','🎯','✈️','🍲','🔗','📚'].map(v=>'<option '+((x.icon||'📝')===v?'selected':'')+'>'+v+'</option>').join('')+'</select></label><label class="field">Inhalt<textarea name="body">'+esc(x.body)+'</textarea></label><label class="field">Farbe<select name="color">'+[['blue','Blau'],['violet','Violett'],['pink','Rosa'],['mint','Mint'],['amber','Gold']].map(([v,t])=>'<option value="'+v+'" '+((x.color||'blue')===v?'selected':'')+'>'+t+'</option>').join('')+'</select></label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="pinned" '+(x.pinned?'checked':'')+' style="width:auto;margin:0"> Notiz anheften</label><label class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" name="checklist" '+(x.checklist?'checked':'')+' style="width:auto;margin:0"> Als Checkliste anzeigen (eine Zeile je Punkt)</label>';document.getElementById('modal').innerHTML='<div class="overlay" onclick="closeForm()"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="entryFormTitle" onclick="event.stopPropagation()"><div class="toolbar"><h2 id="entryFormTitle">' +(id?'Bearbeiten':'Neu hinzufügen')+'</h2><button class="round" type="button" aria-label="Schließen" onclick="closeForm()">×</button></div><form onsubmit="submitForm(event)">'+fields+'<div class="formactions"><button type="button" class="secondary" onclick="closeForm()">Abbrechen</button><button class="primary" type="submit">Speichern</button></div>'+(id?'<button type="button" class="secondary danger" style="width:100%;margin-top:9px" onclick="deleteEntry()">Löschen</button>':'')+'</form></div></div>';if(type==='event'){const warning=document.createElement('div');warning.className='yaryane-conflict-warning';warning.hidden=true;const form=document.querySelector('#modal form');if(form){form.insertBefore(warning,form.querySelector('.formactions'));form.addEventListener('input',()=>yaryaneCheckEventForm(form));form.addEventListener('change',()=>yaryaneCheckEventForm(form));yaryaneCheckEventForm(form)}};const firstInput=document.querySelector('#modal input:not([type=hidden]),#modal select');firstInput?.focus()}
 function yaryaneCheckEventForm(form){
  const date=form.querySelector('[name="date"]')?.value,start=form.querySelector('[name="start"]')?.value,end=form.querySelector('[name="end"]')?.value;
  const box=form.querySelector('.yaryane-conflict-warning');if(!box)return;
@@ -1005,12 +995,187 @@ function yaryaneCheckEventForm(form){
  box.hidden=!conflicts.length;
  box.textContent=conflicts.length?'⚠️ Zeitüberschneidung mit: '+conflicts.slice(0,3).join(' · ')+(conflicts.length>3?' und weiteren Einträgen':'')+'. Du kannst den Termin trotzdem speichern.':'';
 }
-function submitForm(e){e.preventDefault();if(edit&&edit.type==='event'){const ff=new FormData(e.target),conflicts=yaryaneEventConflicts({date:ff.get('date'),start:ff.get('start'),end:ff.get('end')},edit.id);if(conflicts.length&&!confirm('Dieser Termin überschneidet sich mit:\n\n'+conflicts.slice(0,5).join('\n')+'\n\nTrotzdem speichern?'))return}let f=new FormData(e.target),id=edit.id||String(Date.now()),type=edit.type,arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes,prev=arr.find(x=>x.id===id)||{},v=type==='event'?{id,kind:f.get('kind'),name:f.get('title'),date:f.get('date'),start:f.get('start'),end:f.get('end'),notes:f.get('body')}:type==='task'?{id,title:f.get('title'),icon:f.get('icon'),date:f.get('date'),priority:f.get('priority')||'normal',details:f.get('details')||'',done:prev.done||false}:type==='shift'?{id,date:f.get('date'),type:f.get('shiftType'),start:f.get('start'),end:f.get('end'),breakMinutes:Math.max(0,Number(f.get('breakMinutes'))||0)}:{id,title:f.get('title'),icon:f.get('icon'),body:f.get('body'),date:prev.date||localDate(new Date()),updated:localDate(new Date()),color:f.get('color')||'blue',pinned:f.has('pinned'),checklist:f.has('checklist')};if(type==='shift')arr=arr.filter(x=>x.date!==v.date||x.id===id);let ix=arr.findIndex(x=>x.id===id);if(ix>=0)arr[ix]=v;else arr.push(v);if(type==='shift'&&!edit.id){let rep=f.get('repeat')||'1',weekly=rep.startsWith('weekly'),count=weekly?Number(rep.slice(6)):Number(rep);if(count>1){for(let i=1;i<count;i++){let d=new Date(v.date+'T12:00:00');d.setDate(d.getDate()+i*(weekly?7:1));let date=localDate(d);if(!arr.some(x=>x.date===date))arr.push({...v,id:String(Date.now())+'-'+i,date})}}} if(type==='event'&&!edit.id){let rep=f.get('repeat')||'1',weekly=rep.startsWith('weekly'),count=weekly?Number(rep.slice(6)):Number(rep);if(count>1){for(let i=1;i<count;i++){let d=new Date(v.date+'T12:00:00');d.setDate(d.getDate()+i*(weekly?7:1));arr.push({...v,id:String(Date.now())+'-event-'+i,date:localDate(d)})}}} if(type==='event'){events=arr;save(K,arr)}if(type==='task'){tasks=arr;save(TK,arr)}if(type==='shift'){shifts=arr;save(SK,arr)}if(type==='note'){notes=arr;save(NK,arr)}closeForm();render()}
-function deleteEntry(){if(!confirm('Diesen Eintrag wirklich löschen?'))return;let {type,id}=edit;if(type==='event')save(K,events=events.filter(x=>x.id!==id));if(type==='task')save(TK,tasks=tasks.filter(x=>x.id!==id));if(type==='shift')save(SK,shifts=shifts.filter(x=>x.id!==id));if(type==='note')save(NK,notes=notes.filter(x=>x.id!==id));closeForm();render()}
 function backupPayload(){return {version:3,exportedAt:new Date().toISOString(),events,tasks,notes,shifts}}
-function restoreSnapshot(){try{let v=JSON.parse(localStorage.getItem('yaryane_preimport_backup_v1')||'null');if(!v||!Array.isArray(v.events))return alert('Keine Rückfallkopie vorhanden.');if(!confirm('Vorherige Daten aus der Rückfallkopie wiederherstellen? Die aktuellen Daten werden überschrieben.'))return;save(K,events=v.events);save(TK,tasks=v.tasks||[]);save(NK,notes=v.notes||[]);save(SK,shifts=v.shifts||[]);render();alert('Rückfallkopie wiederhergestellt.')}catch(e){alert('Wiederherstellung fehlgeschlagen.')}} 
-function exportData(){try{let data=JSON.stringify(backupPayload(),null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung-'+localDate(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);localStorage.setItem('yaryane_last_export_v1',new Date().toISOString());alert('Sicherungsdatei wurde zum Download bereitgestellt. Bitte in Dateien speichern und aufbewahren.')}catch(e){alert('Sicherung konnte nicht erstellt werden: '+e.message)}}
-function importData(input){let file=input.files[0];if(!file)return;if(file.size>10000000){alert('Datei zu groß.');input.value='';return}let reader=new FileReader();reader.onload=()=>{try{let d=JSON.parse(reader.result);if(!d||!Array.isArray(d.events))throw Error('Keine gültige Yaryane-Sicherung');for(let k of ['tasks','notes','shifts'])if(d[k]!==undefined&&!Array.isArray(d[k]))throw Error('Ungültiges Format: '+k);let counts='Termine: '+d.events.length+', Aufgaben: '+(d.tasks||[]).length+', Notizen: '+(d.notes||[]).length+', Schichten: '+(d.shifts||[]).length;if(!confirm('Sicherung importieren?\\n'+counts+'\\n\\nDie aktuellen Daten werden ersetzt. Vorher wird eine Rückfallkopie auf diesem Gerät angelegt.'))return;localStorage.setItem('yaryane_preimport_backup_v1',JSON.stringify(backupPayload()));save(K,events=d.events);save(TK,tasks=Array.isArray(d.tasks)?d.tasks:[]);save(NK,notes=Array.isArray(d.notes)?d.notes:[]);save(SK,shifts=Array.isArray(d.shifts)?d.shifts:[]);render();alert('Import abgeschlossen. Deine vorherigen Daten sind als lokale Rückfallkopie gespeichert.')}catch(e){alert('Import fehlgeschlagen: '+e.message)}finally{input.value=''}};reader.onerror=()=>{alert('Datei konnte nicht gelesen werden.');input.value=''};reader.readAsText(file)}
+function exportData(){try{let data=JSON.stringify(backupPayload(),null,2),url=URL.createObjectURL(new Blob([data],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='yaryane-sicherung-'+localDate(new Date())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);try{localStorage.setItem('yaryane_last_export_v1',new Date().toISOString())}catch{}alert('Sicherungsdatei wurde zum Download bereitgestellt. Bitte in Dateien speichern und aufbewahren.')}catch(e){alert('Sicherung konnte nicht erstellt werden: '+e.message)}}
+// Shared data-integrity helpers for the current app and its legacy preview.
+function storageGet(key){try{return localStorage.getItem(key)}catch{return null}}
+let yaryaneIdCounter=0;
+let yaryaneFormReturnFocus=null;
+function yaryaneNewId(){return globalThis.crypto?.randomUUID?.()||'y-'+Date.now().toString(36)+'-'+(++yaryaneIdCounter).toString(36)+'-'+Math.random().toString(36).slice(2)}
+function yaryaneDateOK(value,optional=false){
+ if(optional&&(value==null||value===''))return true;
+ if(typeof value!=='string'||value.length!==10||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
+ const [y,m,d]=value.split('-').map(Number),leap=y%4===0&&(y%100!==0||y%400===0);
+ return y>=1&&m>=1&&m<=12&&d>=1&&d<=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31][m-1];
+}
+function yaryaneClockOK(value){return typeof value==='string'&&value===value.trim()&&value.length>=4&&value.length<=5&&/^(?:\d|[01]\d|2[0-3]):[0-5]\d$/.test(value)}
+function yaryaneText(value,name,optional=false,max=1000000){
+ if(value==null&&optional)return '';
+ if(typeof value!=='string'||value.length>max||(!optional&&!value.trim()))throw Error('Ungültiges Feld: '+name);
+ return value;
+}
+function yaryaneNormalizeItem(x,type){
+ if(!x||typeof x!=='object'||Array.isArray(x))throw Error('Ungültiger Eintrag');
+ const id=String(x.id??''),v={...x,id:/^[a-zA-Z0-9_-]{1,128}$/.test(id)?id:yaryaneNewId()};
+ if(type==='event'){
+  v.name=yaryaneText(x.name,'Titel',false,10000);v.notes=yaryaneText(x.notes,'Notiz',true);
+  if(!['work','private','free'].includes(x.kind))throw Error('Ungültige Kategorie');
+ }else if(type==='task'){
+  v.title=yaryaneText(x.title,'Aufgabe',false,10000);v.details=yaryaneText(x.details,'Beschreibung',true);
+  if(x.done!=null&&typeof x.done!=='boolean')throw Error('Ungültiger Aufgabenstatus');
+  v.done=!!x.done;v.icon=yaryaneText(x.icon,'Symbol',true,100)||'📌';v.priority=x.priority||'normal';
+  if(!['normal','high','low'].includes(v.priority))throw Error('Ungültige Priorität');
+ }else if(type==='note'){
+  v.title=yaryaneText(x.title,'Notiztitel',false,10000);v.body=yaryaneText(x.body,'Notizinhalt',true);
+  v.icon=yaryaneText(x.icon,'Symbol',true,100)||'📝';v.color=x.color||'blue';
+  if(!['blue','violet','pink','mint','amber'].includes(v.color))throw Error('Ungültige Notizfarbe');
+  for(const flag of ['pinned','checklist'])if(x[flag]!=null&&typeof x[flag]!=='boolean')throw Error('Ungültige Notizeinstellung');
+  if(!yaryaneDateOK(x.updated,true))throw Error('Ungültiges Änderungsdatum');
+ }else if(type==='shift'){
+  if(!['early','late','night','free','vacation','sick'].includes(x.type))throw Error('Ungültige Schichtart');
+  v.breakMinutes=x.breakMinutes==null?0:Number(x.breakMinutes);
+  if(!Number.isFinite(v.breakMinutes)||v.breakMinutes<0||v.breakMinutes>600)throw Error('Ungültige Pausenzeit');
+ }
+ if(!yaryaneDateOK(x.date,type==='task'||type==='note'))throw Error('Ungültiges Datum');
+ v.date=x.date||'';
+ if(type==='event'||type==='shift'){
+  for(const key of ['start','end']){const value=x[key]??'';if(value!==''&&!yaryaneClockOK(value))throw Error('Ungültige Uhrzeit');v[key]=value?value.padStart(5,'0'):''}
+  if(v.start&&v.end&&v.start===v.end)throw Error('Beginn und Ende dürfen nicht gleich sein');
+ }
+ return v;
+}
+function yaryaneNormalizeBackup(data){
+ if(Array.isArray(data))data={events:data,tasks,notes,shifts};
+ if(!data||typeof data!=='object'||!Array.isArray(data.events))throw Error('Keine gültige Yaryane-Sicherung');
+ const out={};
+ for(const [key,type] of [['events','event'],['tasks','task'],['notes','note'],['shifts','shift']]){
+  const list=data[key]??[];if(!Array.isArray(list))throw Error('Ungültiges Format: '+key);
+  const ids=new Set();out[key]=list.map(x=>{const v=yaryaneNormalizeItem(x,type);if(ids.has(v.id))throw Error('Doppelte Kennung in '+key);ids.add(v.id);return v});
+ }
+ if(data.profile!=null){
+  if(typeof data.profile!=='object'||Array.isArray(data.profile))throw Error('Ungültiges Profil');
+  const name=yaryaneText(data.profile.name,'Profilname',true,1000),photo=yaryaneText(data.profile.photo,'Profilfoto',true,120000);
+  if(photo&&!/^data:image\/(?:png|jpeg|webp|gif);base64,[a-zA-Z0-9+/=]+$/.test(photo)&&!/^https:\/\//.test(photo))throw Error('Ungültiges Profilfoto');
+  out.profile={name,photo};
+ }
+ return out;
+}
+function yaryaneWriteEntries(entries){
+ const before=entries.map(([key])=>[key,localStorage.getItem(key)]),written=[];
+ try{entries.forEach(([key,value],i)=>{localStorage.setItem(key,value);written.push(i)})}
+ catch(error){
+  let restored=true;
+  for(const i of written.reverse()){try{const [key,value]=before[i];if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}catch{restored=false}}
+  if(!restored)throw Error('Speicherfehler. Rückfallkopie prüfen; Änderungen konnten nicht vollständig zurückgesetzt werden.');
+  throw error;
+ }
+}
+function yaryaneLocalChange(){window.dispatchEvent(new Event('yaryane-local-change'))}
+function yaryanePersist(type,list){
+ const key={event:K,task:TK,note:NK,shift:SK}[type];
+ try{yaryaneWriteEntries([[key,JSON.stringify(list)]])}catch{alert('Speichern nicht möglich. Deine bisherigen Daten bleiben erhalten. Prüfe den Browser-Speicher.');return false}
+ if(type==='event')events=list;if(type==='task')tasks=list;if(type==='note')notes=list;if(type==='shift')shifts=list;
+ yaryaneLocalChange();return true;
+}
+function yaryaneApplySnapshot(data,makeBackup=true){
+ const d=yaryaneNormalizeBackup(data),pairs=[];
+ if(makeBackup)pairs.push(['yaryane_preimport_backup_v1',JSON.stringify({version:3,events,tasks,notes,shifts})]);
+ for(const [key,name] of [[K,'events'],[TK,'tasks'],[NK,'notes'],[SK,'shifts']])pairs.push([key,JSON.stringify(d[name])]);
+ if(d.profile){pairs.push(['yaryane_profile_name_v1',d.profile.name],['yaryane_profile_photo_v1',d.profile.photo])}
+ yaryaneWriteEntries(pairs);
+ events=d.events;tasks=d.tasks;notes=d.notes;shifts=d.shifts;yaryaneLocalChange();return d;
+}
+function yaryaneInterval(item){
+ if(!yaryaneDateOK(item.date)||!yaryaneClockOK(item.start)||!yaryaneClockOK(item.end))return null;
+ const start=new Date(item.date+'T'+item.start.padStart(5,'0')+':00'),end=new Date(item.date+'T'+item.end.padStart(5,'0')+':00');
+ if(end<=start)end.setDate(end.getDate()+1);return [start.getTime(),end.getTime()];
+}
+function yaryaneBlockedDay(date){
+ const from=new Date(date+'T00:00:00'),to=new Date(from);to.setDate(to.getDate()+1);
+ const blocked=[],unknown=[];
+ const all=[...events,...shifts.filter(x=>!['free','vacation','sick'].includes(x.type))];
+ for(const item of all){
+  const interval=yaryaneInterval(item);
+  if(!interval){if(item.date===date)unknown.push(item.name||'Dienstplaneintrag');continue}
+  if(interval[0]>=to||interval[1]<=from)continue;
+  const start=new Date(Math.max(interval[0],from.getTime())),end=new Date(Math.min(interval[1],to.getTime()));
+  blocked.push([interval[0]<=from?0:start.getHours()*60+start.getMinutes(),interval[1]>=to?1440:end.getHours()*60+end.getMinutes()]);
+ }
+ return {blocked,unknown};
+}
+function yaryaneEventConflicts(candidate,excludeId){
+ const a=yaryaneInterval(candidate);if(!a)return [];
+ const items=[];
+ for(const x of events){if(String(x.id)===String(excludeId))continue;const b=yaryaneInterval(x);if(b&&a[0]<b[1]&&a[1]>b[0])items.push((x.name||'Termin')+' · '+fmt(x.date)+' · '+x.start+'–'+x.end)}
+ for(const x of shifts){if(['free','vacation','sick'].includes(x.type))continue;const b=yaryaneInterval(x);if(b&&a[0]<b[1]&&a[1]>b[0])items.push((types[x.type]?.[1]||'Schicht')+' · '+fmt(x.date)+' · '+x.start+'–'+x.end)}
+ return items;
+}
+function toggleTask(id){
+ const list=tasks.map(x=>String(x.id)===String(id)?{...x,done:!x.done}:x);
+ if(yaryanePersist('task',list))render();
+}
+function submitForm(e){
+ e.preventDefault();if(!edit)return;
+ try{
+  const f=new FormData(e.target),type=edit.type,editing=edit.id!=null,id=editing?String(edit.id):yaryaneNewId();
+  let arr=(type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes).slice();
+  const prev=arr.find(x=>String(x.id)===id)||{},title=String(f.get('title')||'').trim();
+  let value=type==='event'?{id,kind:f.get('kind'),name:title,date:f.get('date'),start:f.get('start'),end:f.get('end'),notes:f.get('body')}:
+   type==='task'?{...prev,id,title,icon:f.get('icon'),date:f.get('date'),priority:f.get('priority')||'normal',details:f.get('details')||'',done:!!prev.done}:
+   type==='shift'?{id,date:f.get('date'),type:f.get('shiftType'),start:f.get('start'),end:f.get('end'),breakMinutes:Number(f.get('breakMinutes')||0)}:
+   {...prev,id,title,icon:f.get('icon'),body:f.get('body'),date:prev.date||localDate(new Date()),updated:localDate(new Date()),color:f.get('color')||'blue',pinned:f.has('pinned'),checklist:f.has('checklist')};
+  value=yaryaneNormalizeItem(value,type);
+  const rep=editing?'1':String(f.get('repeat')||'1');if(!['1','7','14','28','weekly4','weekly8'].includes(rep))throw Error('Ungültige Wiederholung');
+  const step=rep.startsWith('weekly')?7:1,count=rep.startsWith('weekly')?Number(rep.slice(6)):Number(rep),additions=[value];
+  if(type==='event'||type==='shift')for(let i=1;i<count;i++){const day=new Date(value.date+'T12:00:00');day.setDate(day.getDate()+i*step);additions.push(yaryaneNormalizeItem({...value,id:yaryaneNewId(),date:localDate(day)},type))}
+  if(type==='event'){
+   const conflicts=[...new Set(additions.flatMap(v=>yaryaneEventConflicts(v,edit.id)))];
+   if(conflicts.length&&!confirm('Überschneidung mit:\n\n'+conflicts.slice(0,5).join('\n')+'\n\nTrotzdem speichern?'))return;
+  }
+  if(editing){const i=arr.findIndex(x=>String(x.id)===id);if(i<0)throw Error('Eintrag nicht mehr vorhanden');arr[i]=value}
+  else if(type==='shift'){arr=arr.filter(x=>x.date!==value.date);for(const v of additions)if(!arr.some(x=>x.date===v.date))arr.push(v)}
+  else arr.push(...additions);
+  if(yaryanePersist(type,arr)){closeForm();render()}
+ }catch(error){alert('Eintrag nicht gespeichert: '+error.message)}
+}
+function deleteEntry(){
+ if(!edit||edit.id==null)return;
+ if(!confirm('Diesen Eintrag wirklich löschen?'))return;
+ const {type,id}=edit,arr=type==='event'?events:type==='task'?tasks:type==='shift'?shifts:notes;
+ if(yaryanePersist(type,arr.filter(x=>String(x.id)!==String(id)))){closeForm();render()}
+}
+function closeForm(){
+ document.getElementById('modal').innerHTML='';document.body.classList.remove('yaryane-modal-open');
+ document.getElementById('app').inert=false;document.getElementById('nav').inert=false;const assistantButton=document.getElementById('yaneLaunch');if(assistantButton)assistantButton.inert=false;edit=null;
+ if(yaryaneFormReturnFocus?.isConnected)yaryaneFormReturnFocus.focus();
+}
+document.addEventListener('keydown',e=>{
+ if(!edit)return;
+ if(e.key==='Escape'){e.preventDefault();closeForm();return}
+ if(e.key==='Tab'){
+  const form=document.querySelector('#modal .sheet');if(!form)return;
+  const items=[...form.querySelectorAll('button,input,select,textarea,[tabindex="0"]')].filter(x=>!x.disabled&&x.offsetParent!==null);
+  if(!items.length)return;const first=items[0],last=items[items.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+ }
+});
+function restoreSnapshot(){
+ try{const saved=JSON.parse(storageGet('yaryane_preimport_backup_v1')||'null');if(!saved)throw Error('Keine Rückfallkopie vorhanden');yaryaneNormalizeBackup(saved);if(!confirm('Rückfallkopie wiederherstellen? Die aktuellen Daten werden ersetzt.'))return;yaryaneApplySnapshot(saved);render();alert('Rückfallkopie wiederhergestellt.')}catch(error){alert('Wiederherstellung fehlgeschlagen: '+error.message)}
+}
+function importData(input){
+ const file=input.files?.[0];if(!file)return;
+ if(file.size>10000000){alert('Datei zu groß.');input.value='';return}
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const raw=JSON.parse(reader.result),data=yaryaneNormalizeBackup(raw),counts='Termine: '+data.events.length+', Aufgaben: '+data.tasks.length+', Notizen: '+data.notes.length+', Schichten: '+data.shifts.length;
+   if(!confirm('Sicherung importieren?\n'+counts+'\n\nDie aktuellen Daten werden ersetzt. Vorher wird eine Rückfallkopie angelegt.'))return;
+   yaryaneApplySnapshot(data);render();alert('Import abgeschlossen. Deine vorherigen Daten sind als Rückfallkopie gespeichert.');
+  }catch(error){alert('Import fehlgeschlagen: '+error.message)}finally{input.value=''}
+ };
+ reader.onerror=()=>{alert('Datei konnte nicht gelesen werden.');input.value=''};reader.readAsText(file);
+}
 
 render();
 document.addEventListener('dblclick',function(e){if(e.target.closest('input,textarea,select,[contenteditable="true"]'))return;e.preventDefault()},{passive:false});
@@ -1023,10 +1188,11 @@ const config={apiKey:"AIzaSyAc8nFeX52QlgO0Q3CQO36j6kXnb3dcnYE",authDomain:"yarya
 let auth,db,user=null,cloudExists=false,active=false,busy=false,timer=null,lastMessage='Noch nicht angemeldet';
 const keys=['yaryane_v1_events','yaryane_tasks_v1','yaryane_notes_v1','yaryane_shifts_v1'];
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const snapshot=()=>({events:JSON.parse(localStorage.getItem(keys[0])||'[]'),tasks:JSON.parse(localStorage.getItem(keys[1])||'[]'),notes:JSON.parse(localStorage.getItem(keys[2])||'[]'),shifts:JSON.parse(localStorage.getItem(keys[3])||'[]'),profile:{name:localStorage.getItem('yaryane_profile_name_v1')||'',photo:localStorage.getItem('yaryane_profile_photo_v1')||''}});
+const snapshot=()=>({events:JSON.parse(storageGet(keys[0])||'[]'),tasks:JSON.parse(storageGet(keys[1])||'[]'),notes:JSON.parse(storageGet(keys[2])||'[]'),shifts:JSON.parse(storageGet(keys[3])||'[]'),profile:{name:storageGet('yaryane_profile_name_v1')||'',photo:storageGet('yaryane_profile_photo_v1')||''}});
 const reference=()=>doc(db,'users',user.uid,'sync','data');
 const setStatus=t=>{lastMessage=t;draw()};
-let syncMode='choice';
+let syncMode='choice',dirty=false,localRevision=0,authRevision=0;
+function flushDirty(){if(active&&user&&dirty&&!busy){clearTimeout(timer);timer=setTimeout(uploadChanges,1200)}}
 function draw(){const el=document.getElementById('syncControls'),status=document.getElementById('syncStatus');if(!el||!status)return;status.textContent=lastMessage;if(!user){
 if(syncMode==='choice'){el.innerHTML='<p class="muted">Yaryane funktioniert auch ohne Konto. Für die Cloud-Sicherung kannst du ein kostenloses Konto erstellen.</p><button type="button" class="primary" style="width:100%" id="syncGoRegister">Kostenlos registrieren</button><button type="button" class="secondary" style="width:100%;margin-top:10px" id="syncGoLogin">Ich habe bereits ein Konto · Anmelden</button>';document.getElementById('syncGoRegister').onclick=()=>{syncMode='register';lastMessage='Neues Konto erstellen';draw()};document.getElementById('syncGoLogin').onclick=()=>{syncMode='login';lastMessage='Mit vorhandenem Konto anmelden';draw()};return}
 const registering=syncMode==='register';
@@ -1039,9 +1205,31 @@ async function login(e){e.preventDefault();const f=new FormData(e.target);const 
 async function register(e){e.preventDefault();const form=e.currentTarget;const f=new FormData(form),email=String(f.get('email')).trim(),password=String(f.get('password'));if(password.length<6){setStatus('Bitte mindestens 6 Zeichen für dein Passwort verwenden.');return}const status=document.getElementById('syncStatus');if(status)status.textContent='Konto wird erstellt …';try{await createUserWithEmailAndPassword(auth,email,password)}catch(err){setStatus('Registrierung fehlgeschlagen: '+friendlyError(err))}}
 async function resetPassword(){const email=prompt('Für welche E-Mail-Adresse möchtest du einen Link zum Zurücksetzen des Passworts erhalten?');if(!email)return;try{await sendPasswordResetEmail(auth,email.trim());alert('Falls die E-Mail-Adresse registriert ist, erhältst du eine Nachricht zum Zurücksetzen des Passworts.')}catch(err){alert('Zurücksetzen fehlgeschlagen: '+friendlyError(err))}}
 async function checkCloud(){if(!user)return;try{let x=await getDoc(reference());cloudExists=x.exists();setStatus(cloudExists?'Cloud-Daten vorhanden. Bitte Abgleich auswählen.':'Cloud noch leer. Deine lokalen Daten sind unverändert.')}catch(err){setStatus('Cloud-Prüfung fehlgeschlagen: '+(err.code||err.message))}}
-async function uploadConfirm(){if(!user||busy)return;let message=cloudExists?'ACHTUNG: Vorhandene Cloud-Daten werden durch die Daten dieses Geräts ersetzt. Fortfahren?':'Lokale Daten erstmals in deine private Cloud sichern?';if(!confirm(message))return;try{busy=true;const data=snapshot();if(![data.events,data.tasks,data.notes,data.shifts].every(Array.isArray))throw Error('Lokale Daten ungültig');await setDoc(reference(),{...data,updatedAt:new Date().toISOString(),schemaVersion:1});cloudExists=true;active=true;setStatus('Cloud-Sicherung erfolgreich. Lokale Änderungen werden künftig hochgeladen.')}catch(err){setStatus('Upload fehlgeschlagen: '+(err.code||err.message))}finally{busy=false}}
-async function downloadConfirm(){if(!user||busy)return;if(!confirm('Cloud-Daten auf dieses Gerät laden? Vorher wird eine lokale Rückfallkopie angelegt. Aktuelle lokale Daten werden ersetzt.'))return;try{busy=true;let x=await getDoc(reference());if(!x.exists())throw Error('Keine Cloud-Daten vorhanden');let d=x.data();if(!['events','tasks','notes','shifts'].every(k=>Array.isArray(d[k])))throw Error('Ungültige Cloud-Daten');localStorage.setItem('yaryane_preimport_backup_v1',JSON.stringify({version:3,...snapshot()}));active=false;for(let i=0;i<4;i++)localStorage.setItem(keys[i],JSON.stringify(d[['events','tasks','notes','shifts'][i]]));events=d.events;tasks=d.tasks;notes=d.notes;shifts=d.shifts;if(d.profile&&typeof d.profile==='object'){for(const [k,v] of [['yaryane_profile_name_v1',d.profile.name],['yaryane_profile_photo_v1',d.profile.photo]]){if(typeof v==='string'&&v.length<120000){if(v)localStorage.setItem(k,v);else localStorage.removeItem(k)}}}active=true;render();setStatus('Cloud-Daten geladen. Rückfallkopie lokal gespeichert.')}catch(err){setStatus('Download fehlgeschlagen: '+(err.code||err.message))}finally{busy=false}}
-async function uploadChanges(){if(!active||!user||busy)return;try{busy=true;await setDoc(reference(),{...snapshot(),updatedAt:new Date().toISOString(),schemaVersion:1});cloudExists=true;setStatus('Änderungen in Cloud gesichert.')}catch(err){setStatus('Cloud-Sicherung fehlgeschlagen. Änderungen bleiben lokal: '+(err.code||err.message))}finally{busy=false}}
-window.addEventListener('yaryane-local-change',()=>{if(!active)return;clearTimeout(timer);timer=setTimeout(uploadChanges,1200)});
-try{const app=initializeApp(config);auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,async u=>{clearTimeout(timer);user=u;window.yaryaneAccountEmail=u?.email||'';refreshProfileHeader();active=false;cloudExists=false;if(u){setStatus('Angemeldet. Cloud wird geprüft …');await checkCloud()}else setStatus('Nicht angemeldet · Daten nur lokal')});window.yaryaneSyncRefresh=draw;draw()}catch(err){setStatus('Firebase konnte nicht gestartet werden: '+(err.code||err.message))}
+async function uploadConfirm(){
+ if(!user||busy)return;
+ if(!confirm(cloudExists?'Vorhandene Cloud-Daten durch dieses Gerät ersetzen?':'Lokale Daten erstmals in deiner privaten Cloud sichern?'))return;
+ const generation=authRevision;
+ try{busy=true;dirty=false;const data=yaryaneNormalizeBackup(snapshot());await setDoc(reference(),{...data,updatedAt:new Date().toISOString(),schemaVersion:1});if(generation!==authRevision)return;cloudExists=true;active=true;setStatus('Cloud-Sicherung erfolgreich. Lokale Änderungen werden künftig hochgeladen.')}
+ catch(err){if(generation===authRevision){dirty=true;setStatus('Upload fehlgeschlagen: '+(err.code||err.message))}}
+ finally{busy=false;flushDirty()}
+}
+async function downloadConfirm(){
+ if(!user||busy)return;
+ if(!confirm('Cloud-Daten laden? Eine lokale Rückfallkopie wird angelegt. Aktuelle Daten werden ersetzt.'))return;
+ const generation=authRevision,revision=localRevision;
+ try{busy=true;const result=await getDoc(reference());if(generation!==authRevision)return;if(!result.exists())throw Error('Keine Cloud-Daten vorhanden');
+ const data=yaryaneNormalizeBackup(result.data());if(localRevision!==revision)throw Error('Lokale Daten wurden während des Ladens geändert. Bitte den Abgleich erneut starten.');
+ const wasActive=active;active=false;try{yaryaneApplySnapshot(data)}catch(err){active=wasActive;throw err}dirty=false;active=true;render();setStatus('Cloud-Daten geladen. Rückfallkopie lokal gespeichert.')}
+ catch(err){if(generation===authRevision)setStatus('Download fehlgeschlagen: '+(err.code||err.message))}
+ finally{busy=false;flushDirty()}
+}
+async function uploadChanges(){
+ if(!active||!user)return;if(busy){dirty=true;return}
+ const generation=authRevision;
+ try{busy=true;dirty=false;const data=yaryaneNormalizeBackup(snapshot());await setDoc(reference(),{...data,updatedAt:new Date().toISOString(),schemaVersion:1});if(generation!==authRevision)return;cloudExists=true;setStatus('Änderungen in Cloud gesichert.')}
+ catch(err){if(generation===authRevision)setStatus('Cloud-Sicherung fehlgeschlagen. Änderungen bleiben lokal: '+(err.code||err.message))}
+ finally{busy=false;flushDirty()}
+}
+window.addEventListener('yaryane-local-change',()=>{localRevision++;if(!user)return;dirty=true;flushDirty()});
+try{const app=initializeApp(config);auth=getAuth(app);db=getFirestore(app);onAuthStateChanged(auth,async u=>{clearTimeout(timer);authRevision++;dirty=false;user=u;window.yaryaneAccountEmail=u?.email||'';refreshProfileHeader();active=false;cloudExists=false;if(u){setStatus('Angemeldet. Cloud wird geprüft …');await checkCloud()}else setStatus('Nicht angemeldet · Daten nur lokal')});window.yaryaneSyncRefresh=draw;draw()}catch(err){setStatus('Firebase konnte nicht gestartet werden: '+(err.code||err.message))}
 </script></body></html>
